@@ -59,6 +59,8 @@ public class BeezigForgeMod {
 
     }
 
+
+
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent evt) {
         if(Minecraft.getMinecraft().theWorld != null && !handlerLoaded) {

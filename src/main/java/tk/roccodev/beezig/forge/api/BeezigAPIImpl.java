@@ -7,6 +7,7 @@ public interface BeezigAPIImpl {
 
     public boolean isStaffMember();
     public boolean onPacketReceived(int packetId, String data);
+    public void saveConfigData(Object[] data);
 
 
 
@@ -22,6 +23,11 @@ public interface BeezigAPIImpl {
             @Override
             public boolean onPacketReceived(int packetId, String data) {
                 return (boolean) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "onPacketReceived", int.class, String.class), packetId, data);
+            }
+
+            @Override
+            public void saveConfigData(Object[] data) {
+                ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "saveConfigData", Object.class), new ArrayContainer(data));
             }
         };
     }

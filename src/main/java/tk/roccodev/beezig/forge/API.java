@@ -5,7 +5,7 @@ import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
 public class API {
     
 
-    public static Object privInst;
+    static Object privInst;
     public static BeezigAPIImpl inst;
 
 
