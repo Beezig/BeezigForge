@@ -1,0 +1,16 @@
+[
+{
+  "modid": "BeezigForge",
+  "name": "Beezig Forge Expansion",
+  "description": "Expands the Beezig 5zig plugin to use some Forge features.",
+  "version": "4.9.0",
+  "mcversion": "1.8.9",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["RoccoDev", "ItsNiklass"],
+  "logoFile": "",
+  "screenshots": [],
+  "useDependencyInformation": true,
+  "dependencies": ["the5zigMod"]
+}
+]
