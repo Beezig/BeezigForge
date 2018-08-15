@@ -11,7 +11,7 @@ import java.util.List;
 public class GuiBeezigSettings extends GuiConfig {
 
     public GuiBeezigSettings(GuiScreen parentScreen, List<IConfigElement> configElements) {
-        super(parentScreen, configElements, "BeezigForge", false, false, "Test");
+        super(parentScreen, configElements, "BeezigForge", false, false, "Beezig Config GUI");
 
     }
 
