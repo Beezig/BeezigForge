@@ -2,6 +2,7 @@ package tk.roccodev.beezig.forge.listener;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import tk.roccodev.beezig.forge.BeezigForgeMod;
 import tk.roccodev.beezig.forge.gui.settings.GuiBeezigSettings;
 import tk.roccodev.beezig.forge.settings.BeezigConfigElement;
 
@@ -12,6 +13,7 @@ public class ForgeListenerImpl {
 
     public void onLoad(String s, String s1) {
         System.out.println("Found Beezig " + s + " on 5zig " + s1);
+        BeezigForgeMod.loaded = true;
 
     }
 

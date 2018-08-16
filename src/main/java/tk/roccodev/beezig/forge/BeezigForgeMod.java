@@ -15,7 +15,10 @@ import tk.roccodev.beezig.forge.init.ClassFinder;
 import tk.roccodev.beezig.forge.packet.BeezigNetHandler;
 
 
-@Mod(modid = BeezigForgeMod.MODID, name = BeezigForgeMod.NAME, version = BeezigForgeMod.VERSION, updateJSON = "https://roccodev.pw/beezighosting/forge/versioning.json")
+@Mod(modid = BeezigForgeMod.MODID,
+        name = BeezigForgeMod.NAME,
+        version = BeezigForgeMod.VERSION,
+        updateJSON = "https://roccodev.pw/beezighosting/forge/versioning.json")
 public class BeezigForgeMod {
 
     public static final String MODID = "BeezigForge";
@@ -24,6 +27,7 @@ public class BeezigForgeMod {
 
 
     private boolean handlerLoaded;
+    public static boolean loaded;
 
 
 
@@ -63,7 +67,7 @@ public class BeezigForgeMod {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent evt) {
-        if(Minecraft.getMinecraft().theWorld != null && !handlerLoaded) {
+        if(loaded && Minecraft.getMinecraft().theWorld != null && !handlerLoaded) {
             handlerLoaded = true;
             final INetHandler parent = Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().getNetHandler();
             if (!(parent instanceof BeezigNetHandler)) {
