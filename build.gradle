@@ -28,6 +28,11 @@ archivesBaseName = "BeezigForge"
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
+jar {
+    archiveName = "BeezigForge.jar"
+}
+
+
 minecraft {
     version = "1.8.9-11.15.1.1722"
     runDir = "run"
