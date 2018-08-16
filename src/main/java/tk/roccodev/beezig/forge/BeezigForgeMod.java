@@ -3,7 +3,11 @@ package tk.roccodev.beezig.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.network.INetHandler;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -28,6 +32,7 @@ public class BeezigForgeMod {
 
     private boolean handlerLoaded;
     public static boolean loaded;
+    public static boolean versionUpdate;
 
 
 
@@ -73,6 +78,16 @@ public class BeezigForgeMod {
             if (!(parent instanceof BeezigNetHandler)) {
                 Minecraft.getMinecraft().thePlayer.sendQueue.getNetworkManager().setNetHandler(new BeezigNetHandler((NetHandlerPlayClient)parent));
             }
+        }
+        if(versionUpdate && Minecraft.getMinecraft().thePlayer != null) {
+            versionUpdate = false;
+            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(Log.info + "The version of your Beezig Forge Expansion isn't §3matching your Beezig one."));
+            ChatComponentText link = new ChatComponentText(Log.info + "§bClick here to update.");
+            ChatStyle style = link.getChatStyle();
+            style.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://l.roccodev.pw/beezigforge"));
+            style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("§bClick to update.")));
+            link.setChatStyle(style);
+            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(link);
         }
     }
 
