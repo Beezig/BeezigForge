@@ -5,13 +5,14 @@ import tk.roccodev.beezig.forge.init.ClassUtils;
 
 public interface BeezigAPIImpl {
 
-    public boolean isStaffMember();
-    public boolean onPacketReceived(int packetId, String data);
-    public void saveConfigData(Object[] data);
+    boolean isStaffMember();
+    boolean onPacketReceived(int packetId, String data);
+    void saveConfigData(Object[] data);
+    public String getCAITeam();
 
 
 
-    public static BeezigAPIImpl fromObject(final Object from) {
+    static BeezigAPIImpl fromObject(final Object from) {
         return new BeezigAPIImpl() {
             @Override
             public boolean isStaffMember() {
@@ -28,6 +29,11 @@ public interface BeezigAPIImpl {
             @Override
             public void saveConfigData(Object[] data) {
                 ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "saveConfigData", Object.class), new ArrayContainer(data));
+            }
+
+            @Override
+            public String getCAITeam() {
+                return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getCAITeam"));
             }
         };
     }

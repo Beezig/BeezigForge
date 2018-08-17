@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.*;
 import net.minecraft.util.IChatComponent;
 import tk.roccodev.beezig.forge.API;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
+import tk.roccodev.beezig.forge.listener.CAITitleListener;
 
 import java.lang.reflect.Field;
 
@@ -359,6 +360,7 @@ public class BeezigNetHandler extends NetHandlerPlayClient {
 
     @Override
     public void handleTitle(S45PacketTitle packetIn) {
+        if(!CAITitleListener.inst.onTitle(packetIn)) return;
         if(api.onPacketReceived(0x45, packetIn.toString()))
         parent.handleTitle(packetIn);
     }
