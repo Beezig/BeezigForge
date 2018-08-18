@@ -8,7 +8,8 @@ public interface BeezigAPIImpl {
     boolean isStaffMember();
     boolean onPacketReceived(int packetId, String data);
     void saveConfigData(Object[] data);
-    public String getCAITeam();
+    String getCAITeam();
+    boolean getSettingValue(String setting);
 
 
 
@@ -34,6 +35,11 @@ public interface BeezigAPIImpl {
             @Override
             public String getCAITeam() {
                 return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getCAITeam"));
+            }
+
+            @Override
+            public boolean getSettingValue(String setting) {
+                return (boolean) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getSettingValue", String.class), setting);
             }
         };
     }
