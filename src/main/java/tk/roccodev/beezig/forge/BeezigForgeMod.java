@@ -16,7 +16,8 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
 import tk.roccodev.beezig.forge.init.ClassFinder;
-import tk.roccodev.beezig.forge.listener.CAITitleListener;
+import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
+import tk.roccodev.beezig.forge.listener.games.timv.EnderchestsListener;
 import tk.roccodev.beezig.forge.packet.BeezigNetHandler;
 
 
@@ -41,7 +42,8 @@ public class BeezigForgeMod {
     public void onInit(FMLInitializationEvent evt) {
 
         MinecraftForge.EVENT_BUS.register(this);
-        CAITitleListener.inst = new CAITitleListener();
+        MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
+        TitleListener.inst = new TitleListener();
     }
 
     @SubscribeEvent
