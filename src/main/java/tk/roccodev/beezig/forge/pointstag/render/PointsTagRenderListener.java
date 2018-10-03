@@ -16,7 +16,9 @@ public class PointsTagRenderListener {
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Pre evt) {
+        if(!PointsTagCache.enabled) return;
         EntityPlayer p = evt.entityPlayer;
+        if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;
         if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
         PointsTag tag = PointsTagCache.get(p.getUniqueID());
@@ -37,6 +39,7 @@ public class PointsTagRenderListener {
         if (scoreObjective != null && p.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) < 10 * 10) {
             offset *= 2;
         }
+        offset += PointsTagCache.offset;
         PointsTagUtils.render(evt.renderer, prefix + suffix, p, evt.x, evt.y + offset, evt.z);
 
     }

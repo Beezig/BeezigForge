@@ -6,6 +6,9 @@ import java.util.UUID;
 public class PointsTagCache {
 
     private static HashMap<UUID, PointsTag> cache = new HashMap<>();
+    public static boolean enabled;
+    public static double offset = 0;
+    public static boolean self;
 
     public static void putIfAbsent(UUID uuid, PointsTag cached) {
         cache.putIfAbsent(uuid, cached);

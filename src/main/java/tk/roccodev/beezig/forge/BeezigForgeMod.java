@@ -8,18 +8,24 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.network.INetHandler;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
+import tk.roccodev.beezig.forge.commands.PointsTagCommand;
+import tk.roccodev.beezig.forge.config.ConfigurationManager;
 import tk.roccodev.beezig.forge.init.ClassFinder;
 import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
 import tk.roccodev.beezig.forge.listener.games.timv.EnderchestsListener;
 import tk.roccodev.beezig.forge.packet.BeezigNetHandler;
 import tk.roccodev.beezig.forge.pointstag.render.PointsTagRenderListener;
+
+import java.io.File;
 
 
 @Mod(modid = BeezigForgeMod.MODID,
@@ -38,6 +44,14 @@ public class BeezigForgeMod {
     public static boolean versionUpdate;
 
 
+    @Mod.EventHandler
+    public void onPre(FMLPreInitializationEvent evt) {
+        File configFile = evt.getSuggestedConfigurationFile();
+        File parent = new File(configFile.getParent() + "/BeezigForge/");
+        if(!parent.exists()) parent.mkdir();
+        ConfigurationManager.initAll(configFile);
+    }
+
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent evt) {
@@ -45,6 +59,9 @@ public class BeezigForgeMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
         MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());
+
+        ClientCommandHandler.instance.registerCommand(new PointsTagCommand());
+
         TitleListener.inst = new TitleListener();
     }
 
