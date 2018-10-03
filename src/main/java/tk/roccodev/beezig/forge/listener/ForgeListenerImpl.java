@@ -2,6 +2,7 @@ package tk.roccodev.beezig.forge.listener;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.BeezigForgeMod;
 import tk.roccodev.beezig.forge.gamefields.TIMV;
 import tk.roccodev.beezig.forge.gui.settings.GuiBeezigSettings;
@@ -22,6 +23,10 @@ public class ForgeListenerImpl {
 
         TIMV.callInit();
 
+    }
+
+    public void setActiveGame(String game) {
+        ActiveGame.set(game);
     }
 
     public void onDisplaySettingsGui(Object settings) {

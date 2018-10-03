@@ -19,6 +19,7 @@ import tk.roccodev.beezig.forge.init.ClassFinder;
 import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
 import tk.roccodev.beezig.forge.listener.games.timv.EnderchestsListener;
 import tk.roccodev.beezig.forge.packet.BeezigNetHandler;
+import tk.roccodev.beezig.forge.pointstag.render.PointsTagRenderListener;
 
 
 @Mod(modid = BeezigForgeMod.MODID,
@@ -29,7 +30,7 @@ public class BeezigForgeMod {
 
     public static final String MODID = "BeezigForge";
     public static final String NAME = "Beezig Forge Expansion";
-    public static final String VERSION = "4.9.0";
+    public static final String VERSION = "5.0.0";
 
 
     private boolean handlerLoaded;
@@ -43,6 +44,7 @@ public class BeezigForgeMod {
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
+        MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());
         TitleListener.inst = new TitleListener();
     }
 
