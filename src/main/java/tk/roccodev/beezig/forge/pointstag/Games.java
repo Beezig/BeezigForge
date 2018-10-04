@@ -14,8 +14,20 @@ public enum Games {
     GNTM("total_points", "Points", true),
     MIMV("total_points", "Karma", true),
     SGN("total_points", "Points", false),
-    BP("total_points", "Points", true);
-
+    BP("total_points", "Points", true),
+    SP("points", "Points", false),
+    HB("points", "Points", false),
+    DRAW("total_points", "Points", false),
+    EE("points", "Points", false),
+    EF("points", "Points", false),
+    CR("total_points", "Points", false),
+    HERO("total_points", "Points", false),
+    OITC("total_points", "Points", false),
+    SPL("total_points", "Points", false),
+    MM("points", "Points", false),
+    SLAP("points", "Points", false),
+    RR("points", "Points", false),
+    BD("total_points", "Points", false);
 
     private String points, display;
     private boolean supportsRanks;

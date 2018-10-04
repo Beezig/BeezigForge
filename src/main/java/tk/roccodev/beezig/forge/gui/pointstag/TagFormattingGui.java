@@ -38,6 +38,10 @@ public class TagFormattingGui extends GuiScreen {
                 .replace("{v}", "201,530")
                 .replace("{r}", "§f§lWatson").trim();
         this.drawCenteredString(this.fontRendererObj, "Preview: " + preview, this.width / 2, this.height / 2 + 10, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7Available variables:", this.width / 2, this.height / 2 + 50, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{k} Prefix, e.g, 'Points'", this.width / 2, this.height / 2 + 60, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{v} Value, e.g, '250,100'", this.width / 2, this.height / 2 + 70, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{r} Rank, for supported modes, e.g, 'Forensic'", this.width / 2, this.height / 2 + 80, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
