@@ -39,6 +39,11 @@ public class TagSettingsGui extends GuiScreen {
         }));
     }
 
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+    }
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
@@ -52,6 +57,9 @@ public class TagSettingsGui extends GuiScreen {
                 PointsTagCache.self = !PointsTagCache.self;
                 TagConfigManager.showSelf.set(PointsTagCache.self);
                 button.displayString = "Show self: " +  (PointsTagCache.self ? "Enabled" : "Disabled");
+                break;
+            case 2000:
+                mc.displayGuiScreen(new TagFormattingGui());
                 break;
         }
     }

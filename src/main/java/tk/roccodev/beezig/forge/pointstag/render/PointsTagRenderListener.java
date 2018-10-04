@@ -30,8 +30,8 @@ public class PointsTagRenderListener {
         if(status == PointsTagStatus.UNKNOWN) {
             tag.downloadData(p.getUniqueID().toString().replace("-", ""));
         }
-        String prefix = "§3" + tag.getPrefix() + ": §b";
-        String suffix = status == PointsTagStatus.DONE ? tag.getSuffix() : status.getDisplay();
+        String key = tag.getKey();
+        String value = status == PointsTagStatus.DONE ? tag.getValue() : status.getDisplay();
         double offset = 0.3;
         Scoreboard scoreboard = p.getWorldScoreboard();
         ScoreObjective scoreObjective = scoreboard.getObjectiveInDisplaySlot(2);
@@ -40,7 +40,8 @@ public class PointsTagRenderListener {
             offset *= 2;
         }
         offset += PointsTagCache.offset;
-        PointsTagUtils.render(evt.renderer, prefix + suffix, p, evt.x, evt.y + offset, evt.z);
+        String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}", tag.getRank()).trim();
+        PointsTagUtils.render(evt.renderer, toRender, p, evt.x, evt.y + offset, evt.z);
 
     }
 

@@ -12,6 +12,7 @@ public class TagConfigManager {
     public static Property enabled;
     public static Property offset;
     public static Property showSelf;
+    public static Property formatting;
 
 
 
@@ -26,10 +27,14 @@ public class TagConfigManager {
         offset = config.get("ignored", "offset", 0d,
                 "Offset of the tags, for compatibility");
 
+        formatting = config.get("ignored", "formatting", "§3{k}: §a{v}",
+                "Formatting of the tags");
+
 
         PointsTagCache.self = showSelf.getBoolean();
         PointsTagCache.enabled = enabled.getBoolean();
         PointsTagCache.offset = offset.getDouble();
+        PointsTagCache.formatting = formatting.getString();
 
     }
 

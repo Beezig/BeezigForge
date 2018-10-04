@@ -10,6 +10,7 @@ public interface BeezigAPIImpl {
     void saveConfigData(Object[] data);
     String getCAITeam();
     boolean getSettingValue(String setting);
+    String getRankString(String title, String mode);
 
 
 
@@ -40,6 +41,11 @@ public interface BeezigAPIImpl {
             @Override
             public boolean getSettingValue(String setting) {
                 return (boolean) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getSettingValue", String.class), setting);
+            }
+
+            @Override
+            public String getRankString(String title, String mode) {
+                return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getRankString", String.class, String.class), title, mode);
             }
         };
     }

@@ -1,13 +1,14 @@
 package tk.roccodev.beezig.forge.pointstag;
 
 import org.json.simple.JSONObject;
+import tk.roccodev.beezig.forge.API;
 import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.Log;
 import tk.roccodev.beezig.forge.utils.JSON;
 
 public class PointsTag {
 
-    private String prefix, suffix;
+    private String key, value, rank;
     private PointsTagStatus status;
 
     public void downloadData(String uuid) {
@@ -17,42 +18,57 @@ public class PointsTag {
             Games game = Games.value(gameStr);
             String prefix;
             String pts;
+            boolean ranks;
             if(game == null) {
                 prefix = "Points";
                 pts = "total_points";
+                ranks = false;
             }
             else {
                 prefix = game.getDisplay();
                 pts = game.getPoints();
+                ranks = true;
             }
-            this.prefix = prefix;
+            this.key = prefix;
             JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
-            this.suffix = Log.df((long)obj.get(pts));
+            this.value = Log.df((long)obj.get(pts));
             this.status = PointsTagStatus.DONE;
-
+            if(ranks) {
+                String rankStr = API.inst.getRankString(obj.get("title").toString(), gameStr);
+                if(rankStr != null) rank = rankStr;
+            }
 
         }).start();
     }
 
     public PointsTag() {
         status = PointsTagStatus.UNKNOWN;
-        prefix = "Points";
+        key = "Points";
+        rank = "";
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getKey() {
+        return key;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setKey(String key) {
+        this.key = key;
     }
 
-    public String getSuffix() {
-        return suffix;
+    public String getValue() {
+        return value;
     }
 
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
     }
 
     public PointsTagStatus getStatus() {
