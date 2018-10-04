@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.forge.pointstag.render;
+package tk.roccodev.beezig.forge.modules.pointstag.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,10 +7,10 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import tk.roccodev.beezig.forge.ActiveGame;
-import tk.roccodev.beezig.forge.pointstag.PointsTag;
-import tk.roccodev.beezig.forge.pointstag.PointsTagCache;
-import tk.roccodev.beezig.forge.pointstag.PointsTagStatus;
-import tk.roccodev.beezig.forge.pointstag.PointsTagUtils;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTag;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagStatus;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagUtils;
 
 public class PointsTagRenderListener {
 

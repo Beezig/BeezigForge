@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import tk.roccodev.beezig.forge.config.pointstag.TagConfigManager;
-import tk.roccodev.beezig.forge.pointstag.PointsTagCache;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
 import java.io.IOException;
 

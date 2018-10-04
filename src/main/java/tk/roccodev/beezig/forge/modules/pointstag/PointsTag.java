@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.forge.pointstag;
+package tk.roccodev.beezig.forge.modules.pointstag;
 
 import org.json.simple.JSONObject;
 import tk.roccodev.beezig.forge.API;

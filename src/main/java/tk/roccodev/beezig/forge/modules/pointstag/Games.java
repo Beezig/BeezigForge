@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.forge.pointstag;
+package tk.roccodev.beezig.forge.modules.pointstag;
 
 public enum Games {
 

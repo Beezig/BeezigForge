@@ -22,8 +22,9 @@ import tk.roccodev.beezig.forge.config.ConfigurationManager;
 import tk.roccodev.beezig.forge.init.ClassFinder;
 import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
 import tk.roccodev.beezig.forge.listener.games.timv.EnderchestsListener;
+import tk.roccodev.beezig.forge.modules.compass.render.CompassRenderListener;
 import tk.roccodev.beezig.forge.packet.BeezigNetHandler;
-import tk.roccodev.beezig.forge.pointstag.render.PointsTagRenderListener;
+import tk.roccodev.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 
 import java.io.File;
 
@@ -59,6 +60,7 @@ public class BeezigForgeMod {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
         MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());
+        MinecraftForge.EVENT_BUS.register(new CompassRenderListener());
 
         ClientCommandHandler.instance.registerCommand(new PointsTagCommand());
 

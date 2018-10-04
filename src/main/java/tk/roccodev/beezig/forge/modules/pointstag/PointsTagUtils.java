@@ -1,4 +1,4 @@
-package tk.roccodev.beezig.forge.pointstag;
+package tk.roccodev.beezig.forge.modules.pointstag;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

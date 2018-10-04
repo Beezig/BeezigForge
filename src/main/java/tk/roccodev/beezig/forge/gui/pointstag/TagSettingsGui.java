@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import tk.roccodev.beezig.forge.config.pointstag.TagConfigManager;
-import tk.roccodev.beezig.forge.pointstag.PointsTagCache;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
 import java.io.IOException;
 

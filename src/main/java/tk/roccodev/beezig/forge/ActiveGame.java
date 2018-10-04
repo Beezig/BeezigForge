@@ -1,6 +1,6 @@
 package tk.roccodev.beezig.forge;
 
-import tk.roccodev.beezig.forge.pointstag.PointsTagCache;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
 public class ActiveGame {
 

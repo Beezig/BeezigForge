@@ -3,7 +3,7 @@ package tk.roccodev.beezig.forge.config.pointstag;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
-import tk.roccodev.beezig.forge.pointstag.PointsTagCache;
+import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
 public class TagConfigManager {
 
