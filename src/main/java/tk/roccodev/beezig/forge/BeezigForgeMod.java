@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
+import tk.roccodev.beezig.forge.commands.BedwarsCompassCommand;
 import tk.roccodev.beezig.forge.commands.PointsTagCommand;
 import tk.roccodev.beezig.forge.config.ConfigurationManager;
 import tk.roccodev.beezig.forge.init.ClassFinder;
@@ -63,6 +64,7 @@ public class BeezigForgeMod {
         MinecraftForge.EVENT_BUS.register(new CompassRenderListener());
 
         ClientCommandHandler.instance.registerCommand(new PointsTagCommand());
+        ClientCommandHandler.instance.registerCommand(new BedwarsCompassCommand());
 
         TitleListener.inst = new TitleListener();
     }

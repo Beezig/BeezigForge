@@ -14,16 +14,22 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import tk.roccodev.beezig.forge.ActiveGame;
+import tk.roccodev.beezig.forge.modules.compass.CompassManager;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class CompassRenderListener {
 
     private int offsetAll = 0;
-    private int offY = 0;
+    public static int offY = 0;
+    public static int offX = 0;
 
-    private int centerX = 0;
+    private static CompassRenderListener inst;
+
+
+    public static int centerX = 0;
     public static int width = 184;
     public static int height = 20;
     private int colorMarker = 0xFFFFFF;
@@ -31,9 +37,10 @@ public class CompassRenderListener {
     @SubscribeEvent
     public void renderOverlay(RenderGameOverlayEvent.Post evt) {
         if (evt.type == RenderGameOverlayEvent.ElementType.ALL) {
+            if(!CompassManager.enabled) return;
             if (!ActiveGame.current().equalsIgnoreCase("bed")) return;
             if (Minecraft.getMinecraft().theWorld == null) return;
-            drawCompass(new ScaledResolution(mc).getScaledWidth());
+            drawCompass(new ScaledResolution(mc).getScaledWidth(), false);
         }
     }
 
@@ -72,12 +79,16 @@ public class CompassRenderListener {
 
     public CompassRenderListener() {
         fr = mc.fontRendererObj;
+        inst = this;
     }
 
-    private void drawCompass(int screenWidth) {
+    public static void drawDummy(int screenWidth) {
+        inst.drawCompass(screenWidth, true);
+    }
+
+    private void drawCompass(int screenWidth, boolean dummy) {
         int direction = normalize((int) this.mc.thePlayer.rotationYaw);
         offsetAll = (cwidth * direction / 360);
-        int offX = 0;
         centerX = (screenWidth / 2 + offX);
 
         int tintMarker = 0;
@@ -92,21 +103,37 @@ public class CompassRenderListener {
         } else {
             colorDirection = -1;
         }
+        if(dummy) {
+            renderMarker();
+            drawDirection("●", 0, CompassManager.size, 2);
+            drawDirection("●", 90, CompassManager.size, 3);
+            drawDirection("●", 180, CompassManager.size, 4);
+            drawDirection("●", 270, CompassManager.size, 5);
+            drawDirection("●", 45, CompassManager.size, 6);
+            drawDirection("●", 135, CompassManager.size, 7);
+            drawDirection("●", 225, CompassManager.size, 8);
+            drawDirection("●", 315, CompassManager.size, 9);
+            drawDirection("●", 120, CompassManager.size, 10);
+            drawDirection("●", 240, CompassManager.size, 11);
 
-        renderMarker();
+        }
+        else {
+            AtomicBoolean marker = new AtomicBoolean(false);
+            mc.theWorld.loadedEntityList.forEach((e) -> {
+                if (e.hasCustomName()) return;
+                if (!(e instanceof EntityArmorStand)) return;
+                if (!(e.riddenByEntity instanceof EntityGiantZombie)) return;
+                marker.set(true);
+                EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
+                EntityGiantZombie zombie = (EntityGiantZombie) e.riddenByEntity;
+                int color = zombie.getHeldItem().getMetadata();
 
-        mc.theWorld.loadedEntityList.forEach((e) -> {
-            if(e.hasCustomName()) return;
-            if(!(e instanceof EntityArmorStand)) return;
-            if(!(e.riddenByEntity instanceof EntityGiantZombie)) return;
-            EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
-            EntityGiantZombie zombie = (EntityGiantZombie) e.riddenByEntity;
-            int color = zombie.getHeldItem().getMetadata();
-            double yaw = (Math.atan2((e.posX - pl.posX), (e.posZ - pl.posZ)) * (180.0 / Math.PI));
+                drawDirection("●", (int) Math.toDegrees(Math.atan2(pl.posX - e.posX, e.posZ - pl.posZ)), CompassManager.size, color);
 
-            drawDirection("●", (int)Math.toDegrees(Math.atan2(pl.posX - e.posX, e.posZ - pl.posZ)), 4D, color);
+            });
 
-        });
+            if (marker.get()) renderMarker();
+        }
 
     }
 

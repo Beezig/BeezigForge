@@ -33,7 +33,7 @@ public class TagSettingsGui extends GuiScreen {
 
         this.buttonList.add(new GuiSlider(707, this.width / 2 + 5, this.height / 2 - 83 + 22,
                 150, 20, "Tag Offset: ", "",
-                -10d, 10d, 0d, false, true, slider -> {
+                -10d, 10d, PointsTagCache.offset, false, true, slider -> {
                 PointsTagCache.offset = slider.getValueInt() / 10d;
                 TagConfigManager.offset.set(slider.getValueInt() / 10d);
         }));
