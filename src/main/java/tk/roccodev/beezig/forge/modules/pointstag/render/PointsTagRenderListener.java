@@ -16,11 +16,11 @@ public class PointsTagRenderListener {
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Pre evt) {
+        if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
         if(!PointsTagCache.enabled) return;
         EntityPlayer p = evt.entityPlayer;
         if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;
-        if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
         PointsTag tag = PointsTagCache.get(p.getUniqueID());
         if(tag == null) {
             tag = new PointsTag();
