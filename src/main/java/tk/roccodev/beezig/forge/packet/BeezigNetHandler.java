@@ -3,12 +3,16 @@ package tk.roccodev.beezig.forge.packet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.network.play.server.*;
 import tk.roccodev.beezig.forge.API;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
 import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class BeezigNetHandler extends NetHandlerPlayClient {
 
@@ -401,8 +405,18 @@ public class BeezigNetHandler extends NetHandlerPlayClient {
 
     @Override
     public void handleTabComplete(S3APacketTabComplete packetIn) {
-        if(api.onPacketReceived(0x3A, packetIn.toString()))
-        parent.handleTabComplete(packetIn);
+        if(api.onPacketReceived(0x3A, packetIn.toString())) {
+            if(packetIn.func_149630_c().length == 0) {
+                Collection<NetworkPlayerInfo> players = Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap();
+                List<String> matches = new ArrayList<>();
+                for(NetworkPlayerInfo i : players) {
+                    matches.add(i.getGameProfile().getName());
+                }
+                packetIn = new S3APacketTabComplete(matches.toArray(new String[0]));
+            }
+            parent.handleTabComplete(packetIn);
+        }
+
     }
 
     @Override
