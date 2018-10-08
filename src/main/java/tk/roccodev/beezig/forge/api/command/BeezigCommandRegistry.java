@@ -10,6 +10,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
 import tk.roccodev.beezig.forge.Log;
 import tk.roccodev.beezig.forge.tabcompletion.BeezigCommandExecutor;
+import tk.roccodev.beezig.forge.tabcompletion.TabCompletionUtils;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -65,11 +66,15 @@ public class BeezigCommandRegistry {
                 public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
                     if(!(sender instanceof EntityPlayer)) return super.addTabCompletionOptions(sender, args, pos);
                     try {
-                        return tabCompletion == null
-                                ? super.addTabCompletionOptions(sender, args, pos)
-                                : (List<String>) tabCompletion.invoke(obj, ((EntityPlayer)sender).getGameProfile(), args);
+                        Object tabCompl = tabCompletion == null
+                                ? TabCompletionUtils.matching(args)
+                                : tabCompletion.invoke(obj, ((EntityPlayer)sender).getGameProfile(), args);
+                        if(tabCompl instanceof List) {
+                            return (List<String>) tabCompl;
+                        }
+
                     } catch (Exception ignored) {}
-                    return super.addTabCompletionOptions(sender, args, pos);
+                    return TabCompletionUtils.matching(args);
                 }
 
                 @Override
