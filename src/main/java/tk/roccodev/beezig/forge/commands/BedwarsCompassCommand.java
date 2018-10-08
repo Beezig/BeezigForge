@@ -28,4 +28,5 @@ public class BedwarsCompassCommand extends CommandBase {
         new CompassSettingsGui().show();
 
     }
+
 }

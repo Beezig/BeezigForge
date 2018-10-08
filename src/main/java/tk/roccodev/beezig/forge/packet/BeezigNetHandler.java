@@ -405,18 +405,8 @@ public class BeezigNetHandler extends NetHandlerPlayClient {
 
     @Override
     public void handleTabComplete(S3APacketTabComplete packetIn) {
-        if(api.onPacketReceived(0x3A, packetIn.toString())) {
-            if(packetIn.func_149630_c().length == 0) {
-                Collection<NetworkPlayerInfo> players = Minecraft.getMinecraft().getNetHandler().getPlayerInfoMap();
-                List<String> matches = new ArrayList<>();
-                for(NetworkPlayerInfo i : players) {
-                    matches.add(i.getGameProfile().getName());
-                }
-                packetIn = new S3APacketTabComplete(matches.toArray(new String[0]));
-            }
+        if(api.onPacketReceived(0x3A, packetIn.toString()))
             parent.handleTabComplete(packetIn);
-        }
-
     }
 
     @Override

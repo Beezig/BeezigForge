@@ -1,12 +1,18 @@
 package tk.roccodev.beezig.forge.listener;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import scala.actors.threadpool.Arrays;
 import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.BeezigForgeMod;
+import tk.roccodev.beezig.forge.api.command.BeezigCommandRegistry;
 import tk.roccodev.beezig.forge.gamefields.TIMV;
 import tk.roccodev.beezig.forge.gui.settings.GuiBeezigSettings;
 import tk.roccodev.beezig.forge.settings.BeezigConfigElement;
+import tk.roccodev.beezig.forge.tabcompletion.BeezigCommandExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +33,10 @@ public class ForgeListenerImpl {
 
     public void setActiveGame(String game) {
         ActiveGame.set(game);
+    }
+
+    public void registerCommand(Object commandExecutor) {
+        BeezigCommandRegistry.register(commandExecutor);
     }
 
     public void onDisplaySettingsGui(Object settings) {
