@@ -9,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -77,6 +78,18 @@ public class EnderchestsListener {
            lastCompass = evt.entityPlayer.getCurrentEquippedItem();
 
        }
+    }
+
+    @SubscribeEvent
+    public void onChat(ClientChatReceivedEvent evt) {
+        EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
+        if(pl == null) return;
+        if(evt.type == 2 // Action bar
+                && customSpawnPt
+                && pl.getCurrentEquippedItem() != null
+                && (pl.getCurrentEquippedItem().getItem() == Items.compass)) {
+            evt.message = new ChatComponentText(pl.getCurrentEquippedItem().getDisplayName());
+        }
     }
 
 }
