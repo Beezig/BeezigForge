@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -15,7 +16,6 @@ import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.Log;
 import tk.roccodev.beezig.forge.gamefields.TIMV;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +23,7 @@ public class EnderchestsListener {
 
     public static BlockPos testerSpawnPt;
     public static boolean customSpawnPt;
+    private ItemStack lastCompass;
 
     @SubscribeEvent
     public void onRenderChunk(TickEvent.ClientTickEvent evt) {
@@ -34,7 +35,7 @@ public class EnderchestsListener {
             World w = Minecraft.getMinecraft().theWorld;
 
             EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
-
+            if(pl == null) return;
 
 
             List<TileEntity> ents = w.loadedTileEntityList.stream()
@@ -44,10 +45,18 @@ public class EnderchestsListener {
             TIMV.setEnderchests(ents.size());
 
             if(customSpawnPt) {
-                if(ents.size() == 0) return;
+                if(ents.size() == 0) {
+                    customSpawnPt = false;
+                    pl.addChatComponentMessage(new ChatComponentText(Log.error + "No ender chests found. Changing back to tester mode."));
+                    return;
+                }
                 TileEntity ent = ents.get(0);
                 pl.worldObj.setSpawnPoint(ent.getPos());
+                if(lastCompass != null)
+                    lastCompass.setStackDisplayName("§3Nearest Ender Chest - §b" + (int)pl.getDistanceSq(ent.getPos()) + "m");
             }
+            else if(lastCompass != null)
+                lastCompass.setStackDisplayName("§3Tester Compass");
         } catch(Exception ignored) {}
     }
 
@@ -64,6 +73,9 @@ public class EnderchestsListener {
                evt.entityPlayer.addChatComponentMessage(new ChatComponentText(Log.info + "Now pointing towards tester."));
            } else
                evt.entityPlayer.addChatComponentMessage(new ChatComponentText(Log.info + "Now pointing towards nearest enderchest."));
+
+           lastCompass = evt.entityPlayer.getCurrentEquippedItem();
+
        }
     }
 
