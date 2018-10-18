@@ -56,11 +56,13 @@ public class EnderchestsListener {
                 pl.worldObj.setSpawnPoint(ent.getPos());
                 if(pl.getCurrentEquippedItem() == null || pl.getCurrentEquippedItem().getItem() != Items.compass) return;
                 if(lastCompass != null)
-                   mc.ingameGUI.setRecordPlaying("§3Nearest Ender Chest - §b" + (int)pl.getDistanceSq(ent.getPos()) + "m", false);
+                   mc.ingameGUI.setRecordPlaying("§3Nearest Ender Chest - §b" +
+                           (int) Math.sqrt(pl.getDistanceSq(ent.getPos())) + "m", false);
             }
             else if(testerSpawnPt != null
             && (pl.getCurrentEquippedItem() != null && pl.getCurrentEquippedItem().getItem() == Items.compass))
-                mc.ingameGUI.setRecordPlaying("§6Distance to Tester - §e" + (int)pl.getDistanceSq(testerSpawnPt) + "m", false);
+                mc.ingameGUI.setRecordPlaying("§6Distance to Tester - §e" +
+                        (int) Math.sqrt(pl.getDistanceSq(testerSpawnPt)) + "m", false);
         } catch(Exception ignored) {}
     }
 
@@ -81,6 +83,17 @@ public class EnderchestsListener {
            lastCompass = evt.entityPlayer.getCurrentEquippedItem();
 
        }
+    }
+
+    @SubscribeEvent
+    public void onChat(ClientChatReceivedEvent evt) {
+        if(!ActiveGame.current().equals("TIMV")) return;
+        if(evt.type == 2) {
+            EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
+            if(pl == null) return;
+            if(pl.getCurrentEquippedItem() == null) return;
+            if(pl.getCurrentEquippedItem().getItem() == Items.compass)  evt.setCanceled(true);
+        }
     }
 
 }
