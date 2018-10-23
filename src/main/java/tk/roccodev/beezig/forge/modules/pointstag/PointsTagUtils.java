@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -23,7 +24,7 @@ public class PointsTagUtils {
         int renderDist = 4096; // 64^2
         if(player.getDistanceSqToEntity(Minecraft.getMinecraft().thePlayer) > renderDist) return false;
 
-        return true;
+        return shouldRenderTeam(player);
 
     }
 
@@ -88,6 +89,28 @@ public class PointsTagUtils {
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         renderer.drawString(toRender, x, y, Color.WHITE.darker().getRGB());
 
+    }
+
+    private static boolean shouldRenderTeam(EntityPlayer player) {
+        Team team = player.getTeam();
+        Team team1 = Minecraft.getMinecraft().thePlayer.getTeam();
+
+        if (team != null) {
+            Team.EnumVisible enumVisible = team.getNameTagVisibility();
+            switch (enumVisible) {
+                case ALWAYS:
+                    return true;
+                case NEVER:
+                    return false;
+                case HIDE_FOR_OTHER_TEAMS:
+                    return team1 == null || team.isSameTeam(team1);
+                case HIDE_FOR_OWN_TEAM:
+                    return team1 == null || !team.isSameTeam(team1);
+                default:
+                    return true;
+            }
+        }
+        return true;
     }
 
 }
