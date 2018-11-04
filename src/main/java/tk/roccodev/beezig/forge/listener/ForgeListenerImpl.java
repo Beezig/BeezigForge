@@ -55,15 +55,8 @@ public class ForgeListenerImpl {
                 elements.add(new BeezigConfigElement(enumName, desc, enabled, briefDesc));
             }
 
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                Minecraft.getMinecraft().displayGuiScreen(new GuiBeezigSettings(null, elements));
-            }).start();
+            new GuiBeezigSettings(null, elements).show();
+
         } catch(Exception e) {
             e.printStackTrace();
         }
