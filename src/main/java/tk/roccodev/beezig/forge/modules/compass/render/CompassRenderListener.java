@@ -1,5 +1,6 @@
 package tk.roccodev.beezig.forge.modules.compass.render;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -10,6 +11,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -127,8 +130,10 @@ public class CompassRenderListener {
                 EntityPlayer pl = Minecraft.getMinecraft().thePlayer;
                 EntityGiantZombie zombie = (EntityGiantZombie) e.riddenByEntity;
                 int color = zombie.getHeldItem().getMetadata();
+                String toDraw = Block.getBlockFromItem(zombie.getHeldItem().getItem())
+                        == Blocks.wool ? "●" : "▲";
 
-                drawDirection("●", (int) Math.toDegrees(Math.atan2(pl.posX - e.posX, e.posZ - pl.posZ)), CompassManager.size, color);
+                drawDirection(toDraw, (int) Math.toDegrees(Math.atan2(pl.posX - e.posX, e.posZ - pl.posZ)), CompassManager.size, color);
 
             });
 

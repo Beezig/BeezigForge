@@ -4,6 +4,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.API;
 
 import java.util.List;
@@ -13,6 +15,13 @@ public class GuiBeezigSettings extends GuiConfig {
     public GuiBeezigSettings(GuiScreen parentScreen, List<IConfigElement> configElements) {
         super(parentScreen, configElements, "BeezigForge", false, false, "Beezig Config GUI");
 
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        Mouse.setGrabbed(false);
+        Keyboard.enableRepeatEvents(false);
     }
 
     @Override

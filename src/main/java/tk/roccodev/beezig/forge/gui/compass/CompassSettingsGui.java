@@ -7,6 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.config.compass.CompassConfigManager;
 import tk.roccodev.beezig.forge.modules.compass.CompassManager;
 import tk.roccodev.beezig.forge.modules.compass.render.CompassRenderListener;
@@ -20,6 +21,7 @@ public class CompassSettingsGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        Mouse.setGrabbed(false);
         this.buttonList.add(new GuiButton(0, this.width / 2 - 60, this.height / 2 - 50, 120, 20,
                 "Enabled: " + (CompassManager.enabled ? "Yes" : "No")));
         this.buttonList.add(new GuiButton(1, this.width / 2 - 60, this.height / 2 - 25, 120, 20,

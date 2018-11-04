@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.config.pointstag.TagConfigManager;
 import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
@@ -20,6 +21,7 @@ public class TagFormattingGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        Mouse.setGrabbed(false);
         input = new GuiTextField(2000, this.fontRendererObj, this.width / 2 - 68, this.height / 2 - 70,
                 150, 20);
         input.setText(translateAlternateColorCodesReverse(PointsTagCache.formatting));

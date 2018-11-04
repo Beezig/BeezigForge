@@ -7,6 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.config.pointstag.TagConfigManager;
 import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
@@ -22,6 +23,7 @@ public class TagSettingsGui extends GuiScreen {
 
     @Override
     public void initGui() {
+        Mouse.setGrabbed(false);
         this.buttonList.add(new GuiButton(3011, this.width / 2 - 155, this.height / 2 - 100 - 34, 150, 20,
                 "Points Tag: " + (PointsTagCache.enabled ? "Enabled" : "Disabled")));
 
