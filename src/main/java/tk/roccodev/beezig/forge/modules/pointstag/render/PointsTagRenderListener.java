@@ -15,7 +15,8 @@ import tk.roccodev.beezig.forge.modules.pointstag.PointsTagUtils;
 public class PointsTagRenderListener {
 
     @SubscribeEvent
-    public void onRenderPlayer(RenderPlayerEvent.Pre evt) {
+    public void onRenderPlayer(RenderPlayerEvent.Post evt) {
+
         if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
         if(!PointsTagCache.enabled) return;
         EntityPlayer p = evt.entityPlayer;

@@ -18,7 +18,6 @@ public class PointsTagUtils {
     public static boolean shouldRender(EntityPlayer player) {
         if(player.isInvisible() || player.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
         if(player.isSneaking()) return false;
-        if(player.isPotionActive(14)) return false; // 14 = Invisibility
         if(player.riddenByEntity != null) return false;
 
         int renderDist = 4096; // 64^2
