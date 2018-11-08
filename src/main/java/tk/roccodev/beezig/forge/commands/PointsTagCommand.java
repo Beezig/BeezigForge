@@ -5,6 +5,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import tk.roccodev.beezig.forge.gui.pointstag.TagSettingsGui;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PointsTagCommand extends CommandBase {
 
     @Override
@@ -20,6 +23,11 @@ public class PointsTagCommand extends CommandBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
+    }
+
+    @Override
+    public List<String> getCommandAliases() {
+        return Arrays.asList("pointstag", "pointtags");
     }
 
     @Override

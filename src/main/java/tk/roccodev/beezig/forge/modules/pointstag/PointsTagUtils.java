@@ -16,7 +16,7 @@ import java.awt.*;
 public class PointsTagUtils {
 
     public static boolean shouldRender(EntityPlayer player) {
-        if(player.isInvisible() || player.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
+        if(player.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer)) return false;
         if(player.isSneaking()) return false;
         if(player.riddenByEntity != null) return false;
 
