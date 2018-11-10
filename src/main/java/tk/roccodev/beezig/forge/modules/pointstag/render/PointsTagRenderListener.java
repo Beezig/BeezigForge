@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import tk.roccodev.beezig.forge.ActiveGame;
@@ -41,7 +42,9 @@ public class PointsTagRenderListener {
             offset *= 2;
         }
         offset += PointsTagCache.offset;
-        String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}", tag.getRank()).trim();
+        String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}",
+                PointsTagCache.colorRank ? tag.getRank() : EnumChatFormatting.getTextWithoutFormattingCodes(tag.getRank())).trim();
+        if(!PointsTagCache.colorAll) toRender = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(toRender);
         PointsTagUtils.render(evt.renderer, toRender, p, evt.x, evt.y + offset, evt.z);
 
     }

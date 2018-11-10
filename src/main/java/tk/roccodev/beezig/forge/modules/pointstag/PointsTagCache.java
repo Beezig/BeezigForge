@@ -10,6 +10,9 @@ public class PointsTagCache {
     public static double offset = 0;
     public static boolean self;
     public static String formatting;
+    public static boolean colorAll;
+    public static boolean colorRank;
+
 
     public static void putIfAbsent(UUID uuid, PointsTag cached) {
         cache.putIfAbsent(uuid, cached);

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.config.pointstag.TagConfigManager;
 import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
@@ -25,7 +26,11 @@ public class TagFormattingGui extends GuiScreen {
         input = new GuiTextField(2000, this.fontRendererObj, this.width / 2 - 68, this.height / 2 - 70,
                 150, 20);
         input.setText(translateAlternateColorCodesReverse(PointsTagCache.formatting));
-        this.buttonList.add(new GuiButton(3011, this.width / 2 - 68, this.height / 2 - 30, 150, 20,
+        this.buttonList.add(new GuiButton(3013, this.width / 2 - 68, this.height / 2 - 30, 150, 20,
+                "Colored rank: " + (PointsTagCache.colorRank ? "Yes" : "No")));
+        this.buttonList.add(new GuiButton(3012, this.width / 2 - 68, this.height / 2, 150, 20,
+                "Colored: " + (PointsTagCache.colorAll ? "Yes" : "No")));
+        this.buttonList.add(new GuiButton(3011, this.width / 2 - 68, this.height / 2 + 30, 150, 20,
                 "Done"));
     }
 
@@ -38,12 +43,13 @@ public class TagFormattingGui extends GuiScreen {
         String preview = translateAlternateColorCodes('&', input.getText())
                 .replace("{k}", "Points")
                 .replace("{v}", "201,530")
-                .replace("{r}", "§f§lWatson").trim();
-        this.drawCenteredString(this.fontRendererObj, "Preview: " + preview, this.width / 2, this.height / 2 + 10, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7Available variables:", this.width / 2, this.height / 2 + 50, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{k} Prefix, e.g, 'Points'", this.width / 2, this.height / 2 + 60, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{v} Value, e.g, '250,100'", this.width / 2, this.height / 2 + 70, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{r} Rank, for supported modes, e.g, 'Forensic'", this.width / 2, this.height / 2 + 80, 16777215);
+                .replace("{r}", PointsTagCache.colorRank ? "§f§lWatson" : "Watson").trim();
+        if(!PointsTagCache.colorAll) preview = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(preview);
+        this.drawCenteredString(this.fontRendererObj, "Preview: " + preview, this.width / 2, this.height / 2 + 60, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7Available variables:", this.width / 2, this.height / 2 + 90, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{k} Prefix, e.g, 'Points'", this.width / 2, this.height / 2 + 100, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{v} Value, e.g, '250,100'", this.width / 2, this.height / 2 + 110, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7{r} Rank, for supported modes, e.g, 'Forensic'", this.width / 2, this.height / 2 + 120, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -60,8 +66,20 @@ public class TagFormattingGui extends GuiScreen {
                 String converted = translateAlternateColorCodes('&', input.getText());
                 PointsTagCache.formatting = converted;
                 TagConfigManager.formatting.set(converted);
+
+                TagConfigManager.colorAll.set(PointsTagCache.colorAll);
+                TagConfigManager.colorRank.set(PointsTagCache.colorRank);
+
                 TagConfigManager.save();
                 mc.displayGuiScreen(new TagSettingsGui());
+                break;
+            case 3012:
+                PointsTagCache.colorAll = !PointsTagCache.colorAll;
+                button.displayString = "Colored: " + (PointsTagCache.colorAll ? "Yes" : "No");
+                break;
+            case 3013:
+                PointsTagCache.colorRank = !PointsTagCache.colorRank;
+                button.displayString = "Colored rank: " + (PointsTagCache.colorRank ? "Yes" : "No");
                 break;
         }
     }
