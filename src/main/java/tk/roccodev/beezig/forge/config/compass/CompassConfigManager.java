@@ -14,6 +14,7 @@ public class CompassConfigManager {
     public static Property size;
     public static Property x;
     public static Property y;
+    public static Property enabled4, enabled2, enabled1;
 
     public static void init(Configuration config) {
         CompassConfigManager.config = config;
@@ -29,11 +30,23 @@ public class CompassConfigManager {
         y = config.get("ignored", "posY", 0,
                 "Y Coordinate of the position");
 
+        enabled4 = config.get("ignored", "enabled4", true,
+                "Whether the compass should display in Teams Of 4");
+
+        enabled2 = config.get("ignored", "enabled2", true,
+                "Whether the compass should display in Duos");
+
+        enabled1 = config.get("ignored", "enabled1", true,
+                "Whether the compass should display in Solos");
+
 
         CompassRenderListener.offX = x.getInt();
         CompassRenderListener.offY = y.getInt();
         CompassManager.enabled = enabled.getBoolean();
         CompassManager.size = size.getDouble();
+        CompassManager.enabled4 = enabled4.getBoolean();
+        CompassManager.enabled2 = enabled2.getBoolean();
+        CompassManager.enabled1 = enabled1.getBoolean();
 
 
 

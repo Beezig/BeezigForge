@@ -26,13 +26,19 @@ public class CompassSettingsGui extends GuiScreen {
                 "Enabled: " + (CompassManager.enabled ? "Yes" : "No")));
         this.buttonList.add(new GuiButton(1, this.width / 2 - 60, this.height / 2 - 25, 120, 20,
                 "Reset Position"));
+        this.buttonList.add(new GuiButton(4, this.width / 2 - 60, this.height / 2 + 25, 120, 20,
+                "Enabled in Teams: " + (CompassManager.enabled4 ? "Yes" : "No")));
+        this.buttonList.add(new GuiButton(5, this.width / 2 - 60, this.height / 2 + 50, 120, 20,
+                "Enabled in Duos: " + (CompassManager.enabled2 ? "Yes" : "No")));
+        this.buttonList.add(new GuiButton(6, this.width / 2 - 60, this.height / 2 + 75, 120, 20,
+                "Enabled in Solo: " + (CompassManager.enabled1 ? "Yes" : "No")));
         this.buttonList.add(new GuiSlider(3, this.width / 2 - 60, this.height / 2,
                 120, 20, "Dot Size: ", "",
                 1d, 10d, CompassManager.size, false, true, slider -> {
             CompassManager.size = slider.getValueInt();
             CompassConfigManager.size.set(slider.getValueInt());
         }));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 60, this.height / 2 + 25, 120, 20,
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 60, this.height / 2 + 100, 120, 20,
                 "Done"));
     }
 
@@ -71,6 +77,21 @@ public class CompassSettingsGui extends GuiScreen {
                 onGuiClosed();
                 Minecraft.getMinecraft().currentScreen = null;
                 Minecraft.getMinecraft().setIngameFocus();
+                break;
+            case 4:
+                CompassManager.enabled4 = !CompassManager.enabled4;
+                CompassConfigManager.enabled4.set(CompassManager.enabled4);
+                button.displayString = "Enabled in Teams: " + (CompassManager.enabled4 ? "Yes" : "No");
+                break;
+            case 5:
+                CompassManager.enabled2 = !CompassManager.enabled2;
+                CompassConfigManager.enabled2.set(CompassManager.enabled2);
+                button.displayString = "Enabled in Duos: " + (CompassManager.enabled2 ? "Yes" : "No");
+                break;
+            case 6:
+                CompassManager.enabled1 = !CompassManager.enabled1;
+                CompassConfigManager.enabled4.set(CompassManager.enabled1);
+                button.displayString = "Enabled in Solo: " + (CompassManager.enabled1 ? "Yes" : "No");
                 break;
         }
         super.actionPerformed(button);

@@ -11,6 +11,7 @@ public interface BeezigAPIImpl {
     String getCAITeam();
     boolean getSettingValue(String setting);
     String getRankString(String title, String mode);
+    String getBedwarsMode();
 
 
 
@@ -46,6 +47,11 @@ public interface BeezigAPIImpl {
             @Override
             public String getRankString(String title, String mode) {
                 return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getRankString", String.class, String.class), title, mode);
+            }
+
+            @Override
+            public String getBedwarsMode() {
+                return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getBedwarsMode"));
             }
         };
     }

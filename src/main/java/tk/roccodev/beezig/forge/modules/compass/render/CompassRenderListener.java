@@ -16,6 +16,7 @@ import net.minecraft.init.Items;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
+import tk.roccodev.beezig.forge.API;
 import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.modules.compass.CompassManager;
 
@@ -42,6 +43,7 @@ public class CompassRenderListener {
         if (evt.type == RenderGameOverlayEvent.ElementType.ALL) {
             if(!CompassManager.enabled) return;
             if (!ActiveGame.current().equalsIgnoreCase("bed")) return;
+            if(!CompassManager.shouldRender(API.inst.getBedwarsMode())) return;
             if (Minecraft.getMinecraft().theWorld == null) return;
             drawCompass(new ScaledResolution(mc).getScaledWidth(), false);
         }
