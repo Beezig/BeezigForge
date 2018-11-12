@@ -36,6 +36,10 @@ public class PointsTag {
             if(ranks) {
                 String rankStr = API.inst.getRankString(obj.get("title").toString(), gameStr);
                 if(rankStr != null) rank = rankStr;
+                if(game == Games.BED &&
+                        obj.get("title").toString().startsWith("Sleepy ")
+                        && (long)obj.get(pts) > 1500L)
+                    rank = "§f§l✸ Zzzzzz";
             }
 
         }).start();
