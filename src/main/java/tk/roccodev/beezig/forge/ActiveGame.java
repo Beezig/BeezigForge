@@ -5,10 +5,11 @@ import tk.roccodev.beezig.forge.modules.pointstag.PointsTagCache;
 
 public class ActiveGame {
 
-    private static String current = "", last = "";
+    private static String current = "", last = "placeholder";
 
     public static void set(String game) {
-        if(!last.equals(game)) PointsTagCache.clear();
+        if(game.isEmpty())
+            PointsTagCache.clear();
         last = current;
         current = game;
         EnderchestsListener.customSpawnPt = false;
