@@ -2,10 +2,16 @@ package tk.roccodev.beezig.forge.listener;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.event.HoverEvent;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatStyle;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import scala.actors.threadpool.Arrays;
+import tk.roccodev.beezig.forge.API;
 import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.BeezigForgeMod;
 import tk.roccodev.beezig.forge.api.command.BeezigCommandRegistry;
@@ -37,6 +43,19 @@ public class ForgeListenerImpl {
 
     public void registerCommand(Object commandExecutor) {
         BeezigCommandRegistry.register(commandExecutor);
+    }
+
+    public void displayFriendJoin(String player) {
+        API.inst.sendTutorial("forge_fj");
+        ChatComponentText txt = new ChatComponentText("§8▍ §eFriends§8 ▏§a ✚ " + player);
+        ChatStyle style = txt.getChatStyle();
+        style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party "
+                                + EnumChatFormatting.getTextWithoutFormattingCodes(player)));
+        style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new ChatComponentText("§bInvite " + player + "§b to your party.")));
+
+        if(Minecraft.getMinecraft().thePlayer != null)
+        Minecraft.getMinecraft().thePlayer.addChatComponentMessage(txt);
     }
 
     public void onDisplaySettingsGui(Object settings) {
