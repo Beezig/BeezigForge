@@ -3,7 +3,7 @@
   "modid": "BeezigForge",
   "name": "Beezig Forge Expansion",
   "description": "Expands the Beezig 5zig plugin to use some Forge features.",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "mcversion": "1.8.9",
   "url": "",
   "updateUrl": "",
