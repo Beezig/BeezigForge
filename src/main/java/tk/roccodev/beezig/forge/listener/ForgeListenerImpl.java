@@ -47,7 +47,7 @@ public class ForgeListenerImpl {
 
     public void displayFriendJoin(String player) {
         API.inst.sendTutorial("forge_fj");
-        ChatComponentText txt = new ChatComponentText("§8▍ §eFriends§8 ▏§a ✚ " + player);
+        ChatComponentText txt = new ChatComponentText("§a§8▍ §eFriends§8 ▏§a ✚ " + player);
         ChatStyle style = txt.getChatStyle();
         style.setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/party "
                                 + EnumChatFormatting.getTextWithoutFormattingCodes(player)));
