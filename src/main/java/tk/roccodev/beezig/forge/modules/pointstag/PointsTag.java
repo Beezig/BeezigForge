@@ -34,7 +34,9 @@ public class PointsTag {
             this.value = Log.df((long)obj.get(pts));
             this.status = PointsTagStatus.DONE;
             if(ranks) {
-                String rankStr = API.inst.getRankString(obj.get("title").toString(), gameStr);
+                String rankStr = game == Games.TIMV
+                        ? API.inst.getTIMVRank(obj.get("title").toString(), (long)obj.get(pts))
+                        : API.inst.getRankString(obj.get("title").toString(), gameStr);
                 if(rankStr != null) rank = rankStr;
                 if(game == Games.BED &&
                         obj.get("title").toString().startsWith("Sleepy ")

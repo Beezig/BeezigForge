@@ -11,6 +11,7 @@ public interface BeezigAPIImpl {
     String getCAITeam();
     boolean getSettingValue(String setting);
     String getRankString(String title, String mode);
+    String getTIMVRank(String title, long points);
     String getBedwarsMode();
     void sendTutorial(String key);
 
@@ -48,6 +49,11 @@ public interface BeezigAPIImpl {
             @Override
             public String getRankString(String title, String mode) {
                 return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getRankString", String.class, String.class), title, mode);
+            }
+
+            @Override
+            public String getTIMVRank(String title, long points) {
+                return (String) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getTIMVRank", String.class, long.class), title, points);
             }
 
             @Override
