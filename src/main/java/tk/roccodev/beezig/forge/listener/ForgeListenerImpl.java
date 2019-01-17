@@ -16,6 +16,7 @@ import tk.roccodev.beezig.forge.ActiveGame;
 import tk.roccodev.beezig.forge.BeezigForgeMod;
 import tk.roccodev.beezig.forge.api.command.BeezigCommandRegistry;
 import tk.roccodev.beezig.forge.gamefields.TIMV;
+import tk.roccodev.beezig.forge.gui.autovote.AutovoteGui;
 import tk.roccodev.beezig.forge.gui.settings.GuiBeezigSettings;
 import tk.roccodev.beezig.forge.settings.BeezigConfigElement;
 import tk.roccodev.beezig.forge.tabcompletion.BeezigCommandExecutor;
@@ -82,10 +83,8 @@ public class ForgeListenerImpl {
 
     }
 
-
-
-
-
-
+    public void displayAutovoteGui() {
+        new AutovoteGui(0).show();
+    }
 
 }

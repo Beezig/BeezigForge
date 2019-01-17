@@ -16,8 +16,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import tk.roccodev.beezig.forge.api.AutovoteAPIImpl;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
 import tk.roccodev.beezig.forge.commands.BedwarsCompassCommand;
+import tk.roccodev.beezig.forge.commands.BeezigForgeTestCommand;
 import tk.roccodev.beezig.forge.commands.PointsTagCommand;
 import tk.roccodev.beezig.forge.config.ConfigurationManager;
 import tk.roccodev.beezig.forge.init.ClassFinder;
@@ -65,6 +67,7 @@ public class BeezigForgeMod {
 
         ClientCommandHandler.instance.registerCommand(new PointsTagCommand());
         ClientCommandHandler.instance.registerCommand(new BedwarsCompassCommand());
+        ClientCommandHandler.instance.registerCommand(new BeezigForgeTestCommand());
 
         TitleListener.inst = new TitleListener();
     }
@@ -80,6 +83,8 @@ public class BeezigForgeMod {
             API.privInst = api.getMethod("get")
                     .invoke(null);
             API.inst = BeezigAPIImpl.fromObject(API.privInst);
+
+            API.autovote = AutovoteAPIImpl.fromObject(((Class)(api.getMethod("getAutovoter").invoke(API.privInst))).newInstance());
 
             api.getMethod("registerListener", Object.class)
                     .invoke(API.privInst,
