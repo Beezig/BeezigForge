@@ -43,7 +43,9 @@ public class StaffChangesTab extends Tab {
             for(StaffChange sc : staffChanges) {
                 int stringY = y;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth(sc.getType().getColor() + "§l" + sc.getName(),
+                List<String> title = render.listFormattedStringToWidth(sc.getType().getColor() + "§l" +
+                                sc.getType().getPrefix() + " " +
+                                sc.getName(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 for(String s : title) {
                     stringY += 12;

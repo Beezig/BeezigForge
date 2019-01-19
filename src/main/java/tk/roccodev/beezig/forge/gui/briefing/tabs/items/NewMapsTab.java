@@ -21,7 +21,7 @@ public class NewMapsTab extends Tab {
     private double scrollY;
 
     public NewMapsTab() {
-        super("Map Changes", new ResourceLocation("beezigforge/gui/maps.png"));
+        super("Map Additions", new ResourceLocation("beezigforge/gui/maps.png"));
     }
 
     @Override
