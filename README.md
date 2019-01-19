@@ -12,3 +12,6 @@ Forge expansion mod for [Beezig](https://github.com/Beezig/Beezig), the Hive plu
 + Bedwars teams compass
 + TIMV enderchests compass
 + ...more!
+
+## Attributions
+Icons made by [Freepik](https://freepik.com) and Cole Bemis, from [Flaticon](https://flaticon.com)

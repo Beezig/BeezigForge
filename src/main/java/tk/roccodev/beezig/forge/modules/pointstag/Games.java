@@ -2,40 +2,41 @@ package tk.roccodev.beezig.forge.modules.pointstag;
 
 public enum Games {
 
-    BED("total_points", "Points", true),
-    TIMV("total_points", "Karma", true),
-    SKY("total_points", "Points", true),
-    CAI("total_points", "Points", true),
-    DR("total_points", "Points", true),
-    GRAV("points", "Points", true),
-    HIDE("total_points", "Points", true),
-    LAB("total_points", "Atoms", true),
-    GNT("total_points", "Points", true),
-    GNTM("total_points", "Points", true),
-    MIMV("total_points", "Karma", true),
-    SGN("total_points", "Points", false),
-    BP("total_points", "Points", true),
-    SP("points", "Points", false),
-    HB("points", "Points", false),
-    DRAW("total_points", "Points", false),
-    EE("points", "Points", false),
-    EF("points", "Points", false),
-    CR("total_points", "Points", false),
-    HERO("total_points", "Points", false),
-    OITC("total_points", "Points", false),
-    SPL("total_points", "Points", false),
-    MM("points", "Points", false),
-    SLAP("points", "Points", false),
-    RR("points", "Points", false),
-    BD("total_points", "Points", false);
+    BED("total_points", "Points", true, "BedWars"),
+    TIMV("total_points", "Karma", true, "Trouble in Mineville"),
+    SKY("total_points", "Points", true, "SkyWars"),
+    CAI("total_points", "Points", true, "Cowboys and Indians"),
+    DR("total_points", "Points", true, "DeathRun"),
+    GRAV("points", "Points", true, "Gravity"),
+    HIDE("total_points", "Points", true, "Hide and Seek"),
+    LAB("total_points", "Atoms", true, "TheLab"),
+    GNT("total_points", "Points", true, "SkyGiants"),
+    GNTM("total_points", "Points", true, "SkyGiants:Mini"),
+    MIMV("total_points", "Karma", true, "Murder in Mineville"),
+    SGN("total_points", "Points", false, "Survival Games 2"),
+    BP("total_points", "Points", true, "BlockParty"),
+    SP("points", "Points", false, "Splegg"),
+    HB("points", "Points", false, "The Herobrine"),
+    DRAW("total_points", "Points", false, "DrawIt"),
+    EE("points", "Points", false, "Explosive Eggs"),
+    EF("points", "Points", false, "Electric Floor"),
+    CR("total_points", "Points", false, "Cranked"),
+    HERO("total_points", "Points", false, "SG:Heroes"),
+    OITC("total_points", "Points", false, "One in the Chamber"),
+    SPL("total_points", "Points", false, "Sploop"),
+    MM("points", "Points", false, "MusicMasters"),
+    SLAP("points", "Points", false, "Slaparoo"),
+    RR("points", "Points", false, "RestaurantRush"),
+    BD("total_points", "Points", false, "BatteryDash");
 
-    private String points, display;
+    private String points, display, commonName;
     private boolean supportsRanks;
 
-    Games(String points, String display, boolean supportsRanks){
+    Games(String points, String display, boolean supportsRanks, String commonName){
         this.points = points;
         this.display = display;
         this.supportsRanks = supportsRanks;
+        this.commonName = commonName;
     }
 
     public String getPoints() {
@@ -57,5 +58,9 @@ public enum Games {
 
     public boolean supportsRanks() {
         return supportsRanks;
+    }
+
+    public String getCommonName() {
+        return commonName;
     }
 }

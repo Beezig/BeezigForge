@@ -3,7 +3,7 @@ package tk.roccodev.beezig.forge.commands;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import tk.roccodev.beezig.forge.gui.autovote.AutovoteGui;
+import tk.roccodev.beezig.forge.gui.briefing.BriefingGui;
 
 public class BeezigForgeTestCommand extends CommandBase {
 
@@ -24,6 +24,6 @@ public class BeezigForgeTestCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        new AutovoteGui(0).show();
+        new BriefingGui().show();
     }
 }

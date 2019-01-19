@@ -1,5 +1,6 @@
 package tk.roccodev.beezig.forge.utils;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,6 +19,15 @@ public class JSON {
     public static JSONObject downloadJSON(String url) {
         try {
             return (JSONObject) new JSONParser().parse(read(url));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static JSONArray downloadJSONArray(String url) {
+        try {
+            return (JSONArray) new JSONParser().parse(read(url));
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
