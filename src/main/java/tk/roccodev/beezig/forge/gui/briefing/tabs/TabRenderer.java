@@ -28,9 +28,9 @@ public class TabRenderer extends Gui {
     
     public void renderTabs(int mouseX, int mouseY) {
 
-        int offsetIcon = -103;
-        int offsetLine = -115;
-        int offsetLineEnd = -64;
+        int offsetIcon = -143;
+        int offsetLine = -155;
+        int offsetLineEnd = -104;
 
         for(int i = 0; i < Tabs.tabs.length; i++) {
             Tab tab = Tabs.tabs[i];

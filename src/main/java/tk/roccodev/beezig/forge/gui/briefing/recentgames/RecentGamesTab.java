@@ -1,33 +1,36 @@
-package tk.roccodev.beezig.forge.gui.briefing.tabs.items;
+package tk.roccodev.beezig.forge.gui.briefing.recentgames;
 
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
+import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticle;
+import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticles;
+import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.CsvMerger;
+import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.GameData;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.Tab;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.TabRenderUtils;
+import tk.roccodev.beezig.forge.gui.briefing.tabs.Tabs;
 import tk.roccodev.beezig.forge.gui.briefing.xml.Article;
 import tk.roccodev.beezig.forge.gui.briefing.xml.RssParser;
 
 import java.awt.*;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 
-public class HiveNewsTab extends Tab {
+public class RecentGamesTab extends Tab {
 
-    private List<Article> newsArticles = null;
+    private CsvMerger csv;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
-    public HiveNewsTab() {
-        super("Hive News", new ResourceLocation("beezigforge/gui/hive.png"));
+    public RecentGamesTab() {
+        super("Recent Games", new ResourceLocation("beezigforge/gui/recent.png"));
     }
 
     @Override
     protected void init() {
         super.init();
-        new Thread(() -> newsArticles = RssParser.getArticles()).start();
+        new Thread(() -> csv = new CsvMerger()).start();
 
     }
 
@@ -35,24 +38,31 @@ public class HiveNewsTab extends Tab {
     protected void drawTab(int mouseX, int mouseY) {
         super.drawTab(mouseX, mouseY);
 
-        if(newsArticles == null)
+        if(csv == null)
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(Article article : newsArticles) {
-                int stringY = y + 12;
+            for(GameData game : csv.getRecentGames()) {
+                int stringY = y;
+
+                String color = game.getGamemode().canWin() ? (game.isWon() ? "§a" : "§c") : "§b";
+
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getTitle(),
+                List<String> title = render.listFormattedStringToWidth(color + "§l" + game.getGamemode().getGame().getCommonName(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 for(String s : title) {
                     stringY += 12;
                 }
-                List<String> content = render.listFormattedStringToWidth(article.getContent(),
+
+                if(game.getGameId() != null) stringY += 12;
+
+                List<String> content = render.listFormattedStringToWidth(game.getGameId() == null ? "Unknown GameID" : "",
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 for(String s : content) {
                     stringY += 12;
                 }
-                List<String> author = render.listFormattedStringToWidth(article.getAuthor(),
+                String date = game.getDate() == null ? "Unknown Date" : Tabs.sdf.format(game.getDate());
+                List<String> author = render.listFormattedStringToWidth(date,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 for(String s : author) {
                     stringY += 12;
@@ -65,41 +75,35 @@ public class HiveNewsTab extends Tab {
                 stringY += 6.5;
                 for(String s : title) {
                     if(stringY > getStartY())
-                    render.drawString(s, windowWidth / 3 - 20, stringY, 1.2);
+                        render.drawString(s, windowWidth / 3 - 20, stringY, 1.2);
                     stringY += 12;
                 }
                 for(String s : author) {
                     if(stringY > getStartY())
-                    render.drawString(s, windowWidth / 3 - 20, stringY);
+                        render.drawString("§3" + s, windowWidth / 3 - 20, stringY);
                     stringY += 12;
                 }
                 if(stringY > getStartY())
-                drawHorizontalLine(windowWidth / 3 - 10, windowWidth / 3 * 2 + 10, stringY, Color.GRAY.getRGB());
+                    drawHorizontalLine(windowWidth / 3 - 10, windowWidth / 3 * 2 + 10, stringY, Color.GRAY.getRGB());
                 stringY += 5;
                 for(String s : content) {
                     if(stringY > getStartY())
-                    render.drawCenteredString(s, windowWidth / 2, stringY, 0.9);
+                        render.drawCenteredString(s, windowWidth / 2, stringY, 0.9);
                     stringY += 12;
                 }
                 if(stringY > getStartY()) {
-                    int sWidth = render.getStringWidth(article.getChatComponent());
-                    article.setPosition(windowWidth / 2 - sWidth / 2, stringY, sWidth,
+                    int sWidth = render.getStringWidth(game.getChatComponent());
+                    game.setPosition(windowWidth / 2 - sWidth / 2, stringY, sWidth,
                             12);
-                    article.setShown(true);
-                    render.drawCenteredString(article.getChatComponent(), windowWidth / 2, stringY, 1.2);
+                    game.setShown(true);
+                    render.drawCenteredString(game.getChatComponent(), windowWidth / 2, stringY, 1.2);
                     stringY += 15;
                 }
-                else article.setShown(false);
+                else game.setShown(false);
                 stringY += 8;
                 y = stringY;
             }
         }
-    }
-
-    @Override
-    protected void onMouseClick(int mouseX, int mouseY) {
-        super.onMouseClick(mouseX, mouseY);
-        activateComponent(mouseX, mouseY);
     }
 
     @Override
@@ -123,12 +127,18 @@ public class HiveNewsTab extends Tab {
         }
     }
 
+    @Override
+    protected void onMouseClick(int mouseX, int mouseY) {
+        super.onMouseClick(mouseX, mouseY);
+        activateComponent(mouseX, mouseY);
+    }
+
     private void activateComponent(int mouseX, int mouseY) {
-        if(newsArticles == null) return;
-        for(Article article : newsArticles) {
-            if(article.isShown() && article.isHovered(mouseX, mouseY)) {
+        if(csv == null) return;
+        for(GameData game : csv.getRecentGames()) {
+            if(game.isShown() && game.isHovered(mouseX, mouseY)) {
                 try {
-                    Desktop.getDesktop().browse(new URI(article.getLink()));
+                    Desktop.getDesktop().browse(new URI(game.getLink()));
                     break;
                 } catch (Exception e) {
                     System.err.println("Couldn't open URL: ");

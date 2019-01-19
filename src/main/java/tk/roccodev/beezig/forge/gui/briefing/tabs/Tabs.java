@@ -1,6 +1,7 @@
 package tk.roccodev.beezig.forge.gui.briefing.tabs;
 
 import net.minecraft.util.ResourceLocation;
+import tk.roccodev.beezig.forge.gui.briefing.recentgames.RecentGamesTab;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.items.BeezigNewsTab;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.items.HiveNewsTab;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.items.NewMapsTab;
@@ -20,6 +21,7 @@ public class Tabs {
             new BeezigNewsTab(),
             new StaffChangesTab(),
             new NewMapsTab(),
+            new RecentGamesTab(),
             new Tab("Other", new ResourceLocation("beezigforge/gui/other.png"))
 
     };
