@@ -26,6 +26,9 @@ public class CsvMerger {
             game.setWon(type.won(data));
             game.setDate(type.getTimestamp(data));
             game.setGameId(type.getGameId(data));
+            game.setMap(type.getMap(data));
+            game.setMode(type.getMode(data));
+            game.setValue(ValueEntries.getValue(data, type));
 
             recentGames.add(game);
         }

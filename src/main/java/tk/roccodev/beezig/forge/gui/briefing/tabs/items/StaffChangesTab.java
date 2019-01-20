@@ -52,14 +52,10 @@ public class StaffChangesTab extends Tab {
                 }
                 List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(sc.getDate()),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : content) {
-                    stringY += 12;
-                }
+                stringY += content.size() * 12;
                 List<String> author = render.listFormattedStringToWidth(sc.getType().getDisplay(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : author) {
-                    stringY += 12;
-                }
+                stringY += author.size() * 12;
 
 
                 stringY += 12;

@@ -44,19 +44,13 @@ public class HiveNewsTab extends Tab {
                 // Adapt strings to fit into the box
                 List<String> title = render.listFormattedStringToWidth("§b§l" + article.getTitle(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
-                for(String s : title) {
-                    stringY += 12;
-                }
+                stringY += title.size() * 12;
                 List<String> content = render.listFormattedStringToWidth(article.getContent(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : content) {
-                    stringY += 12;
-                }
+                stringY += content.size() * 12;
                 List<String> author = render.listFormattedStringToWidth(article.getAuthor(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : author) {
-                    stringY += 12;
-                }
+                stringY += author.size() * 12;
 
 
                 stringY += 12;

@@ -14,6 +14,7 @@ import tk.roccodev.beezig.forge.gui.briefing.xml.RssParser;
 
 import java.awt.*;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,23 +51,28 @@ public class RecentGamesTab extends Tab {
                 // Adapt strings to fit into the box
                 List<String> title = render.listFormattedStringToWidth(color + "§l" + game.getGamemode().getGame().getCommonName(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
-                for(String s : title) {
-                    stringY += 12;
-                }
+
+                stringY += title.size() * 12;
 
                 if(game.getGameId() != null) stringY += 12;
 
-                List<String> content = render.listFormattedStringToWidth(game.getGameId() == null ? "Unknown GameID" : "",
-                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : content) {
-                    stringY += 12;
+
+                List<String> content = new ArrayList<>();
+
+                if(game.getValue() != null) {
+                     content.addAll(render.listFormattedStringToWidth(game.getValue(),
+                            windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5));
+                    stringY += content.size() * 12;
                 }
+
                 String date = game.getDate() == null ? "Unknown Date" : Tabs.sdf.format(game.getDate());
+
+                if(game.getMap() != null && !game.getMap().isEmpty()) date += "§3 on §b" + game.getMap();
+                if(game.getMode() != null && !game.getMode().isEmpty()) date += " (" + game.getMode() + ")";
+
                 List<String> author = render.listFormattedStringToWidth(date,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                for(String s : author) {
-                    stringY += 12;
-                }
+                stringY += author.size() * 12;
 
 
                 stringY += 12;

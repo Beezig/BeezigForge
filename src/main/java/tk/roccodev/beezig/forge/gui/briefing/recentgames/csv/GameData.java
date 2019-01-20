@@ -10,7 +10,7 @@ public class GameData {
     private boolean won;
     private boolean supportsWinning;
     private String value;
-    private String link;
+    private String link, map, mode;
 
     private int x, y, width, height;
     private String clickHere;
@@ -30,6 +30,22 @@ public class GameData {
 
     public String getLink() {
         return link;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setMap(String map) {
+        this.map = map;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode;
     }
 
     public void setPosition(int x, int y, int width, int height) {
