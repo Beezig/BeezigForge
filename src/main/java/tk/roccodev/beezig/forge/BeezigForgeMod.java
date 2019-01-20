@@ -3,6 +3,7 @@ package tk.roccodev.beezig.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.network.INetHandler;
@@ -10,18 +11,22 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import org.lwjgl.input.Keyboard;
 import tk.roccodev.beezig.forge.api.AutovoteAPIImpl;
 import tk.roccodev.beezig.forge.api.BeezigAPIImpl;
 import tk.roccodev.beezig.forge.commands.BedwarsCompassCommand;
 import tk.roccodev.beezig.forge.commands.BeezigForgeTestCommand;
 import tk.roccodev.beezig.forge.commands.PointsTagCommand;
 import tk.roccodev.beezig.forge.config.ConfigurationManager;
+import tk.roccodev.beezig.forge.gui.briefing.BriefingGui;
 import tk.roccodev.beezig.forge.init.ClassFinder;
 import tk.roccodev.beezig.forge.listener.games.cai.TitleListener;
 import tk.roccodev.beezig.forge.listener.games.timv.EnderchestsListener;
@@ -47,6 +52,8 @@ public class BeezigForgeMod {
     public static boolean loaded;
     public static boolean versionUpdate;
 
+    public static KeyBinding keybindBeezigGui;
+
 
     @Mod.EventHandler
     public void onPre(FMLPreInitializationEvent evt) {
@@ -70,6 +77,9 @@ public class BeezigForgeMod {
         ClientCommandHandler.instance.registerCommand(new BeezigForgeTestCommand());
 
         TitleListener.inst = new TitleListener();
+
+        keybindBeezigGui = new KeyBinding("Open Beezig GUI", Keyboard.KEY_B, "Beezig");
+        ClientRegistry.registerKeyBinding(keybindBeezigGui);
     }
 
     @SubscribeEvent
@@ -99,6 +109,12 @@ public class BeezigForgeMod {
 
     }
 
+
+    @SubscribeEvent
+    public void onKey(InputEvent.KeyInputEvent evt) {
+        if(keybindBeezigGui.isPressed() && Minecraft.getMinecraft().currentScreen == null)
+            new BriefingGui().show();
+    }
 
 
     @SubscribeEvent
