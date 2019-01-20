@@ -3,22 +3,17 @@ package tk.roccodev.beezig.forge.gui.briefing.recentgames;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticle;
-import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticles;
 import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.CsvMerger;
 import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.GameData;
 import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.LoggingGame;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.Tab;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.TabGuiButton;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.TabRenderUtils;
-import tk.roccodev.beezig.forge.gui.briefing.tabs.Tabs;
-import tk.roccodev.beezig.forge.gui.briefing.xml.Article;
-import tk.roccodev.beezig.forge.gui.briefing.xml.RssParser;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class RecentGamesTab extends Tab {
@@ -89,8 +84,10 @@ public class RecentGamesTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(GameData game : csv.getRecentGames().subList(0, gamesLimit)) {
-                if(gamemodeFilter != null && game.getGamemode() != gamemodeFilter) continue;
+            List<GameData> consider = csv.getRecentGames().stream().filter(g -> gamemodeFilter == null
+                    || g.getGamemode() == gamemodeFilter).collect(Collectors.toList());
+            int limit = gamesLimit > consider.size() ? consider.size() : gamesLimit;
+            for(GameData game : consider.subList(0, limit)) {
                 int stringY = y;
 
                 // Adapt strings to fit into the box
