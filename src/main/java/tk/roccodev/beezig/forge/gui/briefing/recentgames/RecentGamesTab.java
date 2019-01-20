@@ -38,9 +38,9 @@ public class RecentGamesTab extends Tab {
         super.init(windowWidth, windowHeight);
         new Thread(() -> csv = new CsvMerger(windowWidth)).start();
         getButtonList().add(new TabGuiButton(this,40, windowWidth / 2 + 200, getStartY() + 10,
-                100, 20, "Show: 100 games"));
+                100, 20, "Show: " + gamesLimit + " games"));
         getButtonList().add(new TabGuiButton(this,41, windowWidth / 2 + 200, getStartY() + 40,
-                100, 20, "Filter: All"));
+                100, 20, "Filter: " + (gamemodeFilter == null ? "All" : gamemodeFilter.name().toUpperCase())));
 
     }
 
