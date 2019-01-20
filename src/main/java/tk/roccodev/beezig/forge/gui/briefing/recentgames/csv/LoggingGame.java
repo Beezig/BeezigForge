@@ -15,7 +15,7 @@ public enum LoggingGame {
     cai(CAI, "cowboys-and-indians", true, 3, 4, 2, 1, -1),
     dr(DR, "deathrun", false, 4, 5, -1, 1, -1),
     gnt(GNT, "skygiants", true, -1, 6, 5, 1, 0),
-    hide(HIDE, "hide-and-seek", true, -1, 3, 1, 0, -1);
+    hide(HIDE, "hide-and-seek", true, 4, 3, 1, 0, -1);
 
     private Games game;
     private boolean canWin;

@@ -37,9 +37,9 @@ public class RecentGamesTab extends Tab {
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
         new Thread(() -> csv = new CsvMerger(windowWidth)).start();
-        getButtonList().add(new TabGuiButton(this,100, windowWidth / 2 + 200, getStartY() + 10,
+        getButtonList().add(new TabGuiButton(this,40, windowWidth / 2 + 200, getStartY() + 10,
                 100, 20, "Show: 100 games"));
-        getButtonList().add(new TabGuiButton(this,101, windowWidth / 2 + 200, getStartY() + 40,
+        getButtonList().add(new TabGuiButton(this,41, windowWidth / 2 + 200, getStartY() + 40,
                 100, 20, "Filter: All"));
 
     }
@@ -48,7 +48,7 @@ public class RecentGamesTab extends Tab {
     protected void onActionPerformed(GuiButton btn) {
         if(csv == null || csv.getRecentGames() == null) return;
         switch(btn.id) {
-            case 100 /* Game limit */:
+            case 40 /* Game limit */:
                 if(gamesLimit == 400) {
                     gamesLimit = csv.getRecentGames().size();
                     btn.displayString = "Show: All games";
@@ -62,7 +62,7 @@ public class RecentGamesTab extends Tab {
                     btn.displayString = "Show: " + gamesLimit + " games";
                 }
                 break;
-            case 101 /* Filter */:
+            case 41 /* Filter */:
                 if(gamemodeFilter == null) {
                     gamemodeFilter = LoggingGame.values()[0];
                     btn.displayString = "Filter: " + gamemodeFilter.name().toUpperCase();
