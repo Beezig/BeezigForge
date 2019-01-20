@@ -14,14 +14,14 @@ public class ValueEntries {
             case gnt:
                 return null;
             case sky:
-                return safeValue(data, 0, "Points: ") + "\n" + safeValue(data, 2, "Kills: ");
+                return safeValue(data, 0, "Points: ") + " / " + safeValue(data, 2, "Kills: ");
             case hide:
                 return safeValue(data, 2, "Kills: ");
             case timv:
-                return safeValue(data, 0, "Role: ") + "\n" + safeValue(data, 1, "Karma: ");
+                return safeValue(data, 0, "Role: ") + " / " + safeValue(data, 1, "Karma: ");
             case bedwars:
-                return safeValue(data, 0, "Points: ") + "\n" + safeValue(data, 3, "Kills: ") + "\n"
-                        + safeValue(data, 4, "Deaths: ") + "\n" + safeValue(data, 5, "Beds: ");
+                return safeValue(data, 0, "Points: ") + " / " + safeValue(data, 3, "Kills: ") + " / "
+                        + safeValue(data, 4, "Deaths: ") + " / " + safeValue(data, 5, "Beds: ");
 
         }
         return null;
