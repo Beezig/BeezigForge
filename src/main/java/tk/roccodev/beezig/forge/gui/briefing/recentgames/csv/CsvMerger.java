@@ -9,6 +9,7 @@ import java.util.*;
 public class CsvMerger {
 
     private List<GameData> recentGames = new ArrayList<>();
+    private int windowWidth;
 
     private void putIntoList(LoggingGame type) throws FileNotFoundException {
         Scanner s = new Scanner(new File(API.inst.getConfigPath() + "/" + type.name() + "/games.csv"));
@@ -29,13 +30,15 @@ public class CsvMerger {
             game.setMap(type.getMap(data));
             game.setMode(type.getMode(data));
             game.setValue(ValueEntries.getValue(data, type));
+            game.initText(windowWidth);
 
             recentGames.add(game);
         }
         s.close();
     }
 
-    public CsvMerger() {
+    public CsvMerger(int windowWidth) {
+        this.windowWidth = windowWidth;
         for(LoggingGame game : LoggingGame.values()) {
             try {
                 putIntoList(game);

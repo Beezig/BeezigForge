@@ -1,6 +1,11 @@
 package tk.roccodev.beezig.forge.gui.briefing.recentgames.csv;
 
+import tk.roccodev.beezig.forge.gui.briefing.tabs.TabRenderUtils;
+import tk.roccodev.beezig.forge.gui.briefing.tabs.Tabs;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class GameData {
 
@@ -15,6 +20,11 @@ public class GameData {
     private int x, y, width, height;
     private String clickHere;
     private boolean shown;
+    private TabRenderUtils render = TabRenderUtils.getInstance();
+
+    private String[] title = new String[0],
+            below = new String[0],
+            content = new String[0];
 
     public boolean isShown() {
         return shown;
@@ -115,5 +125,39 @@ public class GameData {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public void initText(int windowWidth) {
+        String color = getGamemode().canWin() ? (isWon() ? "§a" : "§c") : "§b";
+
+        // Adapt strings to fit into the box
+        title = render.listFormattedStringToWidth(color + "§l" + getGamemode().getGame().getCommonName(),
+                windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10).toArray(new String[0]);
+
+        if(getValue() != null) {
+            content = render.listFormattedStringToWidth(getValue(),
+                    windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5).toArray(new String[0]);
+        }
+
+        String date = getDate() == null ? "Unknown Date" : Tabs.sdf.format(getDate());
+
+        if(getMap() != null && !getMap().isEmpty()) date += "§3 on §b" + getMap();
+        if(getMode() != null && !getMode().isEmpty()) date += " (" + getMode() + ")";
+
+         below = render.listFormattedStringToWidth(date,
+                windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5).toArray(new String[0]);
+    }
+
+
+    public String[] getContent() {
+        return content;
+    }
+
+    public String[] getBelow() {
+        return below;
+    }
+
+    public String[] getTitle() {
+        return title;
     }
 }

@@ -31,7 +31,7 @@ public class BriefingGui extends GuiScreen {
                     .invoke(null, buttonList, this);
         }
         catch(Exception ignored) {}
-        this.render = new TabRenderer(width, height);
+        this.render = new TabRenderer(width, height, buttonList);
         super.initGui();
 
     }
@@ -67,6 +67,7 @@ public class BriefingGui extends GuiScreen {
                         .invoke(null, button);
         }
         catch (Exception ignored) {}
+        render.onActionPerformed(button);
     }
 
     @SubscribeEvent

@@ -2,6 +2,7 @@ package tk.roccodev.beezig.forge.gui.briefing.tabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -15,14 +16,15 @@ public class TabRenderer extends Gui {
     private int selected;
     private TabRenderUtils render;
 
-    public TabRenderer(int width, int height) {
+    public TabRenderer(int width, int height, java.util.List<GuiButton> btnList) {
         this.width = width;
         this.height = height;
         this.render = TabRenderUtils.getInstance();
 
         for(Tab tab : Tabs.tabs) {
-            tab.init();
+            tab.init(this, width, height, btnList);
         }
+
     }
     
     
@@ -80,6 +82,10 @@ public class TabRenderer extends Gui {
         }
     }
 
+    public void onActionPerformed(GuiButton btn) {
+        Tabs.tabs[selected].onActionPerformed(btn);
+    }
+
     public void onMouseInput() {
         Tabs.tabs[selected].handleMouse();
     }
@@ -91,4 +97,6 @@ public class TabRenderer extends Gui {
     public int getHeight() {
         return height;
     }
+
+    public int getSelected() { return selected; }
 }

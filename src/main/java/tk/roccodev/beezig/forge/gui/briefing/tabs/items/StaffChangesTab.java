@@ -26,8 +26,8 @@ public class StaffChangesTab extends Tab {
     }
 
     @Override
-    protected void init() {
-        super.init();
+    protected void init(int windowWidth, int windowHeight) {
+        super.init(windowWidth, windowHeight);
         new Thread(() -> staffChanges = LerginFetcher.getStaffChanges()).start();
 
     }

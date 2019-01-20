@@ -1,12 +1,15 @@
 package tk.roccodev.beezig.forge.gui.briefing.recentgames;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticle;
 import tk.roccodev.beezig.forge.gui.briefing.json.BeezigArticles;
 import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.CsvMerger;
 import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.GameData;
+import tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.LoggingGame;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.Tab;
+import tk.roccodev.beezig.forge.gui.briefing.tabs.TabGuiButton;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import tk.roccodev.beezig.forge.gui.briefing.tabs.Tabs;
 import tk.roccodev.beezig.forge.gui.briefing.xml.Article;
@@ -23,16 +26,59 @@ public class RecentGamesTab extends Tab {
     private CsvMerger csv;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
+    private int gamesLimit = 100;
+    private LoggingGame gamemodeFilter;
 
     public RecentGamesTab() {
         super("Recent Games", new ResourceLocation("beezigforge/gui/recent.png"));
     }
 
     @Override
-    protected void init() {
-        super.init();
-        new Thread(() -> csv = new CsvMerger()).start();
+    protected void init(int windowWidth, int windowHeight) {
+        super.init(windowWidth, windowHeight);
+        new Thread(() -> csv = new CsvMerger(windowWidth)).start();
+        getButtonList().add(new TabGuiButton(this,100, windowWidth / 2 + 200, getStartY() + 10,
+                100, 20, "Show: 100 games"));
+        getButtonList().add(new TabGuiButton(this,101, windowWidth / 2 + 200, getStartY() + 40,
+                100, 20, "Filter: All"));
 
+    }
+
+    @Override
+    protected void onActionPerformed(GuiButton btn) {
+        if(csv == null || csv.getRecentGames() == null) return;
+        switch(btn.id) {
+            case 100 /* Game limit */:
+                if(gamesLimit == 400) {
+                    gamesLimit = csv.getRecentGames().size();
+                    btn.displayString = "Show: All games";
+                }
+                else if(gamesLimit == csv.getRecentGames().size()) {
+                    gamesLimit = 100;
+                    btn.displayString = "Show: 100 games";
+                }
+                else {
+                    gamesLimit += 100;
+                    btn.displayString = "Show: " + gamesLimit + " games";
+                }
+                break;
+            case 101 /* Filter */:
+                if(gamemodeFilter == null) {
+                    gamemodeFilter = LoggingGame.values()[0];
+                    btn.displayString = "Filter: " + gamemodeFilter.name().toUpperCase();
+                }
+                else {
+                    if(gamemodeFilter.ordinal() + 1 >= LoggingGame.values().length) {
+                        gamemodeFilter = null;
+                        btn.displayString = "Filter: All";
+                    }
+                    else {
+                        gamemodeFilter = LoggingGame.values()[gamemodeFilter.ordinal() + 1];
+                        btn.displayString = "Filter: " + gamemodeFilter.name().toUpperCase();
+                    }
+                }
+                break;
+        }
     }
 
     @Override
@@ -43,37 +89,20 @@ public class RecentGamesTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(GameData game : csv.getRecentGames()) {
+            for(GameData game : csv.getRecentGames().subList(0, gamesLimit)) {
+                if(gamemodeFilter != null && game.getGamemode() != gamemodeFilter) continue;
                 int stringY = y;
 
-                String color = game.getGamemode().canWin() ? (game.isWon() ? "§a" : "§c") : "§b";
-
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth(color + "§l" + game.getGamemode().getGame().getCommonName(),
-                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
-
-                stringY += title.size() * 12;
+                String[] title = game.getTitle();
+                stringY += title.length * 12;
 
                 if(game.getGameId() != null) stringY += 12;
 
+                stringY += game.getContent().length * 12;
 
-                List<String> content = new ArrayList<>();
-
-                if(game.getValue() != null) {
-                     content.addAll(render.listFormattedStringToWidth(game.getValue(),
-                            windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5));
-                    stringY += content.size() * 12;
-                }
-
-                String date = game.getDate() == null ? "Unknown Date" : Tabs.sdf.format(game.getDate());
-
-                if(game.getMap() != null && !game.getMap().isEmpty()) date += "§3 on §b" + game.getMap();
-                if(game.getMode() != null && !game.getMode().isEmpty()) date += " (" + game.getMode() + ")";
-
-                List<String> author = render.listFormattedStringToWidth(date,
-                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                stringY += author.size() * 12;
-
+                String[] author = game.getBelow();
+                stringY += author.length * 12;
 
                 stringY += 12;
                 render.drawRectBorder(windowWidth / 3 - 25, y, windowWidth / 3 * 2 + 25, stringY < getStartY() ? 0 : stringY, Color.GRAY.getRGB(), 1.0);
@@ -92,7 +121,7 @@ public class RecentGamesTab extends Tab {
                 if(stringY > getStartY())
                     drawHorizontalLine(windowWidth / 3 - 10, windowWidth / 3 * 2 + 10, stringY, Color.GRAY.getRGB());
                 stringY += 5;
-                for(String s : content) {
+                for(String s : game.getContent()) {
                     if(stringY > getStartY())
                         render.drawCenteredString(s, windowWidth / 2, stringY, 0.9);
                     stringY += 12;

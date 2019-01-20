@@ -2,7 +2,11 @@ package tk.roccodev.beezig.forge.gui.briefing.tabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Tab extends Gui {
 
@@ -13,6 +17,8 @@ public class Tab extends Gui {
     private ResourceLocation icon;
     protected int x, y, width, height; /* All related to icons */
     protected int windowWidth;
+    protected List<GuiButton> buttonList = new ArrayList<>();
+    protected TabRenderer renderer;
 
     protected Tab(String title, ResourceLocation icon) {
         this.title = title;
@@ -35,7 +41,13 @@ public class Tab extends Gui {
         this.height = height;
     }
 
-    protected void init() {}
+    protected void init(int windowWidth, int windowHeight) {}
+
+    void init(TabRenderer renderer, int windowWidth, int windowHeight, List<GuiButton> btnList) {
+        this.renderer = renderer;
+        buttonList = btnList;
+        init(windowWidth, windowHeight);
+    }
 
     void setWindow(int width) {
         this.windowWidth = width;
@@ -70,4 +82,14 @@ public class Tab extends Gui {
     protected int getStartY() {
         return y + 60;
     }
+
+    protected List<GuiButton> getButtonList() {
+        return buttonList;
+    }
+
+    public TabRenderer getRenderer() {
+        return renderer;
+    }
+
+    protected void onActionPerformed(GuiButton btn) {}
 }
