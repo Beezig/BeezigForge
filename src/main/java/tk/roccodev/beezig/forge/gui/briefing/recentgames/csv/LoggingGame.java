@@ -8,13 +8,13 @@ import static tk.roccodev.beezig.forge.modules.pointstag.Games.*;
 
 public enum LoggingGame {
 
-    bedwars(BED, "bedwars", true, -1, 7, 6, 2, 1),
-    sky(SKY, "skywars", true, -1, 5, 4, 1, 3),
+    bedwars(BED, "bedwars", true, 8, 7, 6, 2, 1),
+    sky(SKY, "skywars", true, 6, 5, 4, 1, 3),
     timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1),
     bp(BP, "blockparty", false, -1, 2, -1, 1, -1),
     cai(CAI, "cowboys-and-indians", true, 3, 4, 2, 1, -1),
     dr(DR, "deathrun", false, 4, 5, -1, 1, -1),
-    gnt(GNT, "skygiants", true, -1, 6, 5, 1, 0),
+    gnt(GNT, "skygiants", true, 7, 6, 5, 1, 0),
     hide(HIDE, "hide-and-seek", true, 4, 3, 1, 0, -1);
 
     private Games game;
