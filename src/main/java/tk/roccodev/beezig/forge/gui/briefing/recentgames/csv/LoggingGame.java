@@ -1,29 +1,35 @@
 package tk.roccodev.beezig.forge.gui.briefing.recentgames.csv;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
 import tk.roccodev.beezig.forge.modules.pointstag.Games;
 
 import java.util.Date;
 
+import static tk.roccodev.beezig.forge.gui.briefing.recentgames.csv.ValueEntries.rp;
 import static tk.roccodev.beezig.forge.modules.pointstag.Games.*;
 
 public enum LoggingGame {
 
-    bedwars(BED, "bedwars", true, 8, 7, 6, 2, 1),
-    sky(SKY, "skywars", true, 6, 5, 4, 1, 3),
-    timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1),
-    bp(BP, "blockparty", false, -1, 2, -1, 1, -1),
-    cai(CAI, "cowboys-and-indians", true, 3, 4, 2, 1, -1),
-    dr(DR, "deathrun", false, 4, 5, -1, 1, -1),
-    gnt(GNT, "skygiants", true, 7, 6, 5, 1, 0),
-    hide(HIDE, "hide-and-seek", true, 4, 3, 1, 0, -1);
+    bedwars(BED, "bedwars", true, 8, 7, 6, 2, 1, new ResourceLocation(rp + "bed.png")),
+    sky(SKY, "skywars", true, 6, 5, 4, 1, 3, new ResourceLocation(rp + "sky.png")),
+    timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1, new ResourceLocation(rp + "timv.png")),
+    bp(BP, "blockparty", false, -1, 2, -1, 1, -1, new ResourceLocation(rp + "bp.png")),
+    cai(CAI, "cowboys-and-indians", true, 3, 4, 2, 1, -1, new ResourceLocation(rp + "cai.png")),
+    dr(DR, "deathrun", false, 4, 5, -1, 1, -1, new ResourceLocation(rp + "dr.png")),
+    gnt(GNT, "skygiants", true, 7, 6, 5, 1, 0, new ResourceLocation(rp + "gnt.png")),
+    hide(HIDE, "hide-and-seek", true, 4, 3, 1, 0, -1, new ResourceLocation(rp + "hide.png"));
 
     private Games game;
     private boolean canWin;
     private int gameIdSlot, timestampSlot, victorySlot, mapSlot, modeSlot;
     private String linkName;
+    private ResourceLocation icon;
+
+
 
     LoggingGame(Games game, String linkName, boolean canWin, int gameIdSlot, int timestampSlot,
-                int victorySlot, int mapSlot, int modeSlot) {
+                int victorySlot, int mapSlot, int modeSlot, ResourceLocation icon) {
         this.game = game;
         this.canWin = canWin;
         this.gameIdSlot = gameIdSlot;
@@ -32,6 +38,7 @@ public enum LoggingGame {
         this.linkName = linkName;
         this.mapSlot = mapSlot;
         this.modeSlot = modeSlot;
+        this.icon = icon;
     }
 
     public Games getGame() {
@@ -44,6 +51,10 @@ public enum LoggingGame {
 
     public String getLinkName() {
         return linkName;
+    }
+
+    public ResourceLocation getIcon() {
+        return icon;
     }
 
     public String getGameId(String[] in) {

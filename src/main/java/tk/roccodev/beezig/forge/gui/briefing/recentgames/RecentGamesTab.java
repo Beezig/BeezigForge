@@ -1,5 +1,6 @@
 package tk.roccodev.beezig.forge.gui.briefing.recentgames;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
@@ -103,16 +104,21 @@ public class RecentGamesTab extends Tab {
 
                 stringY += 12;
                 render.drawRectBorder(windowWidth / 3 - 25, y, windowWidth / 3 * 2 + 25, stringY < getStartY() ? 0 : stringY, Color.GRAY.getRGB(), 1.0);
+
+                Minecraft.getMinecraft().getTextureManager().bindTexture(game.getGamemode().getIcon());
+                if(getStartY() < y + 7)
+                    render.drawTexture(windowWidth / 3.0 - 15.0, y + 7.0, 256, 256, 20, 20);
+
                 stringY = y;
                 stringY += 6.5;
                 for(String s : title) {
                     if(stringY > getStartY())
-                        render.drawString(s, windowWidth / 3 - 20, stringY, 1.2);
+                        render.drawString(s, windowWidth / 3 + 15, stringY, 1.2);
                     stringY += 12;
                 }
                 for(String s : author) {
                     if(stringY > getStartY())
-                        render.drawString("§3" + s, windowWidth / 3 - 20, stringY);
+                        render.drawString("§3" + s, windowWidth / 3 + 15, stringY);
                     stringY += 12;
                 }
                 if(stringY > getStartY())
