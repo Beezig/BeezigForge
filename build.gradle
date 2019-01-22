@@ -22,7 +22,7 @@ plugins {
 }
 */
 version = "1.0"
-group= "tk.roccodev.beezig.forge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group= "eu.beezig.forge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "BeezigForge"
 
 sourceCompatibility = "1.8"
