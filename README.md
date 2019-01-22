@@ -15,3 +15,6 @@ Forge expansion mod for [Beezig](https://github.com/Beezig/Beezig), the Hive plu
 
 ## Attributions
 Icons made by [Freepik](https://freepik.com) and Cole Bemis, from [Flaticon](https://flaticon.com)
+
+# Supporters
+[JetBrains](https://www.jetbrains.com/?from=Beezig) for providing access to development tools for free via their [open-source license](https://www.jetbrains.com/buy/opensource/).
