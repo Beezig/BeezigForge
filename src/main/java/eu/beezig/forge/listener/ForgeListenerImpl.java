@@ -1,6 +1,7 @@
 package eu.beezig.forge.listener;
 
 import eu.beezig.forge.gamefields.TIMV;
+import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -18,6 +19,7 @@ import eu.beezig.forge.settings.BeezigConfigElement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ForgeListenerImpl {
 
@@ -31,6 +33,10 @@ public class ForgeListenerImpl {
 
         TIMV.callInit();
 
+        try {
+            PointsTagRenderListener.mGetHeight = Class.forName("eu.beezig.laby.api.NameHeight")
+                    .getMethod("get", UUID.class);
+        } catch (Exception ignored) {}
     }
 
     public void setActiveGame(String game) {

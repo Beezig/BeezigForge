@@ -13,7 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.lang.reflect.Method;
+
 public class PointsTagRenderListener {
+
+    public static Method mGetHeight;
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post evt) {
@@ -35,6 +39,14 @@ public class PointsTagRenderListener {
         String key = tag.getKey();
         String value = status == PointsTagStatus.DONE ? tag.getValue() : status.getDisplay();
         double offset = 0.3;
+
+        if(mGetHeight != null) {
+            try {
+                offset += (float) mGetHeight.invoke(null, p.getGameProfile().getId());
+            }
+            catch (Exception ignored) {}
+        }
+
         Scoreboard scoreboard = p.getWorldScoreboard();
         ScoreObjective scoreObjective = scoreboard.getObjectiveInDisplaySlot(2);
 
