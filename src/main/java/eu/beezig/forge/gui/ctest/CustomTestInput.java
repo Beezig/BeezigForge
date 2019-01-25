@@ -28,7 +28,7 @@ public class CustomTestInput extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         input.drawTextBox();
-        drawCenteredString(fontRendererObj, "Insert the map's display name. Make sure to include special characters (e.g, colons) and spaces.",
+        drawCenteredString(fontRendererObj, "Add a custom test message. Use {p} for the player's name.",
                 width / 2, height / 6, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
