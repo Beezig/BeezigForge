@@ -137,7 +137,7 @@ public class GameData {
                     windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5).toArray(new String[0]);
         }
 
-        String date = getDate() == null ? "Unknown Date" : Tabs.sdf.format(getDate());
+        String date = getDate() == null ? "Unknown Date" : Tabs.time.format(getDate());
 
         if(getMap() != null && !getMap().isEmpty()) date += "§3 on §b" + getMap();
         if(getMode() != null && !getMode().isEmpty()) date += " (" + getMode() + ")";
