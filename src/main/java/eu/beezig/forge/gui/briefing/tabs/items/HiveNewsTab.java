@@ -46,9 +46,6 @@ public class HiveNewsTab extends Tab {
                 List<String> content = render.listFormattedStringToWidth(article.getContent(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth(article.getAuthor(),
-                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
-                stringY += author.size() * 12;
 
 
                 stringY += 12;
@@ -58,11 +55,6 @@ public class HiveNewsTab extends Tab {
                 for(String s : title) {
                     if(stringY > getStartY())
                     render.drawString(s, windowWidth / 3 - 20, stringY, 1.2);
-                    stringY += 12;
-                }
-                for(String s : author) {
-                    if(stringY > getStartY())
-                    render.drawString(s, windowWidth / 3 - 20, stringY);
                     stringY += 12;
                 }
                 if(stringY > getStartY())
