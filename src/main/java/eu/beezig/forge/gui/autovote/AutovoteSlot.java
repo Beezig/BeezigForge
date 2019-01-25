@@ -61,7 +61,8 @@ public class AutovoteSlot extends GuiSlot {
     }
 
     void setData(List<String> data) {
-        savedMaps = data;
+        if(data != null)
+            savedMaps = data;
         selected = 0;
     }
 
