@@ -46,6 +46,10 @@ public class BeezigNewsTab extends Tab {
                 List<String> content = render.listFormattedStringToWidth(article.getContent(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
+                List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.getPostedAt()),
+                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
+                stringY += author.size() * 12;
+
 
                 stringY += 12;
                 render.drawRectBorder(windowWidth / 3 - 25, y, windowWidth / 3 * 2 + 25, stringY < getStartY() ? 0 : stringY, Color.GRAY.getRGB(), 1.0);
@@ -54,6 +58,11 @@ public class BeezigNewsTab extends Tab {
                 for(String s : title) {
                     if(stringY > getStartY())
                     render.drawString(s, windowWidth / 3 - 20, stringY, 1.2);
+                    stringY += 12;
+                }
+                for(String s : author) {
+                    if(stringY > getStartY())
+                    render.drawString("§3" + s, windowWidth / 3 - 20, stringY);
                     stringY += 12;
                 }
                 if(stringY > getStartY())

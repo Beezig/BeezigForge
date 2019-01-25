@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class Tabs {
 
-    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     public static SimpleDateFormat formatHive = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.US);
 
     static Tab[] tabs = new Tab[] {

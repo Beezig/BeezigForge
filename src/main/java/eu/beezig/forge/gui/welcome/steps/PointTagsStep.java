@@ -36,6 +36,7 @@ public class PointTagsStep extends WelcomeGuiStep {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
+        super.actionPerformed(button);
         if(button.id == 0) {
             Minecraft.getMinecraft().displayGuiScreen(null);
             endTutorial();

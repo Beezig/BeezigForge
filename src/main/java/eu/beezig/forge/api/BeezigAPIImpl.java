@@ -19,6 +19,7 @@ public interface BeezigAPIImpl {
     void sendTutorial(String key);
     void setTIMVMessages(List<String> messages);
     List<String> getTIMVMessages();
+    void setSetting(String setting, boolean value);
 
 
 
@@ -84,6 +85,11 @@ public interface BeezigAPIImpl {
             @Override
             public List<String> getTIMVMessages() {
                 return (List<String>) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getTIMVMessages"));
+            }
+
+            @Override
+            public void setSetting(String setting, boolean value) {
+                ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "setSetting", String.class, boolean.class), setting, value);
             }
         };
     }

@@ -1,10 +1,9 @@
 package eu.beezig.forge.commands;
 
-import eu.beezig.forge.gui.ctest.CustomTestGui;
+import eu.beezig.forge.gui.welcome.WelcomeGui;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import eu.beezig.forge.gui.welcome.WelcomeGui;
 
 public class BeezigForgeTestCommand extends CommandBase {
 
@@ -25,6 +24,6 @@ public class BeezigForgeTestCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        new CustomTestGui().show();
+        new WelcomeGui().show();
     }
 }
