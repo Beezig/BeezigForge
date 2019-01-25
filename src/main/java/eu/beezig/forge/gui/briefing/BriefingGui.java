@@ -15,6 +15,7 @@ public class BriefingGui extends GuiScreen {
 
     private TabRenderer render;
     private Class labyTabs;
+    private int selected = 0;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -32,6 +33,7 @@ public class BriefingGui extends GuiScreen {
         }
         catch(Exception ignored) {}
         this.render = new TabRenderer(width, height, buttonList);
+        render.setSelected(selected);
         super.initGui();
 
     }
@@ -74,5 +76,9 @@ public class BriefingGui extends GuiScreen {
     public void onTick(TickEvent.ClientTickEvent event) {
         MinecraftForge.EVENT_BUS.unregister(this);
         Minecraft.getMinecraft().displayGuiScreen(this);
+    }
+
+    public void setSelectedTab(int selectedTab) {
+        selected = selectedTab;
     }
 }

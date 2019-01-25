@@ -66,6 +66,10 @@ public class TabRenderer extends Gui {
         selected = newIndex;
     }
 
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
     public void onKeyTyped(int keyCode) {
         if(keyCode == Keyboard.KEY_RIGHT)
             switchSelected(1);

@@ -1,6 +1,10 @@
 package eu.beezig.forge;
 
 
+import eu.beezig.forge.commands.briefing.MapsCommand;
+import eu.beezig.forge.commands.briefing.NewsCommand;
+import eu.beezig.forge.commands.briefing.RecentGamesCommand;
+import eu.beezig.forge.commands.briefing.StaffChangesCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.settings.KeyBinding;
@@ -72,9 +76,16 @@ public class BeezigForgeMod {
         MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());
         MinecraftForge.EVENT_BUS.register(new CompassRenderListener());
 
-        ClientCommandHandler.instance.registerCommand(new PointsTagCommand());
-        ClientCommandHandler.instance.registerCommand(new BedwarsCompassCommand());
-        ClientCommandHandler.instance.registerCommand(new BeezigForgeTestCommand());
+        ClientCommandHandler cch = ClientCommandHandler.instance;
+
+        cch.registerCommand(new PointsTagCommand());
+        cch.registerCommand(new BedwarsCompassCommand());
+        cch.registerCommand(new BeezigForgeTestCommand());
+
+        cch.registerCommand(new MapsCommand());
+        cch.registerCommand(new NewsCommand());
+        cch.registerCommand(new RecentGamesCommand());
+        cch.registerCommand(new StaffChangesCommand());
 
         TitleListener.inst = new TitleListener();
 
