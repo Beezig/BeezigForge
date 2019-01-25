@@ -48,7 +48,7 @@ public class LerginFetcher {
             result.add(map);
         }
 
-        return result;
+        return result.subList(0, 50);
     }
 
 }
