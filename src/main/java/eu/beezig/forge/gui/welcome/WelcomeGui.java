@@ -1,19 +1,17 @@
 package eu.beezig.forge.gui.welcome;
 
+import eu.beezig.forge.gui.welcome.steps.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import eu.beezig.forge.gui.welcome.steps.AdvancedRecordsStep;
-import eu.beezig.forge.gui.welcome.steps.AutovoteStep;
-import eu.beezig.forge.gui.welcome.steps.BeezigStep;
-import eu.beezig.forge.gui.welcome.steps.PointTagsStep;
 
 public class WelcomeGui extends GuiScreen {
 
     private static final Class<? extends WelcomeGuiStep>[] steps = new Class[] {
-            BeezigStep.class, AdvancedRecordsStep.class, AutovoteStep.class, PointTagsStep.class
+            BeezigStep.class, AdvancedRecordsStep.class, AutovoteStep.class, CustomModulesStep.class,
+            CustomCommandsStep.class, StaffFeaturesStep.class, PointTagsStep.class
     };
 
     private int currentStepIndex = 0;
