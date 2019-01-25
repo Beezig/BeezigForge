@@ -39,9 +39,10 @@ public abstract class WelcomeGuiStep extends GuiScreen {
         super.initGui();
         WelcomeGuiStep next = parent.getNext(1);
         WelcomeGuiStep previous = parent.getNext(-1);
-        if(next != null)
-            buttonList.add(new GuiButton(0, this.width / 2 - 155 + 160, this.height - 38, 150, 20,
-                next.getName() + " >"));
+
+        buttonList.add(new GuiButton(0, this.width / 2 - 155 + 160, this.height - 38, 150, 20,
+                next != null ? next.getName() + " >" : "Done"));
+
         if(previous != null)
             buttonList.add(new GuiButton(1, this.width / 2 - 155, this.height - 38, 150, 20,
                     "< " + previous.getName()));

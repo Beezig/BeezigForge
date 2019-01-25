@@ -1,6 +1,9 @@
 package eu.beezig.forge.listener;
 
+import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gamefields.TIMV;
+import eu.beezig.forge.gui.ctest.CustomTestGui;
+import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
@@ -17,6 +20,7 @@ import eu.beezig.forge.gui.autovote.AutovoteGui;
 import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import eu.beezig.forge.settings.BeezigConfigElement;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +41,10 @@ public class ForgeListenerImpl {
             PointsTagRenderListener.mGetHeight = Class.forName("eu.beezig.laby.api.NameHeight")
                     .getMethod("get", UUID.class);
         } catch (Exception ignored) {}
+
+        if(!new File(ConfigurationManager.configParent + "tut").exists()) {
+            new WelcomeGui().show();
+        }
     }
 
     public void setActiveGame(String game) {
@@ -86,6 +94,10 @@ public class ForgeListenerImpl {
 
     public void displayAutovoteGui() {
         new AutovoteGui(0).show();
+    }
+
+    public void displayTIMVTestGui() {
+        new CustomTestGui().show();
     }
 
 }

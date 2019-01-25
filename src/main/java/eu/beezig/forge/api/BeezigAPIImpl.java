@@ -3,6 +3,8 @@ package eu.beezig.forge.api;
 
 import eu.beezig.forge.init.ClassUtils;
 
+import java.util.List;
+
 public interface BeezigAPIImpl {
 
     boolean isStaffMember();
@@ -15,6 +17,8 @@ public interface BeezigAPIImpl {
     String getBedwarsMode();
     String getConfigPath();
     void sendTutorial(String key);
+    void setTIMVMessages(List<String> messages);
+    List<String> getTIMVMessages();
 
 
 
@@ -70,6 +74,16 @@ public interface BeezigAPIImpl {
             @Override
             public void sendTutorial(String key) {
                 ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "sendTutorial", String.class), key);
+            }
+
+            @Override
+            public void setTIMVMessages(List<String> messages) {
+                ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "setTIMVMessages", List.class), messages);
+            }
+
+            @Override
+            public List<String> getTIMVMessages() {
+                return (List<String>) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "getTIMVMessages"));
             }
         };
     }

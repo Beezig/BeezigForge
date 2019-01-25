@@ -44,16 +44,7 @@ public class BeezigStep extends WelcomeGuiStep {
         switch(button.id) {
             case 1001 /* Skip */:
                 Minecraft.getMinecraft().displayGuiScreen(null);
-                new Thread(() -> {
-                    File f = new File(ConfigurationManager.configParent + "tut");
-                    if(!f.exists()) {
-                        try {
-                            f.createNewFile();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                PointTagsStep.endTutorial();
                 break;
         }
         super.actionPerformed(button);

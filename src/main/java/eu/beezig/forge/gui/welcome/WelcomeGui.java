@@ -45,7 +45,7 @@ public class WelcomeGui extends GuiScreen {
     }
 
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
+    public void onTick(TickEvent.PlayerTickEvent event) {
         MinecraftForge.EVENT_BUS.unregister(this);
         advanceStep(0);
     }
