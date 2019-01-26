@@ -18,7 +18,7 @@ public class ValueEntries {
             case sky:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ");
             case hide:
-                return safeValue(data, 2, "§7Kills:§r ");
+                return safeValue(data, 2, "§7Kills:§r ") + " §r/ " + safeValue(data, 5, "§7Time Alive:§r ");
             case timv:
                 return parseTimvRole(data) + " §r/ " + parseTimvKarma(data);
             case bedwars:
@@ -30,7 +30,7 @@ public class ValueEntries {
     }
 
     private static String safeValue(String[] in, int slot, String prefix) {
-        if(slot < 0 || slot >= in.length) return null;
+        if(slot < 0 || slot >= in.length) return prefix + "N/A";
         return prefix + in[slot];
     }
 
