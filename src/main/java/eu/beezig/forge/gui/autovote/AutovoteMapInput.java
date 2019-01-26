@@ -49,7 +49,7 @@ public class AutovoteMapInput extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch(button.id) {
             case 2 /* Done */:
-                String text = input.getText().toUpperCase().replace(":", "{c}").replace(" ", "_");
+                String text = input.getText().toUpperCase().replace(" ", "_");
                 Minecraft.getMinecraft().displayGuiScreen(parent);
                 if(!text.isEmpty())
                     parent.getList().add(text);

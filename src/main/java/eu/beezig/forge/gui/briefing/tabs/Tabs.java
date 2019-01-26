@@ -1,11 +1,8 @@
 package eu.beezig.forge.gui.briefing.tabs;
 
+import eu.beezig.forge.gui.briefing.tabs.items.*;
 import net.minecraft.util.ResourceLocation;
 import eu.beezig.forge.gui.briefing.recentgames.RecentGamesTab;
-import eu.beezig.forge.gui.briefing.tabs.items.BeezigNewsTab;
-import eu.beezig.forge.gui.briefing.tabs.items.HiveNewsTab;
-import eu.beezig.forge.gui.briefing.tabs.items.NewMapsTab;
-import eu.beezig.forge.gui.briefing.tabs.items.StaffChangesTab;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -23,7 +20,7 @@ public class Tabs {
             new StaffChangesTab(),
             new NewMapsTab(),
             new RecentGamesTab(),
-            new Tab("Other", new ResourceLocation("beezigforge/gui/other.png"))
+            new OtherTab()
 
     };
 

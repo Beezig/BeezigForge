@@ -71,7 +71,7 @@ public class Tab extends Gui {
         drawString(Minecraft.getMinecraft().fontRendererObj, text, x, getStartY() + y, color);
     }
 
-    protected void centered(String text, int x,  int y, int color) {
+    protected void centered(String text, int x, int y, int color) {
         string(text, x - Minecraft.getMinecraft().fontRendererObj.getStringWidth(text) / 2, y, color);
     }
 
