@@ -22,6 +22,10 @@ public class OtherTab extends Tab {
 
         getButtonList().add(new TabGuiButton(this,42, windowWidth / 2 - 50, 108, 100, 20,
                 "Click here"));
+        getButtonList().add(new TabGuiButton(this,43, windowWidth / 2 - 50, 148, 100, 20,
+                "Click here"));
+        getButtonList().add(new TabGuiButton(this,44, windowWidth / 2 - 50, 188, 100, 20,
+                "Click here"));
 
     }
 
@@ -30,6 +34,8 @@ public class OtherTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         centered("Join our §bDiscord server§f!", windowWidth / 2, 0, Color.WHITE.getRGB());
+        centered("Check out our §bwebsite§f!", windowWidth / 2, 40, Color.WHITE.getRGB());
+        centered("Need help? Read the §bwiki§f!", windowWidth / 2, 80, Color.WHITE.getRGB());
 
     }
 
@@ -38,12 +44,22 @@ public class OtherTab extends Tab {
         super.onActionPerformed(btn);
         switch (btn.id) {
             case 42 /* Join Discord */:
-                try {
-                    Desktop.getDesktop().browse(new URI("https://l.beezig.eu/discord"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                browse("https://l.beezig.eu/discord");
                 break;
+            case 43 /* Website */:
+                browse("https://beezig.eu");
+                break;
+            case 44 /* Wiki */:
+                browse("https://beezig.eu/wiki");
+                break;
+        }
+    }
+
+    private void browse(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
