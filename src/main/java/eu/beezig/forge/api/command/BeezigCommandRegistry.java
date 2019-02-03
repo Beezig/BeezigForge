@@ -1,6 +1,8 @@
 package eu.beezig.forge.api.command;
 
 import com.mojang.authlib.GameProfile;
+import eu.beezig.forge.API;
+import eu.beezig.forge.Log;
 import eu.beezig.forge.tabcompletion.BeezigCommandExecutor;
 import eu.beezig.forge.tabcompletion.TabCompletionUtils;
 import net.minecraft.client.Minecraft;
@@ -10,7 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
-import eu.beezig.forge.Log;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -52,9 +53,14 @@ public class BeezigCommandRegistry {
                 public void processCommand(ICommandSender sender, String[] args) throws CommandException {
                     try {
                         if(!(boolean)exec.invoke(obj,(Object) args)) {
+                            String alias = firstAlias;
+                            if(API.inst != null && !API.inst.isHive() && aliases.length > 1) {
+                                alias = aliasesList.get(1);
+                            }
                             Minecraft.getMinecraft().thePlayer
-                                    .sendChatMessage("/" + firstAlias + " " + String.join(" ", args));
+                                    .sendChatMessage("/" + alias + " " + String.join(" ", args));
                         }
+
                     } catch (Exception e) {
                         sender.addChatMessage(new ChatComponentText(Log.error + "An unexpected error occurred " +
                                 "§cwhile attempting to §cperform the command."));

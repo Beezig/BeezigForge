@@ -20,6 +20,7 @@ public interface BeezigAPIImpl {
     void setTIMVMessages(List<String> messages);
     List<String> getTIMVMessages();
     void setSetting(String setting, boolean value);
+    boolean isHive();
 
 
 
@@ -90,6 +91,11 @@ public interface BeezigAPIImpl {
             @Override
             public void setSetting(String setting, boolean value) {
                 ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "setSetting", String.class, boolean.class), setting, value);
+            }
+
+            @Override
+            public boolean isHive() {
+                return (boolean) ClassUtils.invokeMethod(from, ClassUtils.findMethod(from.getClass(), "isHive"));
             }
         };
     }
