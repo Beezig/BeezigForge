@@ -2,6 +2,7 @@
 ![Github All Releases](https://img.shields.io/github/downloads/Beezig/BeezigForge/total.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Beezig/BeezigForge.svg)
 ![Unique users](https://l.beezig.eu/badgeunique)
+![LOC](https://badgen.net/codeclimate/loc/Beezig/BeezigForge)
 
 # BeezigForge
 Forge expansion mod for [Beezig](https://github.com/Beezig/Beezig), the Hive plugin for 5zig.
