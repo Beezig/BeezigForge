@@ -10,7 +10,7 @@ import java.util.List;
 
 public class BeezigArticles {
 
-    private static final String URL = "https://roccodev.pw/beezighosting/news/news.json";
+    private static final String URL = "https://rocco.dev/beezighosting/news/news.json";
 
     public static List<BeezigArticle> fetch() {
         JSONArray json = JSON.downloadJSONArray(URL);

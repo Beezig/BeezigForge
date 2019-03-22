@@ -44,12 +44,12 @@ import java.io.File;
 @Mod(modid = BeezigForgeMod.MODID,
         name = BeezigForgeMod.NAME,
         version = BeezigForgeMod.VERSION,
-        updateJSON = "https://roccodev.pw/beezighosting/forge/versioning.json")
+        updateJSON = "https://rocco.dev/beezighosting/forge/versioning.json")
 public class BeezigForgeMod {
 
     public static final String MODID = "BeezigForge";
     public static final String NAME = "Beezig Forge Expansion";
-    public static final String VERSION = "6.0.0";
+    public static final String VERSION = "6.0.1";
 
 
     private boolean handlerLoaded;
@@ -142,7 +142,7 @@ public class BeezigForgeMod {
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(Log.info + "The version of your Beezig Forge Expansion isn't §3matching your Beezig one."));
             ChatComponentText link = new ChatComponentText(Log.info + "§bClick here to update.");
             ChatStyle style = link.getChatStyle();
-            style.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://l.roccodev.pw/beezigforge"));
+            style.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://l.rocco.dev/beezigforge"));
             style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("§bClick to update.")));
             link.setChatStyle(style);
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(link);
