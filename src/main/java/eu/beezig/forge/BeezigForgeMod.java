@@ -49,7 +49,7 @@ public class BeezigForgeMod {
 
     public static final String MODID = "BeezigForge";
     public static final String NAME = "Beezig Forge Expansion";
-    public static final String VERSION = "6.0.1";
+    public static final String VERSION = "6.1.0";
 
 
     private boolean handlerLoaded;
