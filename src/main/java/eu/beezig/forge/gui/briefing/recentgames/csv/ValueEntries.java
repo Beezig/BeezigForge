@@ -31,7 +31,9 @@ public class ValueEntries {
             case cai:
                 return safeValue(data, 0, "§7Points:§r ");
             case gnt:
-                return null;
+                return safeValue(data, 8, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ")
+                        + " §r/ " + safeValue(data, 3, "§7Deaths:§r ") + " §r/ " +
+                        safeValue(data, 4, "§7Giants: §r");
             case sky:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ");
             case hide:
