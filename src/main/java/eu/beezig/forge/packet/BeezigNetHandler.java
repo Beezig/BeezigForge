@@ -202,7 +202,6 @@ public class BeezigNetHandler extends NetHandlerPlayClient {
 
     @Override
     public void handleSpawnPosition(S05PacketSpawnPosition packetIn) {
-        EnderchestsListener.testerSpawnPt = packetIn.getSpawnPos();
         if(api.onPacketReceived(0x05, packetIn.toString()))
         parent.handleSpawnPosition(packetIn);
     }

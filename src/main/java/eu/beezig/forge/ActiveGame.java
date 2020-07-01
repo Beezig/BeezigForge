@@ -29,7 +29,6 @@ public class ActiveGame {
             PointsTagCache.clear();
         last = current;
         current = game;
-        EnderchestsListener.customSpawnPt = false;
     }
 
     public static String current() {
