@@ -41,14 +41,11 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
-import eu.beezig.forge.api.AutovoteAPIImpl;
-import eu.beezig.forge.api.BeezigAPIImpl;
 import eu.beezig.forge.commands.BedwarsCompassCommand;
 import eu.beezig.forge.commands.BeezigForgeTestCommand;
 import eu.beezig.forge.commands.PointsTagCommand;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gui.briefing.BriefingGui;
-import eu.beezig.forge.init.ClassFinder;
 import eu.beezig.forge.listener.games.cai.TitleListener;
 import eu.beezig.forge.listener.games.timv.EnderchestsListener;
 import eu.beezig.forge.modules.compass.render.CompassRenderListener;
@@ -109,34 +106,6 @@ public class BeezigForgeMod {
         keybindBeezigGui = new KeyBinding("Open Beezig GUI", Keyboard.KEY_B, "Beezig");
         ClientRegistry.registerKeyBinding(keybindBeezigGui);
     }
-
-    @SubscribeEvent
-    public void onConnect(FMLNetworkEvent.ClientConnectedToServerEvent evt) {
-
-        try {
-            ClassFinder.init();
-
-            Class api = ClassFinder.findClass("eu.beezig.core.api.BeezigAPI");
-
-            API.privInst = api.getMethod("get")
-                    .invoke(null);
-            API.inst = BeezigAPIImpl.fromObject(API.privInst);
-
-            API.autovote = AutovoteAPIImpl.fromObject(((Class)(api.getMethod("getAutovoter").invoke(API.privInst))).newInstance());
-
-            api.getMethod("registerListener", Object.class)
-                    .invoke(API.privInst,
-                    Class.forName("eu.beezig.forge.listener.ForgeListenerImpl", true, this.getClass().getClassLoader())
-                            .newInstance());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-
-
-    }
-
 
     @SubscribeEvent
     public void onKey(InputEvent.KeyInputEvent evt) {

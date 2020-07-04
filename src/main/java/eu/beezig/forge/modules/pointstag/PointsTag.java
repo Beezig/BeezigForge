@@ -17,11 +17,11 @@
 
 package eu.beezig.forge.modules.pointstag;
 
-import eu.beezig.forge.ActiveGame;
-import eu.beezig.forge.utils.JSON;
-import org.json.simple.JSONObject;
 import eu.beezig.forge.API;
 import eu.beezig.forge.Log;
+import eu.beezig.forge.api.BeezigAPI;
+import eu.beezig.forge.utils.JSON;
+import org.json.simple.JSONObject;
 
 public class PointsTag {
 
@@ -31,7 +31,7 @@ public class PointsTag {
     public void downloadData(String uuid) {
         status = PointsTagStatus.LOADING;
         new Thread(() -> {
-            String gameStr = ActiveGame.current().replace("ARCADE_", "");
+            String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "");
             Games game = Games.value(gameStr);
             String prefix;
             String pts;

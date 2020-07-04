@@ -17,7 +17,7 @@
 
 package eu.beezig.forge.modules.pointstag.render;
 
-import eu.beezig.forge.ActiveGame;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.modules.pointstag.PointsTag;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.pointstag.PointsTagStatus;
@@ -38,7 +38,7 @@ public class PointsTagRenderListener {
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post evt) {
-        if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
+        if(BeezigAPI.getCurrentGame() == null) return;
         if(!PointsTagCache.enabled) return;
         EntityPlayer p = evt.entityPlayer;
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;

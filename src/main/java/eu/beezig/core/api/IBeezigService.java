@@ -15,20 +15,14 @@
  * along with BeezigForge.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package eu.beezig.forge;
+package eu.beezig.core.api;
 
-import java.text.DecimalFormat;
+import java.util.UUID;
+import java.util.function.Function;
 
-public class Log {
+public interface IBeezigService {
+    void registerUserIndicator(Function<UUID, Integer> callback);
 
-
-    public static String info = "§7▏ §aBeezig§7 ▏ §3";
-    public static String error = "§7▏ §cBeezig§7 ▏ §c";
-    public static String bar = "    §7§m                                                                                    ";
-    private static final DecimalFormat bigintFormatter = new DecimalFormat("#,###");
-
-    public static String df(long l) {
-        return bigintFormatter.format(l);
-    }
-
+    void setOnHive(boolean update);
+    void setCurrentGame(String game);
 }
