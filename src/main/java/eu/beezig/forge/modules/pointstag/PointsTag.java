@@ -31,36 +31,39 @@ public class PointsTag {
     public void downloadData(String uuid) {
         status = PointsTagStatus.LOADING;
         new Thread(() -> {
-            String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "");
-            Games game = Games.value(gameStr);
-            String prefix;
-            String pts;
-            boolean ranks;
-            if(game == null) {
-                prefix = "Points";
-                pts = "total_points";
-                ranks = false;
+            try {
+                String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "");
+                Games game = Games.value(gameStr);
+                String prefix;
+                String pts;
+                boolean ranks;
+                if (game == null) {
+                    prefix = "Points";
+                    pts = "total_points";
+                    ranks = false;
+                } else {
+                    prefix = game.getDisplay();
+                    pts = game.getPoints();
+                    ranks = true;
+                }
+                this.key = prefix;
+                JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
+                this.value = Log.df((long) obj.get(pts));
+                this.status = PointsTagStatus.DONE;
+                if (ranks) {
+                    String rankStr = game == Games.TIMV
+                            ? API.inst.getTIMVRank(obj.get("title").toString(), (long) obj.get(pts))
+                            : API.inst.getRankString(obj.get("title").toString(), gameStr);
+                    if (rankStr != null) rank = rankStr;
+                    if (game == Games.BED &&
+                            obj.get("title").toString().startsWith("Sleepy ")
+                            && (long) obj.get(pts) > 1500L)
+                        rank = "§f§l✸ Zzzzzz";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                status = PointsTagStatus.ERRORED;
             }
-            else {
-                prefix = game.getDisplay();
-                pts = game.getPoints();
-                ranks = true;
-            }
-            this.key = prefix;
-            JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
-            this.value = Log.df((long)obj.get(pts));
-            this.status = PointsTagStatus.DONE;
-            if(ranks) {
-                String rankStr = game == Games.TIMV
-                        ? API.inst.getTIMVRank(obj.get("title").toString(), (long)obj.get(pts))
-                        : API.inst.getRankString(obj.get("title").toString(), gameStr);
-                if(rankStr != null) rank = rankStr;
-                if(game == Games.BED &&
-                        obj.get("title").toString().startsWith("Sleepy ")
-                        && (long)obj.get(pts) > 1500L)
-                    rank = "§f§l✸ Zzzzzz";
-            }
-
         }).start();
     }
 

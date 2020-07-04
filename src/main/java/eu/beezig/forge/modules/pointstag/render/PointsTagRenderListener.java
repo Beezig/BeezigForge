@@ -35,6 +35,7 @@ import java.lang.reflect.Method;
 public class PointsTagRenderListener {
 
     public static Method mGetHeight;
+    private TagRenderer renderer = new TagRenderer();
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post evt) {
@@ -74,8 +75,7 @@ public class PointsTagRenderListener {
         String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}",
                 PointsTagCache.colorRank ? tag.getRank() : EnumChatFormatting.getTextWithoutFormattingCodes(tag.getRank())).trim();
         if(!PointsTagCache.colorAll) toRender = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(toRender);
-        PointsTagUtils.render(evt.renderer, toRender, p, evt.x, evt.y + offset, evt.z);
-
+        int role = BeezigAPI.getUserRole(evt.entityPlayer.getUniqueID());
+        renderer.renderNameAndBadge(toRender, role, evt, offset);
     }
-
 }
