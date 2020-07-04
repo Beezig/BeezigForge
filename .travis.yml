@@ -1,7 +1,7 @@
 language: java
 jdk:
   - openjdk8
-install: gradle setupCIWorkspace build
+install: ./gradlew setupCIWorkspace build
 deploy:
   - provider: pages
     skip_cleanup: true
