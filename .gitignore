@@ -19,8 +19,6 @@ build
 
 # other
 eclipse
-gradlew
-gradlew.bat
 run
 mods/
 libs/
