@@ -18,7 +18,9 @@
 package eu.beezig.forge.api;
 
 import eu.beezig.core.api.IBeezigService;
+import eu.beezig.forge.api.command.BeezigCommandRegistry;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -42,5 +44,12 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerTitle(Function<String, String> callback) {
         BeezigAPI.titleFunc = callback;
+    }
+
+    @Override
+    public void addCommands(List<Object> commands) {
+        for(Object cmd : commands) {
+            BeezigCommandRegistry.register(cmd);
+        }
     }
 }
