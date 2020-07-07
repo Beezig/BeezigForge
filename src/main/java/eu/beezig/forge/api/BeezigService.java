@@ -38,4 +38,9 @@ public class BeezigService implements IBeezigService {
     public void setCurrentGame(String game) {
         BeezigAPI.currentGame = game;
     }
+
+    @Override
+    public void registerTitle(Function<String, String> callback) {
+        BeezigAPI.titleFunc = callback;
+    }
 }

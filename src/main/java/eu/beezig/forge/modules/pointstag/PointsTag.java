@@ -23,6 +23,8 @@ import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.utils.JSON;
 import org.json.simple.JSONObject;
 
+import java.util.Locale;
+
 public class PointsTag {
 
     private String key, value, rank;
@@ -33,7 +35,7 @@ public class PointsTag {
         new Thread(() -> {
             try {
                 String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "");
-                Games game = Games.value(gameStr);
+                Games game = Games.value(gameStr.toUpperCase(Locale.ROOT));
                 String prefix;
                 String pts;
                 boolean ranks;
@@ -51,9 +53,7 @@ public class PointsTag {
                 this.value = Log.df((long) obj.get(pts));
                 this.status = PointsTagStatus.DONE;
                 if (ranks) {
-                    String rankStr = game == Games.TIMV
-                            ? API.inst.getTIMVRank(obj.get("title").toString(), (long) obj.get(pts))
-                            : API.inst.getRankString(obj.get("title").toString(), gameStr);
+                    String rankStr = BeezigAPI.getTitle(obj.get("title").toString());
                     if (rankStr != null) rank = rankStr;
                     if (game == Games.BED &&
                             obj.get("title").toString().startsWith("Sleepy ")

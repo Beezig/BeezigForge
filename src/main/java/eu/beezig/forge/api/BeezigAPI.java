@@ -24,6 +24,7 @@ public class BeezigAPI {
     static boolean onHive;
     static String currentGame;
     static Function<UUID, Integer> userRoleFunc;
+    static Function<String, String> titleFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -35,5 +36,9 @@ public class BeezigAPI {
 
     public static int getUserRole(UUID id) {
         return userRoleFunc.apply(id);
+    }
+
+    public static String getTitle(String api) {
+        return titleFunc.apply(api);
     }
 }
