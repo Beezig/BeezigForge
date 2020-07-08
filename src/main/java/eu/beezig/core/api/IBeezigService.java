@@ -24,6 +24,7 @@ import java.util.function.Function;
 public interface IBeezigService {
     void registerUserIndicator(Function<UUID, Integer> callback);
     void registerTitle(Function<String, String> callback);
+    void registerFormatNumber(Function<Long, String> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);

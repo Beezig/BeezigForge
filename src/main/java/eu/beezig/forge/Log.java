@@ -17,6 +17,8 @@
 
 package eu.beezig.forge;
 
+import eu.beezig.forge.api.BeezigAPI;
+
 import java.text.DecimalFormat;
 
 public class Log {
@@ -28,7 +30,7 @@ public class Log {
     private static final DecimalFormat bigintFormatter = new DecimalFormat("#,###");
 
     public static String df(long l) {
-        return bigintFormatter.format(l);
+        return BeezigAPI.formatNumber(l);
     }
 
 }

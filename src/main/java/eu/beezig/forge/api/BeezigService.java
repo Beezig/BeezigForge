@@ -52,4 +52,9 @@ public class BeezigService implements IBeezigService {
             BeezigCommandRegistry.register(cmd);
         }
     }
+
+    @Override
+    public void registerFormatNumber(Function<Long, String> callback) {
+        BeezigAPI.formatFunc = callback;
+    }
 }

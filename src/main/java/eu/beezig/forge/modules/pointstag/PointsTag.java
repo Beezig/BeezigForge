@@ -51,6 +51,9 @@ public class PointsTag {
                 this.key = prefix;
                 JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
                 this.value = Log.df((long) obj.get(pts));
+                if(game == Games.TIMV && (long) obj.get(pts) < 400) {
+                    value += " (" + Log.df((long) obj.get("role_points")) + ")";
+                }
                 this.status = PointsTagStatus.DONE;
                 if (ranks) {
                     String rankStr = BeezigAPI.getTitle(obj.get("title").toString());
