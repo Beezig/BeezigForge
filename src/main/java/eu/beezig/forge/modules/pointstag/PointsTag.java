@@ -34,8 +34,8 @@ public class PointsTag {
         status = PointsTagStatus.LOADING;
         new Thread(() -> {
             try {
-                String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "");
-                Games game = Games.value(gameStr.toUpperCase(Locale.ROOT));
+                String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "").toUpperCase(Locale.ROOT);
+                Games game = Games.value(gameStr);
                 String prefix;
                 String pts;
                 boolean ranks;
