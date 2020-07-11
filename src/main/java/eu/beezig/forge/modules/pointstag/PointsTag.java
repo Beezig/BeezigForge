@@ -17,7 +17,6 @@
 
 package eu.beezig.forge.modules.pointstag;
 
-import eu.beezig.forge.API;
 import eu.beezig.forge.Log;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.utils.JSON;
@@ -71,7 +70,6 @@ public class PointsTag {
                         rank = "§f§l✸ Zzzzzz";
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 status = PointsTagStatus.ERRORED;
             }
         }).start();
