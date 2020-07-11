@@ -39,6 +39,7 @@ public class PointsTagRenderListener {
 
     @SubscribeEvent
     public void onRenderPlayer(RenderPlayerEvent.Post evt) {
+        if(!BeezigAPI.isOnHive()) return;
         if(!PointsTagCache.enabled) return;
         EntityPlayer p = evt.entityPlayer;
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;
