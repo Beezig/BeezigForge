@@ -19,6 +19,7 @@ package eu.beezig.forge.api;
 
 import eu.beezig.core.api.IBeezigService;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
+import eu.beezig.forge.modules.pointstag.PointsTagCache;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,7 @@ public class BeezigService implements IBeezigService {
 
     @Override
     public void setCurrentGame(String game) {
+        if(game == null) PointsTagCache.clear();
         BeezigAPI.currentGame = game;
     }
 
