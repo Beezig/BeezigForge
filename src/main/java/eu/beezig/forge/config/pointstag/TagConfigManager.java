@@ -33,8 +33,6 @@ public class TagConfigManager {
     public static Property colorAll;
     public static Property colorRank;
 
-
-
     public static void init(Configuration config) {
         TagConfigManager.config = config;
         enabled = config.get("ignored", "enabled", true,

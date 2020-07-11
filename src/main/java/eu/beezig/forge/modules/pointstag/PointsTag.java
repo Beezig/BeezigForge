@@ -34,6 +34,13 @@ public class PointsTag {
         status = PointsTagStatus.LOADING;
         new Thread(() -> {
             try {
+                if(BeezigAPI.getCurrentGame() == null) {
+                    this.key = "Tokens";
+                    JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid);
+                    this.value = Log.df((long) obj.get("tokens"));
+                    this.status = PointsTagStatus.DONE;
+                    return;
+                }
                 String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "").toUpperCase(Locale.ROOT);
                 Games game = Games.value(gameStr);
                 String prefix;
