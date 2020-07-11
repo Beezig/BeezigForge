@@ -39,7 +39,7 @@ public class BeezigService implements IBeezigService {
 
     @Override
     public void setCurrentGame(String game) {
-        if(game == null) PointsTagCache.clear();
+        PointsTagCache.clear();
         BeezigAPI.currentGame = game;
     }
 
