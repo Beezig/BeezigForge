@@ -55,11 +55,6 @@ public class ForgeListenerImpl {
 
         TIMV.callInit();
 
-        try {
-            PointsTagRenderListener.mGetHeight = Class.forName("eu.beezig.laby.api.NameHeight")
-                    .getMethod("get", UUID.class);
-        } catch (Exception ignored) {}
-
         if(!new File(ConfigurationManager.configParent + "tut").exists()) {
             new WelcomeGui().show();
         }

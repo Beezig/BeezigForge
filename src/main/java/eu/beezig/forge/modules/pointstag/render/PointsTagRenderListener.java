@@ -23,6 +23,7 @@ import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.pointstag.PointsTagStatus;
 import eu.beezig.forge.modules.pointstag.PointsTagUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
@@ -30,18 +31,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.lang.reflect.Method;
+import java.util.UUID;
+import java.util.function.Function;
 
 public class PointsTagRenderListener {
 
-    public static Method mGetHeight;
-    private TagRenderer renderer = new TagRenderer();
+    public static Function<UUID, Float> heightFunc;
+    private TagRenderer tagRenderer = new TagRenderer();
 
-    @SubscribeEvent
-    public void onRenderPlayer(RenderPlayerEvent.Post evt) {
+    public void doRender(EntityPlayer p, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
         if(!BeezigAPI.isOnHive()) return;
         if(!PointsTagCache.enabled) return;
-        EntityPlayer p = evt.entityPlayer;
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;
         if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;
@@ -58,11 +58,8 @@ public class PointsTagRenderListener {
         String value = status == PointsTagStatus.DONE ? tag.getValue() : status.getDisplay();
         double offset = 0.3;
 
-        if(mGetHeight != null) {
-            try {
-                offset += (float) mGetHeight.invoke(null, p.getGameProfile().getId());
-            }
-            catch (Exception ignored) {}
+        if(heightFunc != null) {
+            offset += heightFunc.apply(p.getGameProfile().getId());
         }
 
         Scoreboard scoreboard = p.getWorldScoreboard();
@@ -75,7 +72,28 @@ public class PointsTagRenderListener {
         String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}",
                 PointsTagCache.colorRank ? tag.getRank() : EnumChatFormatting.getTextWithoutFormattingCodes(tag.getRank())).trim();
         if(!PointsTagCache.colorAll) toRender = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(toRender);
-        int role = BeezigAPI.getUserRole(evt.entityPlayer.getUniqueID());
-        renderer.renderNameAndBadge(toRender, role, evt, offset);
+        int role = BeezigAPI.getUserRole(p.getUniqueID());
+        tagRenderer.renderNameAndBadge(toRender, role, new RenderData(p, x, y, z, partialTicks, renderer), offset);
+    }
+
+    static class RenderData {
+        public EntityPlayer player;
+        public RenderPlayer renderer;
+        public double x, y, z;
+        public float partialTicks;
+
+        public RenderData(EntityPlayer player, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
+            this.player = player;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.partialTicks = partialTicks;
+            this.renderer = renderer;
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderPlayer(RenderPlayerEvent.Post evt) {
+        doRender(evt.entityPlayer, evt.x, evt.y, evt.z, evt.partialRenderTick, evt.renderer);
     }
 }

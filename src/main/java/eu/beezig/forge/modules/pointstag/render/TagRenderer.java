@@ -26,8 +26,6 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
 public class TagRenderer {
@@ -37,23 +35,23 @@ public class TagRenderer {
     private static final ResourceLocation BADGE_TRANSLATOR = new ResourceLocation("beezig", "badges/translator-256.png");
     private static final ResourceLocation BADGE_USER = new ResourceLocation("beezig", "badges/user-256.png");
 
-    public void renderNameAndBadge(String textToRender, int role, RenderPlayerEvent.Post event, double offset) {
+    public void renderNameAndBadge(String textToRender, int role, PointsTagRenderListener.RenderData data, double offset) {
         ResourceLocation badge = null;
         if(role == 1) badge = BADGE_USER;
         else if(role == 2) badge = BADGE_TRANSLATOR;
         else if(role == 3) badge = BADGE_DEV;
-        double tagY = event.y + event.entityPlayer.height + 0.5 + offset;
-        FontRenderer fontRenderer = event.renderer.getFontRendererFromRenderManager();
-        RenderManager renderer = event.renderer.getRenderManager();
+        double tagY = data.y + data.player.height + 0.5 + offset;
+        FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();
+        RenderManager renderer = data.renderer.getRenderManager();
         int textSemiWidth = fontRenderer.getStringWidth(textToRender) / 2;
 
         if(badge != null)
-        renderBadge(badge, (float)event.x, (float)tagY, (float)event.z, renderer, textSemiWidth);
+        renderBadge(badge, (float)data.x, (float)tagY, (float)data.z, renderer, textSemiWidth);
 
         float f = 1.6F;
         float f1 = 0.016666668F * f;
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) event.x, (float) tagY, (float) event.z);
+        GlStateManager.translate((float) data.x, (float) tagY, (float) data.z);
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-renderer.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(renderer.playerViewX, 1.0F, 0.0F, 0.0F);
