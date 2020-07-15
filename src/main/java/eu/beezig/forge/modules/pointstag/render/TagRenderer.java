@@ -31,9 +31,9 @@ import org.lwjgl.opengl.GL11;
 public class TagRenderer {
 
     private final Gui dummyGui = new Gui();
-    private static final ResourceLocation BADGE_DEV = new ResourceLocation("beezig", "badges/developer-256.png");
-    private static final ResourceLocation BADGE_TRANSLATOR = new ResourceLocation("beezig", "badges/translator-256.png");
-    private static final ResourceLocation BADGE_USER = new ResourceLocation("beezig", "badges/user-256.png");
+    private static final ResourceLocation BADGE_DEV = new ResourceLocation("beezig/badges/developer-256.png");
+    private static final ResourceLocation BADGE_TRANSLATOR = new ResourceLocation("beezig/badges/translator-256.png");
+    private static final ResourceLocation BADGE_USER = new ResourceLocation("beezig/badges/user-256.png");
 
     public void renderNameAndBadge(String textToRender, int role, PointsTagRenderListener.RenderData data, double offset) {
         ResourceLocation badge = null;
