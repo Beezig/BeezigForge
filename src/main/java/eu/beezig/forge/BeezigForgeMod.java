@@ -72,16 +72,6 @@ public class BeezigForgeMod {
 
     public static KeyBinding keybindBeezigGui;
 
-
-    @Mod.EventHandler
-    public void onPre(FMLPreInitializationEvent evt) {
-        File configFile = evt.getSuggestedConfigurationFile();
-        File parent = new File(configFile.getParent() + "/BeezigForge/");
-        if(!parent.exists()) parent.mkdir();
-        ConfigurationManager.initAll(configFile);
-    }
-
-
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent evt) {
 

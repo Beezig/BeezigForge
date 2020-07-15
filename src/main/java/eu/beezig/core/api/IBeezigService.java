@@ -17,6 +17,7 @@
 
 package eu.beezig.core.api;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -29,4 +30,5 @@ public interface IBeezigService {
     void setOnHive(boolean update);
     void setCurrentGame(String game);
     void addCommands(List<Object> commands);
+    void loadConfig(File beezigDir);
 }

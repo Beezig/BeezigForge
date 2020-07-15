@@ -19,8 +19,11 @@ package eu.beezig.forge.api;
 
 import eu.beezig.core.api.IBeezigService;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
+import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -58,5 +61,14 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerFormatNumber(Function<Long, String> callback) {
         BeezigAPI.formatFunc = callback;
+    }
+
+    @Override
+    public void loadConfig(File beezigDir) {
+        try {
+            ConfigurationManager.initAll(beezigDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

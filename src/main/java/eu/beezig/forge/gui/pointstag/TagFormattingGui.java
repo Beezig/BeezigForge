@@ -82,10 +82,10 @@ public class TagFormattingGui extends GuiScreen {
             case 3011:
                 String converted = translateAlternateColorCodes('&', input.getText());
                 PointsTagCache.formatting = converted;
-                TagConfigManager.formatting.set(converted);
+                TagConfigManager.formatting.setValue(converted);
 
-                TagConfigManager.colorAll.set(PointsTagCache.colorAll);
-                TagConfigManager.colorRank.set(PointsTagCache.colorRank);
+                TagConfigManager.colorAll.setValue(PointsTagCache.colorAll);
+                TagConfigManager.colorRank.setValue(PointsTagCache.colorRank);
 
                 TagConfigManager.save();
                 mc.displayGuiScreen(new TagSettingsGui());

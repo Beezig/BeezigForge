@@ -23,10 +23,10 @@ import java.util.UUID;
 public class PointsTagCache {
 
     private static HashMap<UUID, PointsTag> cache = new HashMap<>();
-    public static boolean enabled = true;
+    public static boolean enabled;
     public static double offset = 0;
     public static boolean self;
-    public static String formatting = "§3{k}: §a{v}";
+    public static String formatting;
     public static boolean colorAll;
     public static boolean colorRank;
 

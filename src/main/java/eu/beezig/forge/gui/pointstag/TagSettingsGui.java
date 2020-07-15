@@ -54,7 +54,7 @@ public class TagSettingsGui extends GuiScreen {
                 150, 20, "Tag Offset: ", "",
                 -10d, 10d, PointsTagCache.offset, false, true, slider -> {
                 PointsTagCache.offset = slider.getValueInt() / 10d;
-                TagConfigManager.offset.set(slider.getValueInt() / 10d);
+                TagConfigManager.offset.setValue(slider.getValueInt() / 10d);
         }));
     }
 
@@ -69,12 +69,12 @@ public class TagSettingsGui extends GuiScreen {
         switch(button.id) {
             case 3011:
                 PointsTagCache.enabled = !PointsTagCache.enabled;
-                TagConfigManager.enabled.set(PointsTagCache.enabled);
+                TagConfigManager.enabled.setValue(PointsTagCache.enabled);
                 button.displayString = "Points Tag: " + (PointsTagCache.enabled ? "Enabled" : "Disabled");
                 break;
             case 1603:
                 PointsTagCache.self = !PointsTagCache.self;
-                TagConfigManager.showSelf.set(PointsTagCache.self);
+                TagConfigManager.showSelf.setValue(PointsTagCache.self);
                 button.displayString = "Show self: " +  (PointsTagCache.self ? "Enabled" : "Disabled");
                 break;
             case 2000:
