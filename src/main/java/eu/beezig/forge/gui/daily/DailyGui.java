@@ -45,7 +45,7 @@ public class DailyGui extends GuiScreen {
         buttonList.add(regNext = new GuiButton(2, width / 2 + 80, 5, 20, 20, ">"));
         buttonList.add(modePrev = new GuiButton(3, width / 2 - 80, 30, 20, 20, "<"));
         buttonList.add(modeNext = new GuiButton(4, width / 2 + 80, 30, 20, 20, ">"));
-        buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done")));
+        buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 29, I18n.format("gui.done")));
         regPrev.enabled = false;
         regNext.enabled = false;
         modePrev.enabled = false;
