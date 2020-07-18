@@ -18,22 +18,24 @@
 package eu.beezig.forge.commands;
 
 import eu.beezig.forge.gui.daily.DailyGui;
-import eu.beezig.forge.gui.report.ReportGui;
-import eu.beezig.forge.gui.welcome.WelcomeGui;
+import eu.beezig.forge.gui.pointstag.TagSettingsGui;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
-public class BeezigForgeTestCommand extends CommandBase {
+import java.util.Arrays;
+import java.util.List;
+
+public class DailyCommand extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return "bftest";
+        return "daily";
     }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/bftest";
+        return "/daily";
     }
 
     @Override

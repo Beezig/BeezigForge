@@ -18,6 +18,7 @@
 package eu.beezig.forge;
 
 
+import eu.beezig.forge.commands.DailyCommand;
 import eu.beezig.forge.commands.briefing.MapsCommand;
 import eu.beezig.forge.commands.briefing.NewsCommand;
 import eu.beezig.forge.commands.briefing.RecentGamesCommand;
@@ -85,6 +86,7 @@ public class BeezigForgeMod {
         cch.registerCommand(new PointsTagCommand());
         cch.registerCommand(new BedwarsCompassCommand());
         cch.registerCommand(new BeezigForgeTestCommand());
+        cch.registerCommand(new DailyCommand());
 
         cch.registerCommand(new MapsCommand());
         cch.registerCommand(new NewsCommand());
