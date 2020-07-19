@@ -64,6 +64,11 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void registerTranslate(Function<String, String> callback) {
+        BeezigAPI.translateFunc = callback;
+    }
+
+    @Override
     public void loadConfig(File beezigDir) {
         try {
             ConfigurationManager.initAll(beezigDir);

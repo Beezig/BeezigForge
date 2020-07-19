@@ -17,7 +17,7 @@
 
 package eu.beezig.forge.modules.pointstag;
 
-import eu.beezig.forge.Log;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.utils.JSON;
 import org.json.simple.JSONObject;
@@ -36,7 +36,7 @@ public class PointsTag {
                 if(BeezigAPI.getCurrentGame() == null) {
                     this.key = "Tokens";
                     JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid);
-                    this.value = Log.df((long) obj.get("tokens"));
+                    this.value = ForgeMessage.formatNumber((long) obj.get("tokens"));
                     this.status = PointsTagStatus.DONE;
                     return;
                 }
@@ -56,9 +56,9 @@ public class PointsTag {
                 }
                 this.key = prefix;
                 JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
-                this.value = Log.df((long) obj.get(pts));
+                this.value = ForgeMessage.formatNumber((long) obj.get(pts));
                 if(game == Games.TIMV && (long) obj.get(pts) < 400) {
-                    value += " (" + Log.df((long) obj.get("role_points")) + ")";
+                    value += " (" + ForgeMessage.formatNumber((long) obj.get("role_points")) + ")";
                 }
                 this.status = PointsTagStatus.DONE;
                 if (ranks) {

@@ -1,6 +1,6 @@
 package eu.beezig.forge.gui.daily;
 
-import eu.beezig.forge.Log;
+import eu.beezig.forge.ForgeMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
@@ -60,12 +60,12 @@ public class DailyLeaderboard extends GuiListExtended {
             }
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
-            String pts = Log.df(points);
+            String pts = ForgeMessage.formatNumber(points);
             fr.drawString("#" + place, x - 50, y, color);
             fr.drawString(roleColor + name, x, y, color);
             int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
             fr.drawString(pts, ptsPos, y, color);
-            fr.drawString(Log.df(most), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
+            fr.drawString(ForgeMessage.formatNumber(most), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
         }
 
         @Override

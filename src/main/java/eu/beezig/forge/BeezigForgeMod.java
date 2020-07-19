@@ -36,24 +36,19 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import org.lwjgl.input.Keyboard;
 import eu.beezig.forge.commands.BedwarsCompassCommand;
 import eu.beezig.forge.commands.BeezigForgeTestCommand;
 import eu.beezig.forge.commands.PointsTagCommand;
-import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gui.briefing.BriefingGui;
 import eu.beezig.forge.listener.games.cai.TitleListener;
 import eu.beezig.forge.listener.games.timv.EnderchestsListener;
 import eu.beezig.forge.modules.compass.render.CompassRenderListener;
 import eu.beezig.forge.packet.BeezigNetHandler;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
-
-import java.io.File;
 
 
 @Mod(modid = BeezigForgeMod.MODID,
@@ -75,6 +70,7 @@ public class BeezigForgeMod {
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent evt) {
+        if(!BeezigI18N.init) BeezigI18N.init();
 
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
@@ -117,8 +113,8 @@ public class BeezigForgeMod {
         }
         if(versionUpdate && Minecraft.getMinecraft().thePlayer != null) {
             versionUpdate = false;
-            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(Log.info + "The version of your Beezig Forge Expansion isn't §3matching your Beezig one."));
-            ChatComponentText link = new ChatComponentText(Log.info + "§bClick here to update.");
+            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(ForgeMessage.info + "The version of your Beezig Forge Expansion isn't §3matching your Beezig one."));
+            ChatComponentText link = new ChatComponentText(ForgeMessage.info + "§bClick here to update.");
             ChatStyle style = link.getChatStyle();
             style.setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://l.rocco.dev/beezigforge"));
             style.setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("§bClick to update.")));

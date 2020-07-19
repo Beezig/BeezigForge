@@ -2,7 +2,7 @@ package eu.beezig.forge.gui.daily;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
-import eu.beezig.forge.Log;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.modules.pointstag.Games;
 import eu.beezig.forge.utils.JSON;
 import net.minecraft.client.Minecraft;
@@ -92,8 +92,8 @@ public class DailyGui extends GuiScreen {
             GlStateManager.scale(2f, 2f, 2f);
             mc.fontRendererObj.drawString(profile.place == -1 ? "?"  : "#" + profile.place, 0, 0, 0xff_ff_ff_ff);
             GlStateManager.popMatrix();
-            mc.fontRendererObj.drawString(profile.points == -1 ? "?" : Log.df(profile.points), 60, height - 20, 0xff_ff_ff_ff);
-            mc.fontRendererObj.drawString(profile.most == -1 ? "?" : Log.df(profile.most), 60, height - 10, 0xff_ff_ff_ff);
+            mc.fontRendererObj.drawString(profile.points == -1 ? "?" : ForgeMessage.formatNumber(profile.points), 60, height - 20, 0xff_ff_ff_ff);
+            mc.fontRendererObj.drawString(profile.most == -1 ? "?" : ForgeMessage.formatNumber(profile.most), 60, height - 10, 0xff_ff_ff_ff);
         } else drawCenteredString(mc.fontRendererObj, "Loading...", 40, height - 20, 0xff_ff_ff_ff);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

@@ -26,6 +26,7 @@ public class BeezigAPI {
     static Function<UUID, Integer> userRoleFunc;
     static Function<String, String> titleFunc;
     static Function<Long, String> formatFunc;
+    static Function<String, String> translateFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -45,5 +46,9 @@ public class BeezigAPI {
 
     public static String formatNumber(long l) {
         return formatFunc.apply(l);
+    }
+
+    public static String translate(String key) {
+        return translateFunc.apply(key);
     }
 }

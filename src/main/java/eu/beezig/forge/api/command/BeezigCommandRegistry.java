@@ -18,8 +18,7 @@
 package eu.beezig.forge.api.command;
 
 import com.mojang.authlib.GameProfile;
-import eu.beezig.forge.API;
-import eu.beezig.forge.Log;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.tabcompletion.BeezigCommandExecutor;
 import eu.beezig.forge.tabcompletion.TabCompletionUtils;
 import net.minecraft.client.Minecraft;
@@ -31,9 +30,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BeezigCommandRegistry {
 
@@ -70,7 +67,7 @@ public class BeezigCommandRegistry {
                             }
 
                         } catch (Exception e) {
-                            sender.addChatMessage(new ChatComponentText(Log.error + "An unexpected error occurred " +
+                            sender.addChatMessage(new ChatComponentText(ForgeMessage.error + "An unexpected error occurred " +
                                     "§cwhile attempting to §cperform the command."));
                             e.printStackTrace();
                         }
