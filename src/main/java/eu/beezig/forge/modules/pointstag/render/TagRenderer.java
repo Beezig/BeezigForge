@@ -38,8 +38,8 @@ public class TagRenderer {
     public void renderNameAndBadge(String textToRender, int role, PointsTagRenderListener.RenderData data, double offset) {
         ResourceLocation badge = null;
         if(role == 1) badge = BADGE_USER;
-        else if(role == 2) badge = BADGE_TRANSLATOR;
-        else if(role == 3) badge = BADGE_DEV;
+        else if(role == 51) badge = BADGE_TRANSLATOR;
+        else if(role == 101) badge = BADGE_DEV;
         double tagY = data.y + data.player.height + 0.5 + offset;
         FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();
         RenderManager renderer = data.renderer.getRenderManager();
