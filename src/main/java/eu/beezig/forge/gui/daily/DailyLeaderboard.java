@@ -54,8 +54,8 @@ public class DailyLeaderboard extends GuiListExtended {
         @Override
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             if(roleColor == null) {
-                if(role == 1) roleColor = "§6";
-                else if(role == 2) roleColor = "§b";
+                if(role == 50) roleColor = "§6";
+                else if(role == 100) roleColor = "§b";
                 else roleColor = "§f";
             }
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
