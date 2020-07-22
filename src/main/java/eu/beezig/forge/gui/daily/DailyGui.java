@@ -25,8 +25,8 @@ public class DailyGui extends GuiScreen {
     private GuiButton regPrev, regNext, modePrev, modeNext;
     private final List<Games> supportedGames = Games.dailies();
     private Games currentGame = Games.TIMV;
-    private List<DailyRegion> supportedRegions = ImmutableList.of(new DailyRegion("none", "Unknown"));
-    private DailyRegion currentRegion = supportedRegions.get(0);
+    private List<DailyRegion> supportedRegions;
+    private DailyRegion currentRegion;
     private final Map<String, Map<Games, LbResponse>> lbCache = new HashMap<>();
     private final Object lbLock = new Object();
     private final Map<Games, DailyProfile> profileCache = new EnumMap<>(Games.class);
@@ -78,12 +78,18 @@ public class DailyGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        String loading = ForgeMessage.translate("gui.daily.loading");
         drawDefaultBackground();
         if (leaderboard != null) leaderboard.drawScreen(mouseX, mouseY, partialTicks);
-        drawCenteredString(mc.fontRendererObj, currentRegion.getName(), width / 2, 10, 0xff_ff_ff_ff);
-        drawCenteredString(mc.fontRendererObj, currentGame.getCommonName(), width / 2, 35, 0xff_ff_ff_ff);
+        drawCenteredString(mc.fontRendererObj, currentRegion == null ? loading : currentRegion.getName(), width / 2, 10, 0xff_ff_ff_ff);
+        drawCenteredString(mc.fontRendererObj, currentGame == null ? loading : currentGame.getCommonName(), width / 2, 35, 0xff_ff_ff_ff);
         if (leaderboard == null) {
-            drawCenteredString(mc.fontRendererObj, ForgeMessage.translate("gui.daily.loading"), width / 2, height / 2, 0xff_ff_ff_ff);
+            drawCenteredString(mc.fontRendererObj, loading, width / 2, height / 2, 0xff_ff_ff_ff);
+        }
+        else {
+            String reset = leaderboard.getFormattedResetTime();
+            if(reset != null)
+                drawCenteredString(mc.fontRendererObj, ForgeMessage.translate("gui.daily.reset", reset), width / 2, 55, 0xff_ff_ff_ff);
         }
         if (profile != null) {
             drawCenteredString(mc.fontRendererObj, "§7" + ForgeMessage.translate("gui.daily.stats"), 40, height - 40, 0xff_ff_ff_ff);
@@ -94,18 +100,22 @@ public class DailyGui extends GuiScreen {
             GlStateManager.popMatrix();
             mc.fontRendererObj.drawString(profile.points == -1 ? "?" : ForgeMessage.formatNumber(profile.points), 60, height - 20, 0xff_ff_ff_ff);
             mc.fontRendererObj.drawString(profile.most == -1 ? "?" : ForgeMessage.formatNumber(profile.most), 60, height - 10, 0xff_ff_ff_ff);
-        } else drawCenteredString(mc.fontRendererObj, ForgeMessage.translate("gui.daily.loading"), 40, height - 20, 0xff_ff_ff_ff);
+        } else drawCenteredString(mc.fontRendererObj, loading, 40, height - 20, 0xff_ff_ff_ff);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
     public void updateScreen() {
-        int modeIdx = supportedGames.indexOf(currentGame);
-        modePrev.enabled = modeIdx > 0;
-        modeNext.enabled = modeIdx < supportedGames.size() - 1;
-        int regIdx = supportedRegions.indexOf(currentRegion);
-        regPrev.enabled = regIdx > 0;
-        regNext.enabled = regIdx < supportedRegions.size() - 1;
+        if(currentGame != null) {
+            int modeIdx = supportedGames.indexOf(currentGame);
+            modePrev.enabled = modeIdx > 0;
+            modeNext.enabled = modeIdx < supportedGames.size() - 1;
+        }
+        if(currentRegion != null) {
+            int regIdx = supportedRegions.indexOf(currentRegion);
+            regPrev.enabled = regIdx > 0;
+            regNext.enabled = regIdx < supportedRegions.size() - 1;
+        }
     }
 
     public void show() {
@@ -160,7 +170,9 @@ public class DailyGui extends GuiScreen {
         if (lbCache.containsKey(currentRegion.getId())) {
             Map<Games, LbResponse> gameCache = lbCache.get(currentRegion.getId());
             if (gameCache.containsKey(currentGame)) {
-                leaderboard = new DailyLeaderboard(gameCache.get(currentGame).leaderboard, Minecraft.getMinecraft(), width, height, 52, DailyGui.this.height - 44, 16);
+                LbResponse cached = gameCache.get(currentGame);
+                leaderboard = new DailyLeaderboard(cached.leaderboard, Minecraft.getMinecraft(), width, height, 67, DailyGui.this.height - 44, 16);
+                leaderboard.setResetTime(cached.reset_time);
                 return;
             }
         }
@@ -173,7 +185,8 @@ public class DailyGui extends GuiScreen {
             synchronized (lbLock) {
                 if (!lbCache.containsKey(region.getId())) lbCache.put(region.getId(), new EnumMap<>(Games.class));
                 lbCache.get(region.getId()).put(game, res);
-                leaderboard = new DailyLeaderboard(res.leaderboard, Minecraft.getMinecraft(), width, height, 52, DailyGui.this.height - 44, 16);
+                leaderboard = new DailyLeaderboard(res.leaderboard, Minecraft.getMinecraft(), width, height, 67, DailyGui.this.height - 44, 16);
+                leaderboard.setResetTime(res.reset_time);
             }
             updateScreen();
         }).start();
@@ -181,6 +194,7 @@ public class DailyGui extends GuiScreen {
 
     private static class LbResponse {
         private List<DailyLeaderboard.Profile> leaderboard;
+        private long reset_time;
     }
 
     private static class DailyProfile {

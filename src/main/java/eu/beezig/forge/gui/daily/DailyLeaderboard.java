@@ -5,18 +5,35 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.renderer.Tessellator;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DailyLeaderboard extends GuiListExtended {
 
-    List<Profile> profiles = new ArrayList<>();
+    private Date resetTime;
+    private final List<Profile> profiles = new ArrayList<>();
 
     public DailyLeaderboard(List<Profile> profiles, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
         this.profiles.add(new Header());
         this.profiles.addAll(profiles);
+    }
+
+    public void setResetTime(long resetTime) {
+        this.resetTime = new Date(resetTime * 1000);
+    }
+
+    public String getFormattedResetTime() {
+        if(resetTime == null) return null;
+        long duration = resetTime.getTime() - System.currentTimeMillis();
+        String dateFmt;
+        if(duration >= 1000 * 60 * 60) dateFmt = "H'h' m'min' s's'";
+        else if(duration >= 60) dateFmt = "m'min' s's'";
+        else dateFmt = "s's'";
+        return DurationFormatUtils.formatDuration(duration, dateFmt);
     }
 
     @Override
