@@ -18,11 +18,20 @@
 package eu.beezig.forge;
 
 
+import eu.beezig.forge.commands.BedwarsCompassCommand;
+import eu.beezig.forge.commands.BeezigForgeTestCommand;
 import eu.beezig.forge.commands.DailyCommand;
+import eu.beezig.forge.commands.PointsTagCommand;
 import eu.beezig.forge.commands.briefing.MapsCommand;
 import eu.beezig.forge.commands.briefing.NewsCommand;
 import eu.beezig.forge.commands.briefing.RecentGamesCommand;
 import eu.beezig.forge.commands.briefing.StaffChangesCommand;
+import eu.beezig.forge.gui.briefing.BriefingGui;
+import eu.beezig.forge.listener.games.cai.TitleListener;
+import eu.beezig.forge.listener.games.timv.EnderchestsListener;
+import eu.beezig.forge.modules.compass.render.CompassRenderListener;
+import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
+import eu.beezig.forge.packet.BeezigNetHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.settings.KeyBinding;
@@ -40,15 +49,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
-import eu.beezig.forge.commands.BedwarsCompassCommand;
-import eu.beezig.forge.commands.BeezigForgeTestCommand;
-import eu.beezig.forge.commands.PointsTagCommand;
-import eu.beezig.forge.gui.briefing.BriefingGui;
-import eu.beezig.forge.listener.games.cai.TitleListener;
-import eu.beezig.forge.listener.games.timv.EnderchestsListener;
-import eu.beezig.forge.modules.compass.render.CompassRenderListener;
-import eu.beezig.forge.packet.BeezigNetHandler;
-import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 
 
 @Mod(modid = BeezigForgeMod.MODID,
@@ -59,7 +59,7 @@ public class BeezigForgeMod {
 
     public static final String MODID = "BeezigForge";
     public static final String NAME = "Beezig Forge Expansion";
-    public static final String VERSION = "6.2.1";
+    public static final String VERSION = "7.0.0";
 
 
     private boolean handlerLoaded;
@@ -70,8 +70,6 @@ public class BeezigForgeMod {
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent evt) {
-        if(!BeezigI18N.init) BeezigI18N.init();
-
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
         MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());

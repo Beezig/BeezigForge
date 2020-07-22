@@ -85,11 +85,11 @@ public class DailyLeaderboard extends GuiListExtended {
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
-            fr.drawString("§lPlace", x - 50, y, color);
-            fr.drawString("§lName", x, y, color);
+            fr.drawString("§l" + ForgeMessage.translate("gui.daily.place"), x - 50, y, color);
+            fr.drawString("§l" + ForgeMessage.translate("gui.daily.name"), x, y, color);
             int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
-            fr.drawString("§lPoints", ptsPos, y, color);
-            fr.drawString("§lMost Points", ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
+            fr.drawString("§l" + ForgeMessage.translate("gui.daily.points"), ptsPos, y, color);
+            fr.drawString("§l" + ForgeMessage.translate("gui.daily.most"), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
         }
     }
 }

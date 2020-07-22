@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.pointstag;
 
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.config.pointstag.TagConfigManager;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import net.minecraft.client.Minecraft;
@@ -43,13 +44,13 @@ public class TagSettingsGui extends GuiScreen {
     public void initGui() {
         Mouse.setGrabbed(false);
         this.buttonList.add(new GuiButton(3011, this.width / 2 - 155, this.height / 2 - 100 - 34, 150, 20,
-                "Points Tag: " + (PointsTagCache.enabled ? "Enabled" : "Disabled")));
+                ForgeMessage.translateOnOff("gui.ptags.tags", PointsTagCache.enabled)));
 
         this.buttonList.add(new GuiButton(2000, this.width / 2 + 5, this.height / 2 - 100 - 34, 150, 20,
-                "Edit formatting..."));
+                ForgeMessage.translate("gui.ptags.formatting")));
 
         this.buttonList.add(new GuiButton(1603, this.width / 2 - 155, this.height / 2 -  83 + 22, 150, 20,
-                "Show self: " +  (PointsTagCache.self ? "Enabled" : "Disabled")));
+                ForgeMessage.translateOnOff("gui.ptags.self", PointsTagCache.self)));
 
         this.buttonList.add(new GuiSlider(new GuiPageButtonList.GuiResponder() {
             @Override
@@ -70,7 +71,7 @@ public class TagSettingsGui extends GuiScreen {
                 "Tag Offset: ", -10, 10, (float) (PointsTagCache.offset * 10f), new GuiSlider.FormatHelper() {
             @Override
             public String getText(int id, String name, float value) {
-                return "Tag Offset: " + value;
+                return ForgeMessage.translate("gui.ptags.offset", value);
             }
         }));
     }
@@ -87,12 +88,12 @@ public class TagSettingsGui extends GuiScreen {
             case 3011:
                 PointsTagCache.enabled = !PointsTagCache.enabled;
                 TagConfigManager.enabled.setValue(PointsTagCache.enabled);
-                button.displayString = "Points Tag: " + (PointsTagCache.enabled ? "Enabled" : "Disabled");
+                button.displayString = ForgeMessage.translateOnOff("gui.ptags.tags", PointsTagCache.enabled);
                 break;
             case 1603:
                 PointsTagCache.self = !PointsTagCache.self;
                 TagConfigManager.showSelf.setValue(PointsTagCache.self);
-                button.displayString = "Show self: " +  (PointsTagCache.self ? "Enabled" : "Disabled");
+                button.displayString = ForgeMessage.translateOnOff("gui.ptags.self", PointsTagCache.self);
                 break;
             case 2000:
                 mc.displayGuiScreen(new TagFormattingGui());

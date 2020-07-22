@@ -83,10 +83,10 @@ public class DailyGui extends GuiScreen {
         drawCenteredString(mc.fontRendererObj, currentRegion.getName(), width / 2, 10, 0xff_ff_ff_ff);
         drawCenteredString(mc.fontRendererObj, currentGame.getCommonName(), width / 2, 35, 0xff_ff_ff_ff);
         if (leaderboard == null) {
-            drawCenteredString(mc.fontRendererObj, "Loading data", width / 2, height / 2, 0xff_ff_ff_ff);
+            drawCenteredString(mc.fontRendererObj, ForgeMessage.translate("gui.daily.loading"), width / 2, height / 2, 0xff_ff_ff_ff);
         }
         if (profile != null) {
-            drawCenteredString(mc.fontRendererObj, "§7Your Stats", 40, height - 40, 0xff_ff_ff_ff);
+            drawCenteredString(mc.fontRendererObj, "§7" + ForgeMessage.translate("gui.daily.stats"), 40, height - 40, 0xff_ff_ff_ff);
             GlStateManager.pushMatrix();
             GlStateManager.translate(20, height - 20, 1);
             GlStateManager.scale(2f, 2f, 2f);
@@ -94,7 +94,7 @@ public class DailyGui extends GuiScreen {
             GlStateManager.popMatrix();
             mc.fontRendererObj.drawString(profile.points == -1 ? "?" : ForgeMessage.formatNumber(profile.points), 60, height - 20, 0xff_ff_ff_ff);
             mc.fontRendererObj.drawString(profile.most == -1 ? "?" : ForgeMessage.formatNumber(profile.most), 60, height - 10, 0xff_ff_ff_ff);
-        } else drawCenteredString(mc.fontRendererObj, "Loading...", 40, height - 20, 0xff_ff_ff_ff);
+        } else drawCenteredString(mc.fontRendererObj, ForgeMessage.translate("gui.daily.loading"), 40, height - 20, 0xff_ff_ff_ff);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
