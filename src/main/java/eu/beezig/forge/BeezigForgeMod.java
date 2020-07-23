@@ -31,6 +31,7 @@ import eu.beezig.forge.listener.games.cai.TitleListener;
 import eu.beezig.forge.listener.games.timv.EnderchestsListener;
 import eu.beezig.forge.modules.compass.render.CompassRenderListener;
 import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
+import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
 import eu.beezig.forge.packet.BeezigNetHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
@@ -74,6 +75,7 @@ public class BeezigForgeMod {
         MinecraftForge.EVENT_BUS.register(new EnderchestsListener());
         MinecraftForge.EVENT_BUS.register(new PointsTagRenderListener());
         MinecraftForge.EVENT_BUS.register(new CompassRenderListener());
+        MinecraftForge.EVENT_BUS.register(new ShuffleForgeListener());
 
         ClientCommandHandler cch = ClientCommandHandler.instance;
 

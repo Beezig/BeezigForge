@@ -27,6 +27,7 @@ public class BeezigAPI {
     static Function<String, String> titleFunc;
     static Function<Long, String> formatFunc;
     static Function<String, String> translateFunc;
+    static Function<String, String> mapFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -50,5 +51,9 @@ public class BeezigAPI {
 
     public static String translate(String key) {
         return translateFunc.apply(key);
+    }
+
+    public static String normalizeMapName(String name) {
+        return mapFunc.apply(name);
     }
 }

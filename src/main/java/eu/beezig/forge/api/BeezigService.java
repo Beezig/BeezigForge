@@ -21,6 +21,7 @@ import eu.beezig.core.api.IBeezigService;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
+import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,11 +70,21 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void registerNormalizeMapName(Function<String, String> callback) {
+        BeezigAPI.mapFunc = callback;
+    }
+
+    @Override
     public void loadConfig(File beezigDir) {
         try {
             ConfigurationManager.initAll(beezigDir);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void autovoteShuffle(List<String> favorites) {
+        ShuffleForgeListener.mgr.attemptVote(favorites);
     }
 }
