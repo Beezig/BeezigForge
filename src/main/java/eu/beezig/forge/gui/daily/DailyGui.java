@@ -1,6 +1,5 @@
 package eu.beezig.forge.gui.daily;
 
-import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.modules.pointstag.Games;
@@ -24,7 +23,7 @@ public class DailyGui extends GuiScreen {
     private DailyLeaderboard leaderboard;
     private GuiButton regPrev, regNext, modePrev, modeNext;
     private final List<Games> supportedGames = Games.dailies();
-    private Games currentGame = Games.TIMV;
+    private Games currentGame = Games.BED;
     private List<DailyRegion> supportedRegions;
     private DailyRegion currentRegion;
     private final Map<String, Map<Games, LbResponse>> lbCache = new HashMap<>();

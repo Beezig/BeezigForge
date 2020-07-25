@@ -56,8 +56,8 @@ public class DailyLeaderboard extends GuiListExtended {
         protected static final int MAX_NAME_LEN = 16;
 
         private String uuid, name;
-        private int place, points, most, role;
-        private String roleColor;
+        private int place, points, most, roleColor = -1;
+        private Role role;
 
         public Profile() {
 
@@ -70,16 +70,14 @@ public class DailyLeaderboard extends GuiListExtended {
 
         @Override
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
-            if(roleColor == null) {
-                if(role == 50) roleColor = "§6";
-                else if(role == 100) roleColor = "§b";
-                else roleColor = "§f";
+            if(roleColor == -1) {
+                roleColor = Integer.parseInt(role.color.substring(1), 16);
             }
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
             String pts = ForgeMessage.formatNumber(points);
             fr.drawString("#" + place, x - 50, y, color);
-            fr.drawString(roleColor + name, x, y, color);
+            fr.drawString(name, x, y, roleColor);
             int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
             fr.drawString(pts, ptsPos, y, color);
             fr.drawString(ForgeMessage.formatNumber(most), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
@@ -94,6 +92,10 @@ public class DailyLeaderboard extends GuiListExtended {
         public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
 
         }
+    }
+
+    private static class Role {
+        String color;
     }
 
     private static class Header extends Profile {
