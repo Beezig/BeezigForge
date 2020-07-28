@@ -17,10 +17,13 @@
 
 package eu.beezig.core.api;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public interface IBeezigService {
     void registerUserIndicator(Function<UUID, Integer> callback);
@@ -28,6 +31,8 @@ public interface IBeezigService {
     void registerFormatNumber(Function<Long, String> callback);
     void registerTranslate(Function<String, String> callback);
     void registerNormalizeMapName(Function<String, String> callback);
+    void registerGetRegion(Supplier<String> callback);
+    void registerTranslateFormat(Function<Pair<String, Object[]>, String> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);

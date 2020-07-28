@@ -17,8 +17,12 @@
 
 package eu.beezig.forge.api;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BeezigAPI {
     static boolean onHive;
@@ -27,7 +31,9 @@ public class BeezigAPI {
     static Function<String, String> titleFunc;
     static Function<Long, String> formatFunc;
     static Function<String, String> translateFunc;
+    static Function<Pair<String, Object[]>, String> translFormatFunc;
     static Function<String, String> mapFunc;
+    static Supplier<String> regionFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -49,11 +55,16 @@ public class BeezigAPI {
         return formatFunc.apply(l);
     }
 
-    public static String translate(String key) {
-        return translateFunc.apply(key);
+    public static String translate(String key, Object... format) {
+        if(format.length == 0) return translateFunc.apply(key);
+        else return translFormatFunc.apply(new ImmutablePair<>(key, format));
     }
 
     public static String normalizeMapName(String name) {
         return mapFunc.apply(name);
+    }
+
+    public static String getRegion() {
+        return regionFunc.get();
     }
 }

@@ -2,6 +2,7 @@ package eu.beezig.forge.gui.daily;
 
 import com.google.gson.Gson;
 import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.modules.pointstag.Games;
 import eu.beezig.forge.utils.JSON;
 import net.minecraft.client.Minecraft;
@@ -30,12 +31,14 @@ public class DailyGui extends GuiScreen {
     private final Object lbLock = new Object();
     private final Map<Games, DailyProfile> profileCache = new EnumMap<>(Games.class);
     private DailyProfile profile;
-
-    public DailyGui(Games currentGame) {
-        this.currentGame = currentGame;
-    }
+    private String regionToLoad;
 
     public DailyGui() {
+        try {
+            String game = BeezigAPI.getCurrentGame();
+            if(game != null) currentGame = Games.valueOf(game.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException ignored) {}
+        regionToLoad = BeezigAPI.getRegion();
     }
 
     @Override
@@ -58,8 +61,7 @@ public class DailyGui extends GuiScreen {
             currentRegion = supportedRegions.get(supportedRegions.indexOf(currentRegion) - 1);
         } else if (button.id == 2) {
             currentRegion = supportedRegions.get(supportedRegions.indexOf(currentRegion) + 1);
-        }
-        if (button.id == 3) {
+        } else if (button.id == 3) {
             currentGame = supportedGames.get(supportedGames.indexOf(currentGame) - 1);
         } else if (button.id == 4) {
             currentGame = supportedGames.get(supportedGames.indexOf(currentGame) + 1);
@@ -133,6 +135,15 @@ public class DailyGui extends GuiScreen {
             JSONArray json = JSON.downloadJSONArray(url);
             supportedRegions = Arrays.asList(GSON.fromJson(json.toJSONString(), DailyRegion[].class));
             currentRegion = supportedRegions.get(0);
+            if(regionToLoad != null) {
+                for(DailyRegion region : supportedRegions) {
+                    if(region.getId().equals(regionToLoad)) {
+                        currentRegion = region;
+                        break;
+                    }
+                }
+            }
+            updateScreen();
             refreshLeaderboard();
         }).start();
     }

@@ -22,12 +22,14 @@ import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class BeezigService implements IBeezigService {
 
@@ -86,5 +88,15 @@ public class BeezigService implements IBeezigService {
     @Override
     public void autovoteShuffle(List<String> favorites) {
         ShuffleForgeListener.mgr.attemptVote(favorites);
+    }
+
+    @Override
+    public void registerGetRegion(Supplier<String> callback) {
+        BeezigAPI.regionFunc = callback;
+    }
+
+    @Override
+    public void registerTranslateFormat(Function<Pair<String, Object[]>, String> callback) {
+        BeezigAPI.translFormatFunc = callback;
     }
 }

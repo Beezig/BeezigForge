@@ -27,8 +27,7 @@ public class ForgeMessage {
         return BeezigAPI.formatNumber(l);
     }
     public static String translate(String key, Object... format) {
-        if(format.length == 0) return BeezigAPI.translate(key);
-        else return String.format(BeezigAPI.translate(key), format);
+        return BeezigAPI.translate(key, format);
     }
     public static String translateOnOff(String key, boolean toggle) {
         return ForgeMessage.translate(key, ForgeMessage.translate(toggle ? "msg.on" : "msg.off"));
