@@ -19,8 +19,6 @@ package eu.beezig.forge.modules.pointstag;
 
 import eu.beezig.forge.BeezigForgeMod;
 import eu.beezig.forge.modules.pointstag.render.BadgeRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
@@ -39,6 +37,7 @@ public class BadgeService {
 
     private static void loadDefaults() {
         badges.put(100, BadgeRenderer.staticTexture(new ResourceLocation("beezig/badges/developer-256.png")));
+        badges.put(51, BadgeRenderer.staticTexture(new ResourceLocation("beezig/badges/contributor-256.png")));
         badges.put(50, BadgeRenderer.staticTexture(new ResourceLocation("beezig/badges/translator-256.png")));
         badges.put(0, BadgeRenderer.staticTexture(fallback));
     }
