@@ -28,7 +28,7 @@ public enum Games {
     SKY("total_points", "Points", true, "SkyWars", true),
     CAI("total_points", "Points", true, "Cowboys and Indians", false),
     DR("total_points", "Points", true, "DeathRun", true),
-    GRAV("points", "Points", true, "Gravity", false),
+    GRAV("points", "Points", true, "Gravity", true),
     HIDE("total_points", "Points", true, "Hide and Seek", true),
     LAB("total_points", "Atoms", true, "TheLab", false),
     GNT("total_points", "Points", true, "SkyGiants", false),
