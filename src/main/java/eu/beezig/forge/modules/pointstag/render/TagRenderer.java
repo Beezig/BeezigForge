@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.modules.pointstag.render;
 
+import eu.beezig.forge.modules.pointstag.BadgeService;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -31,22 +32,16 @@ import org.lwjgl.opengl.GL11;
 public class TagRenderer {
 
     private final Gui dummyGui = new Gui();
-    private static final ResourceLocation BADGE_DEV = new ResourceLocation("beezig/badges/developer-256.png");
-    private static final ResourceLocation BADGE_TRANSLATOR = new ResourceLocation("beezig/badges/translator-256.png");
-    private static final ResourceLocation BADGE_USER = new ResourceLocation("beezig/badges/user-256.png");
 
     public void renderNameAndBadge(String textToRender, int role, PointsTagRenderListener.RenderData data, double offset) {
-        ResourceLocation badge = null;
-        if(role == 1) badge = BADGE_USER;
-        else if(role == 51) badge = BADGE_TRANSLATOR;
-        else if(role == 101) badge = BADGE_DEV;
+        BadgeRenderer badge = BadgeService.getBadge(role);
         double tagY = data.y + data.player.height + 0.5 + offset;
         FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();
         RenderManager renderer = data.renderer.getRenderManager();
         int textSemiWidth = fontRenderer.getStringWidth(textToRender) / 2;
 
         if(badge != null)
-        renderBadge(badge, (float)data.x, (float)tagY, (float)data.z, renderer, textSemiWidth);
+        renderBadge(badge.render(), (float)data.x, (float)tagY, (float)data.z, renderer, textSemiWidth);
 
         float f = 1.6F;
         float f1 = 0.016666668F * f;
