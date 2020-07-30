@@ -58,6 +58,7 @@ public class DailyLeaderboard extends GuiListExtended {
         private String uuid, name;
         private int place, points, most, roleColor = -1;
         private Role role;
+        private String ptsStr;
 
         public Profile() {
 
@@ -72,14 +73,14 @@ public class DailyLeaderboard extends GuiListExtended {
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             if(roleColor == -1) {
                 roleColor = Integer.parseInt(role.color.substring(1), 16);
+                ptsStr = ForgeMessage.formatNumber(points);
             }
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
-            String pts = ForgeMessage.formatNumber(points);
             fr.drawString("#" + place, x - 50, y, color);
             fr.drawString(name, x, y, roleColor);
             int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
-            fr.drawString(pts, ptsPos, y, color);
+            fr.drawString(ptsStr, ptsPos, y, color);
             fr.drawString(ForgeMessage.formatNumber(most), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
         }
 
