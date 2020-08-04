@@ -17,8 +17,8 @@
 
 package eu.beezig.forge.modules.pointstag.render;
 
-import eu.beezig.forge.modules.pointstag.BadgeService;
-import net.minecraft.client.Minecraft;
+import eu.beezig.forge.badge.BadgeRenderer;
+import eu.beezig.forge.badge.BadgeService;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,8 +26,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+
+import static eu.beezig.forge.badge.BadgeRenderer.renderBadge;
 
 public class TagRenderer {
 
@@ -75,30 +76,6 @@ public class TagRenderer {
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.popMatrix();
-    }
-
-    private void renderBadge(ResourceLocation badge, float x, float y, float z, RenderManager renderer, int width) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
-        GlStateManager.rotate(-renderer.playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(renderer.playerViewX, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(-0.02666667F, -0.02666667F, 0.02666667F);
-        GlStateManager.disableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        double pos = -width - 10D;
-        GlStateManager.enableBlend();
-        Minecraft.getMinecraft().getTextureManager().bindTexture(badge);
-        double factor = 8D / 255D;
-        GlStateManager.pushMatrix();
-        GlStateManager.scale(factor, factor, 0D);
-        dummyGui.drawTexturedModalRect((int)(pos / factor),(int)(-0.5D/factor), 0, 0, 255, 255);
-        GlStateManager.popMatrix();
-        GlStateManager.enableLighting();
-        GlStateManager.disableBlend();
-        GlStateManager.resetColor();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
     }
 }

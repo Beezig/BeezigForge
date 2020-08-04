@@ -15,10 +15,9 @@
  * along with BeezigForge.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package eu.beezig.forge.modules.pointstag;
+package eu.beezig.forge.badge;
 
 import eu.beezig.forge.BeezigForgeMod;
-import eu.beezig.forge.modules.pointstag.render.BadgeRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
