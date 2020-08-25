@@ -23,7 +23,6 @@ public class ValueEntries {
 
     public static String getValue(String[] data, LoggingGame game) {
         switch(game) {
-
             case bp:
                 return safeValue(data, 0, "§7Points:§r ");
             case dr:
@@ -31,7 +30,7 @@ public class ValueEntries {
             case sky:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ");
             case hide:
-                return safeValue(data, 0, "§7Points:§r ") + "§r / " + safeValue(data, 2, "§7Kills:§r ") + " §r/ ";
+                return safeValue(data, 0, "§7Points:§r ") + "§r / " + safeValue(data, 2, "§7Kills:§r ");
             case timv:
                 return parseTimvRole(data) + " §r/ " + parseTimvKarma(data);
             case bed:

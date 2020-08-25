@@ -30,17 +30,15 @@ public enum LoggingGame {
     bed(BED, "bedwars", true, 8, 7, 6, 2, 1, new ResourceLocation(rp + "bed.png")),
     sky(SKY, "skywars", true, 6, 5, 4, 1, 3, new ResourceLocation(rp + "sky.png")),
     timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1, new ResourceLocation(rp + "timv.png")),
-    bp(BP, "blockparty", false, -1, 2, -1, 1, -1, new ResourceLocation(rp + "bp.png")),
+    bp(BP, "blockparty", false, -1, 1, -1, -1, -1, new ResourceLocation(rp + "bp.png")),
     dr(DR, "deathrun", false, 4, 5, -1, 1, -1, new ResourceLocation(rp + "dr.png")),
-    hide(HIDE, "hide-and-seek", true, 5, 4, 3, 2, -1, new ResourceLocation(rp + "hide.png"));
+    hide(HIDE, "hide-and-seek", true, 5, 4, 3, 1, -1, new ResourceLocation(rp + "hide.png"));
 
     private Games game;
     private boolean canWin;
     private int gameIdSlot, timestampSlot, victorySlot, mapSlot, modeSlot;
     private String linkName;
     private ResourceLocation icon;
-
-
 
     LoggingGame(Games game, String linkName, boolean canWin, int gameIdSlot, int timestampSlot,
                 int victorySlot, int mapSlot, int modeSlot, ResourceLocation icon) {
