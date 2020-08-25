@@ -18,6 +18,7 @@
 package eu.beezig.forge.gui.briefing.recentgames.csv;
 
 import eu.beezig.forge.API;
+import eu.beezig.forge.api.BeezigAPI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,7 +30,7 @@ public class CsvMerger {
     private int windowWidth;
 
     private void putIntoList(LoggingGame type) throws FileNotFoundException {
-        Scanner s = new Scanner(new File(API.inst.getConfigPath() + "/" + type.name() + "/games.csv"));
+        Scanner s = new Scanner(new File(BeezigAPI.getBeezigDir(), type.name() + "/games.csv"));
 
         if(s.hasNextLine()) s.nextLine(); // Skip header
 

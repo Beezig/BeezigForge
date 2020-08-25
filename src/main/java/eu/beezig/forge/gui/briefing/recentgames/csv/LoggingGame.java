@@ -27,14 +27,12 @@ import static eu.beezig.forge.modules.pointstag.Games.*;
 
 public enum LoggingGame {
 
-    bedwars(BED, "bedwars", true, 8, 7, 6, 2, 1, new ResourceLocation(rp + "bed.png")),
+    bed(BED, "bedwars", true, 8, 7, 6, 2, 1, new ResourceLocation(rp + "bed.png")),
     sky(SKY, "skywars", true, 6, 5, 4, 1, 3, new ResourceLocation(rp + "sky.png")),
     timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1, new ResourceLocation(rp + "timv.png")),
     bp(BP, "blockparty", false, -1, 2, -1, 1, -1, new ResourceLocation(rp + "bp.png")),
-    cai(CAI, "cowboys-and-indians", true, 3, 4, 2, 1, -1, new ResourceLocation(rp + "cai.png")),
     dr(DR, "deathrun", false, 4, 5, -1, 1, -1, new ResourceLocation(rp + "dr.png")),
-    gnt(GNT, "skygiants", true, 7, 6, 5, 1, 0, new ResourceLocation(rp + "gnt.png")),
-    hide(HIDE, "hide-and-seek", true, 4, 3, 1, 0, -1, new ResourceLocation(rp + "hide.png"));
+    hide(HIDE, "hide-and-seek", true, 5, 4, 3, 2, -1, new ResourceLocation(rp + "hide.png"));
 
     private Games game;
     private boolean canWin;

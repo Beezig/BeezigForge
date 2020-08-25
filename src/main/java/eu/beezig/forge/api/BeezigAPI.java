@@ -20,6 +20,7 @@ package eu.beezig.forge.api;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.io.File;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -34,6 +35,7 @@ public class BeezigAPI {
     static Function<Pair<String, Object[]>, String> translFormatFunc;
     static Function<String, String> mapFunc;
     static Supplier<String> regionFunc;
+    static Supplier<File> beezigDirFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -66,5 +68,9 @@ public class BeezigAPI {
 
     public static String getRegion() {
         return regionFunc.get();
+    }
+
+    public static File getBeezigDir() {
+        return beezigDirFunc.get();
     }
 }

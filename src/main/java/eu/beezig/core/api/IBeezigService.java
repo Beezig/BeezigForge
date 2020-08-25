@@ -33,6 +33,7 @@ public interface IBeezigService {
     void registerNormalizeMapName(Function<String, String> callback);
     void registerGetRegion(Supplier<String> callback);
     void registerTranslateFormat(Function<Pair<String, Object[]>, String> callback);
+    void registerBeezigDir(Supplier<File> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);

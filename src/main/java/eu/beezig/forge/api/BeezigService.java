@@ -99,4 +99,9 @@ public class BeezigService implements IBeezigService {
     public void registerTranslateFormat(Function<Pair<String, Object[]>, String> callback) {
         BeezigAPI.translFormatFunc = callback;
     }
+
+    @Override
+    public void registerBeezigDir(Supplier<File> callback) {
+        BeezigAPI.beezigDirFunc = callback;
+    }
 }
