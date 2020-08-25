@@ -32,6 +32,7 @@ import java.awt.*;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class RecentGamesTab extends Tab {
@@ -101,12 +102,10 @@ public class RecentGamesTab extends Tab {
         if(csv == null)
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
-            int y = getStartY() + (int)scrollY;
-            List<GameData> consider = csv.getRecentGames().stream().filter(g -> gamemodeFilter == null
-                    || g.getGamemode() == gamemodeFilter).collect(Collectors.toList());
-            int limit = gamesLimit > consider.size() ? consider.size() : gamesLimit;
-            for(GameData game : consider.subList(0, limit)) {
-                int stringY = y;
+            final int[] y = {getStartY() + (int) scrollY};
+            csv.getRecentGames().stream().filter(g -> gamemodeFilter == null || g.getGamemode() == gamemodeFilter)
+                    .limit(gamesLimit).forEach(game -> {
+                int stringY = y[0];
 
                 // Adapt strings to fit into the box
                 String[] title = game.getTitle();
@@ -120,22 +119,22 @@ public class RecentGamesTab extends Tab {
                 stringY += author.length * 12;
 
                 stringY += 12;
-                render.drawRectBorder(windowWidth / 3 - 25, y, windowWidth / 3 * 2 + 25, stringY < getStartY() ? 0 : stringY, Color.GRAY.getRGB(), 1.0);
+                render.drawRectBorder(windowWidth / 3D - 25, y[0], windowWidth / 3D * 2 + 25, stringY < getStartY() ? 0 : stringY, Color.GRAY.getRGB(), 1.0);
 
                 Minecraft.getMinecraft().getTextureManager().bindTexture(game.getGamemode().getIcon());
-                if(getStartY() < y + 7)
-                    render.drawTexture(windowWidth / 3.0 - 15.0, y + 7.0, 256, 256, 20, 20);
+                if(getStartY() < y[0] + 7)
+                    render.drawTexture(windowWidth / 3.0 - 15.0, y[0] + 7.0, 256, 256, 20, 20);
 
-                stringY = y;
+                stringY = y[0];
                 stringY += 6.5;
                 for(String s : title) {
                     if(stringY > getStartY())
-                        render.drawString(s, windowWidth / 3 + 15, stringY, 1.2);
+                        render.drawString(s, windowWidth / 3D + 15, stringY, 1.2);
                     stringY += 12;
                 }
                 for(String s : author) {
                     if(stringY > getStartY())
-                        render.drawString("§3" + s, windowWidth / 3 + 15, stringY);
+                        render.drawString("§3" + s, windowWidth / 3D + 15, stringY);
                     stringY += 12;
                 }
                 if(stringY > getStartY())
@@ -143,7 +142,7 @@ public class RecentGamesTab extends Tab {
                 stringY += 5;
                 for(String s : game.getContent()) {
                     if(stringY > getStartY())
-                        render.drawCenteredString(s, windowWidth / 2, stringY, 0.9);
+                        render.drawCenteredString(s, windowWidth / 2D, stringY, 0.9);
                     stringY += 12;
                 }
                 if(stringY > getStartY()) {
@@ -151,13 +150,13 @@ public class RecentGamesTab extends Tab {
                     game.setPosition(windowWidth / 2 - sWidth / 2, stringY, sWidth,
                             12);
                     game.setShown(true);
-                    render.drawCenteredString(game.getChatComponent(), windowWidth / 2, stringY, 1.2);
+                    render.drawCenteredString(game.getChatComponent(), windowWidth / 2D, stringY, 1.2);
                     stringY += 15;
                 }
                 else game.setShown(false);
                 stringY += 8;
-                y = stringY;
-            }
+                y[0] = stringY;
+            });
         }
     }
 
