@@ -32,7 +32,11 @@ public enum LoggingGame {
     timv(TIMV, "trouble-in-mineville", false, 7, 9, -1, 2, -1, new ResourceLocation(rp + "timv.png")),
     bp(BP, "blockparty", false, -1, 1, -1, -1, -1, new ResourceLocation(rp + "bp.png")),
     dr(DR, "deathrun", false, 4, 5, -1, 1, -1, new ResourceLocation(rp + "dr.png")),
-    hide(HIDE, "hide-and-seek", true, 5, 4, 3, 1, -1, new ResourceLocation(rp + "hide.png"));
+    hide(HIDE, "hide-and-seek", true, 5, 4, 3, 1, -1, new ResourceLocation(rp + "hide.png")),
+    draw(DRAW, "drawit", true, -1, 2, 1, -1, -1, new ResourceLocation(rp + "draw.png")),
+    sp(SP, "splegg", true, -1, 3, 2, 1, -1, new ResourceLocation(rp + "sp.png")),
+    grav(GRAV, "gravity", true, -1, 2, 1, -1, -1, new ResourceLocation(rp + "grav.png")),
+    sgn(SGN, "survival-games-2", true, 6, 5, 4, 1, 3, new ResourceLocation(rp + "sgn.png"));
 
     private Games game;
     private boolean canWin;

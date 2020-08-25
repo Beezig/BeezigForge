@@ -24,10 +24,14 @@ public class ValueEntries {
     public static String getValue(String[] data, LoggingGame game) {
         switch(game) {
             case bp:
+            case draw:
+            case grav:
+            case sp:
                 return safeValue(data, 0, "§7Points:§r ");
             case dr:
                 return safeValue(data, 6, "§7Time:§r ");
             case sky:
+            case sgn:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ");
             case hide:
                 return safeValue(data, 0, "§7Points:§r ") + "§r / " + safeValue(data, 2, "§7Kills:§r ");

@@ -23,6 +23,7 @@ import org.apache.commons.io.input.ReversedLinesFileReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CsvMerger {
@@ -52,7 +53,7 @@ public class CsvMerger {
 
                 recentGames.add(game);
             } catch (Exception ex) {
-                System.err.printf("Error occurred when loading a %s game%n", type.name());
+                System.err.println(String.format("Error occurred when loading a %s game", type.name()));
                 ex.printStackTrace();
             }
         }
@@ -68,6 +69,11 @@ public class CsvMerger {
                 e.printStackTrace();
             }
         }
+        sort();
+    }
+
+    private void sort() {
+        recentGames.sort(Comparator.comparingLong(GameData::getTime).reversed());
     }
 
     public List<GameData> getRecentGames() {
