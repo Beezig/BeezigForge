@@ -34,7 +34,7 @@ public enum Games {
     GNT("total_points", "Points", true, "SkyGiants", false),
     GNTM("total_points", "Points", true, "SkyGiants:Mini", false),
     MIMV("total_points", "Karma", true, "Murder in Mineville", false),
-    SGN("total_points", "Points", false, "Survival Games 2", false),
+    SGN("total_points", "Points", false, "Survival Games 2", true),
     BP("total_points", "Points", true, "BlockParty", true),
     SP("points", "Points", false, "Splegg", true),
     HB("points", "Points", false, "The Herobrine", false),

@@ -41,6 +41,7 @@ public class PointsTag {
                     return;
                 }
                 String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "").toUpperCase(Locale.ROOT);
+                if("SG".equals(gameStr) || "SGD".equals(gameStr)) gameStr = "SGN";
                 Games game = Games.value(gameStr);
                 String prefix;
                 String pts;
@@ -52,7 +53,7 @@ public class PointsTag {
                 } else {
                     prefix = game.getDisplay();
                     pts = game.getPoints();
-                    ranks = true;
+                    ranks = game.supportsRanks();
                 }
                 this.key = prefix;
                 JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
