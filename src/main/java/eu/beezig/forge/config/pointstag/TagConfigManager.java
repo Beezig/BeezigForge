@@ -28,12 +28,7 @@ public class TagConfigManager {
 
     private static Configuration config;
 
-    public static Property enabled;
-    public static Property offset;
-    public static Property showSelf;
-    public static Property formatting;
-    public static Property colorAll;
-    public static Property colorRank;
+    public static Property enabled, offset, showSelf, formatting, colorAll, colorRank, showTokens;
 
     public static void init(Configuration config) {
         TagConfigManager.config = config;
@@ -43,6 +38,7 @@ public class TagConfigManager {
         formatting = config.get("formatting", "§3{k}: §a{v}");
         colorAll = config.get("colorAll", true);
         colorRank = config.get("colorRank", true);
+        showTokens = config.get("showTokens", true);
 
         PointsTagCache.self = showSelf.getBoolean();
         PointsTagCache.enabled = enabled.getBoolean();
@@ -50,6 +46,7 @@ public class TagConfigManager {
         PointsTagCache.formatting = formatting.getString();
         PointsTagCache.colorAll = colorAll.getBoolean();
         PointsTagCache.colorRank = colorRank.getBoolean();
+        PointsTagCache.showTokens = showTokens.getBoolean();
     }
 
     public static void save() {

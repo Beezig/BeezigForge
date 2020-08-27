@@ -43,14 +43,17 @@ public class TagSettingsGui extends GuiScreen {
     @Override
     public void initGui() {
         Mouse.setGrabbed(false);
-        this.buttonList.add(new GuiButton(3011, this.width / 2 - 155, this.height / 2 - 100 - 34, 150, 20,
+        this.buttonList.add(new GuiButton(3011, this.width / 2 - 155, this.height / 2 - 114, 150, 20,
                 ForgeMessage.translateOnOff("gui.ptags.tags", PointsTagCache.enabled)));
 
-        this.buttonList.add(new GuiButton(2000, this.width / 2 + 5, this.height / 2 - 100 - 34, 150, 20,
+        this.buttonList.add(new GuiButton(2000, this.width / 2 + 5, this.height / 2 - 114, 150, 20,
                 ForgeMessage.translate("gui.ptags.formatting")));
 
-        this.buttonList.add(new GuiButton(1603, this.width / 2 - 155, this.height / 2 -  83 + 22, 150, 20,
+        this.buttonList.add(new GuiButton(1603, this.width / 2 - 155, this.height / 2 -  63, 150, 20,
                 ForgeMessage.translateOnOff("gui.ptags.self", PointsTagCache.self)));
+
+        this.buttonList.add(new GuiButton(2020, this.width / 2 - 75, this.height / 2 - 88, 150, 20,
+                ForgeMessage.translateOnOff("gui.ptags.tokens", PointsTagCache.showTokens)));
 
         this.buttonList.add(new GuiSlider(new GuiPageButtonList.GuiResponder() {
             @Override
@@ -67,7 +70,7 @@ public class TagSettingsGui extends GuiScreen {
             public void func_175319_a(int p_175319_1_, String p_175319_2_) {
 
             }
-        }, 707, this.width / 2 + 5, this.height / 2 - 83 + 22,
+        }, 707, this.width / 2 + 5, this.height / 2 - 63,
                 "Tag Offset: ", -10, 10, (float) (PointsTagCache.offset * 10f), new GuiSlider.FormatHelper() {
             @Override
             public String getText(int id, String name, float value) {
@@ -97,6 +100,12 @@ public class TagSettingsGui extends GuiScreen {
                 break;
             case 2000:
                 mc.displayGuiScreen(new TagFormattingGui());
+                break;
+            case 2020:
+                PointsTagCache.showTokens = !PointsTagCache.showTokens;
+                TagConfigManager.showTokens.setValue(PointsTagCache.showTokens);
+                PointsTagCache.clear();
+                button.displayString = ForgeMessage.translateOnOff("gui.ptags.tokens", PointsTagCache.showTokens);
                 break;
         }
     }

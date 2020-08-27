@@ -42,6 +42,7 @@ public class PointsTagRenderListener {
     public void doRender(EntityPlayer p, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
         if(!BeezigAPI.isOnHive()) return;
         if(!PointsTagCache.enabled) return;
+        if(!PointsTagCache.showTokens && BeezigAPI.getCurrentGame() == null) return;
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;
         if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;

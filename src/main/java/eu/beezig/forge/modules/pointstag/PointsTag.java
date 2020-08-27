@@ -34,6 +34,7 @@ public class PointsTag {
         new Thread(() -> {
             try {
                 if(BeezigAPI.getCurrentGame() == null) {
+                    if(!PointsTagCache.showTokens) return;
                     this.key = "Tokens";
                     JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid);
                     this.value = ForgeMessage.formatNumber((long) obj.get("tokens"));
