@@ -21,7 +21,10 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -36,6 +39,8 @@ public class BeezigAPI {
     static Function<String, String> mapFunc;
     static Supplier<String> regionFunc;
     static Supplier<File> beezigDirFunc;
+    static Function<String, Object> getSettingFunc;
+    static Consumer<Map.Entry<String, Object>> setSettingFunc;
 
     public static boolean isOnHive() {
         return onHive;
@@ -72,5 +77,13 @@ public class BeezigAPI {
 
     public static File getBeezigDir() {
         return beezigDirFunc.get();
+    }
+
+    public static Object getSetting(String name) {
+        return getSettingFunc.apply(name);
+    }
+
+    public static void setSetting(String name, Object value) {
+        setSettingFunc.accept(new AbstractMap.SimpleImmutableEntry<>(name, value));
     }
 }

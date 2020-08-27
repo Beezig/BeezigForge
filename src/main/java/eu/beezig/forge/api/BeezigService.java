@@ -27,7 +27,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -103,5 +105,15 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerBeezigDir(Supplier<File> callback) {
         BeezigAPI.beezigDirFunc = callback;
+    }
+
+    @Override
+    public void registerGetSetting(Function<String, Object> callback) {
+        BeezigAPI.getSettingFunc = callback;
+    }
+
+    @Override
+    public void registerSetSetting(Consumer<Map.Entry<String, Object>> callback) {
+        BeezigAPI.setSettingFunc = callback;
     }
 }

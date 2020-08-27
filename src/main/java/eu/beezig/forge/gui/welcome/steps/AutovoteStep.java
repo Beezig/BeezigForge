@@ -18,6 +18,7 @@
 package eu.beezig.forge.gui.welcome.steps;
 
 import eu.beezig.forge.API;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
 import net.minecraft.client.gui.GuiButton;
@@ -41,9 +42,9 @@ public class AutovoteStep extends WelcomeGuiStep {
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButton(1002, width / 2 - 80, 240, 160, 20,
-                "Enable Autovoting: " + ((enabled = API.inst.getSettingValue("AUTOVOTE")) ? "Yes" : "No")));
+                "Enable Autovoting: " + ((enabled = (boolean) BeezigAPI.getSetting("AUTOVOTE")) ? "Yes" : "No")));
         buttonList.add(new GuiButton(1003, width / 2 - 80, 270, 160, 20,
-                "Vote for Random: " + ((random = API.inst.getSettingValue("AUTOVOTE_RANDOM")) ? "Yes" : "No")));
+                "Vote for Random: " + ((random = (boolean) BeezigAPI.getSetting("AUTOVOTE_RANDOM")) ? "Yes" : "No")));
     }
 
     @Override
@@ -65,12 +66,12 @@ public class AutovoteStep extends WelcomeGuiStep {
         switch(button.id) {
             case 1002 /* Toggle */:
                 enabled = !enabled;
-                API.inst.setSetting("AUTOVOTE", enabled);
+                BeezigAPI.setSetting("AUTOVOTE", enabled);
                 button.displayString = "Enable Autovoting: " + (enabled ? "Yes" : "No");
                 break;
             case 1003 /* Vote for random */:
                 random = !random;
-                API.inst.setSetting("AUTOVOTE_RANDOM", random);
+                BeezigAPI.setSetting("AUTOVOTE_RANDOM", random);
                 button.displayString = "Vote for Random: " + (random ? "Yes" : "No");
                 break;
         }

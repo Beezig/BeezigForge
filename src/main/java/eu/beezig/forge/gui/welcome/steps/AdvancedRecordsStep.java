@@ -17,10 +17,10 @@
 
 package eu.beezig.forge.gui.welcome.steps;
 
-import eu.beezig.forge.API;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
-import net.minecraft.client.gui.GuiButton;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
+import net.minecraft.client.gui.GuiButton;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class AdvancedRecordsStep extends WelcomeGuiStep {
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButton(1001, width / 2 - 80, 200, 160, 20,
-                "Enable Advanced Records: " + ((setting = API.inst.getSettingValue("ADVANCED_RECORDS")) ? "Yes" : "No")));
+                "Enable Advanced Records: " + ((setting = (boolean) BeezigAPI.getSetting("ADVANCED_RECORDS")) ? "Yes" : "No")));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class AdvancedRecordsStep extends WelcomeGuiStep {
         switch(button.id) {
             case 1001 /* Toggle */:
                 setting = !setting;
-                API.inst.setSetting("ADVANCED_RECORDS", setting);
+                BeezigAPI.setSetting("ADVANCED_RECORDS", setting);
                 button.displayString = "Enable Advanced Records: " + (setting ? "Yes" : "No");
                 break;
         }

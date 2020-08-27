@@ -21,7 +21,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -34,6 +36,8 @@ public interface IBeezigService {
     void registerGetRegion(Supplier<String> callback);
     void registerTranslateFormat(Function<Pair<String, Object[]>, String> callback);
     void registerBeezigDir(Supplier<File> callback);
+    void registerGetSetting(Function<String, Object> callback);
+    void registerSetSetting(Consumer<Map.Entry<String, Object>> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);
