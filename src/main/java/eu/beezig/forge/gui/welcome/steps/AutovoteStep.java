@@ -17,10 +17,10 @@
 
 package eu.beezig.forge.gui.welcome.steps;
 
-import eu.beezig.forge.API;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
+import eu.beezig.forge.gui.welcome.WelcomeI18n;
 import net.minecraft.client.gui.GuiButton;
 
 import java.io.IOException;
@@ -28,6 +28,8 @@ import java.io.IOException;
 public class AutovoteStep extends WelcomeGuiStep {
 
     private boolean enabled, random;
+    private final String desc = WelcomeI18n.colorMessage(this, "desc", "§b");
+    private final String footer = WelcomeI18n.colorMessage(this, "desc2", "§b");
 
     public AutovoteStep(WelcomeGui parent) {
         super(parent);
@@ -39,26 +41,26 @@ public class AutovoteStep extends WelcomeGuiStep {
     }
 
     @Override
+    protected String getTranslationKey() {
+        return "av";
+    }
+
+    @Override
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButton(1002, width / 2 - 80, 240, 160, 20,
-                "Enable Autovoting: " + ((enabled = (boolean) BeezigAPI.getSetting("AUTOVOTE")) ? "Yes" : "No")));
+                WelcomeI18n.button(this, "setting", (enabled = (boolean) BeezigAPI.getSetting("AUTOVOTE")))));
         buttonList.add(new GuiButton(1003, width / 2 - 80, 270, 160, 20,
-                "Vote for Random: " + ((random = (boolean) BeezigAPI.getSetting("AUTOVOTE_RANDOM")) ? "Yes" : "No")));
+                WelcomeI18n.button(this, "setting.random", (random = (boolean) BeezigAPI.getSetting("AUTOVOTE_RANDOM")))));
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
         int centerX = width / 2;
-
-        dCenterStr("§3Autovoting", centerX, 60, 4.0);
-
-        dCenterStr("With Beezig, you can §bautomatically vote for maps§r", centerX, 140, 2.0);
-        dCenterStr("when you join a lobby.", centerX, 158, 2.0);
-
-        dCenterStr("To add or remove maps, run §b/autovote§r.", centerX, 200, 2.0);
+        dCenterStr(WelcomeI18n.title(this), centerX, 60, 4.0);
+        drawCenteredWrapped(desc, centerX, 140, 2.0);
+        drawCenteredWrapped(footer, centerX, 200, 2.0);
     }
 
     @Override
@@ -67,12 +69,12 @@ public class AutovoteStep extends WelcomeGuiStep {
             case 1002 /* Toggle */:
                 enabled = !enabled;
                 BeezigAPI.setSetting("AUTOVOTE", enabled);
-                button.displayString = "Enable Autovoting: " + (enabled ? "Yes" : "No");
+                button.displayString = WelcomeI18n.button(this, "setting", enabled);
                 break;
             case 1003 /* Vote for random */:
                 random = !random;
                 BeezigAPI.setSetting("AUTOVOTE_RANDOM", random);
-                button.displayString = "Vote for Random: " + (random ? "Yes" : "No");
+                button.displayString = WelcomeI18n.button(this, "setting.random", random);
                 break;
         }
         super.actionPerformed(button);

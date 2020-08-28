@@ -19,8 +19,14 @@ package eu.beezig.forge.gui.welcome.steps;
 
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
+import eu.beezig.forge.gui.welcome.WelcomeI18n;
 
 public class CustomCommandsStep extends WelcomeGuiStep {
+    private final String desc = WelcomeI18n.colorMessage(this, "desc", "§b");
+    private final String footer = WelcomeI18n.colorMessage(this, "footer", "§b", "§b/beezig §bcommands§r");
+    private final String report = WelcomeI18n.colorMessage(this, "report", "§b", "§b/breport§r");
+    private final String ps = WelcomeI18n.colorMessage(this, "ps", "§b", "§b/ps§r");
+    private final String monthly = WelcomeI18n.colorMessage(this, "monthly", "§b", "§b/monthly§r");
 
     public CustomCommandsStep(WelcomeGui parent) {
         super(parent);
@@ -32,21 +38,19 @@ public class CustomCommandsStep extends WelcomeGuiStep {
     }
 
     @Override
+    protected String getTranslationKey() {
+        return "cmds";
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
         int centerX = width / 2;
-
-        dCenterStr("§3Commands", centerX, 60, 4.0);
-
-        dCenterStr("Beezig includes §bcustom commands§f.", centerX, 140, 2.0);
-        dCenterStr("Our users love these:", centerX, 158, 2.0);
-
-        dCenterStr("- §b/report§f to report people.", centerX, 200, 1.5);
-        dCenterStr("- §b/ps§f to check the stats of everyone in your lobby.", centerX, 200 + (int)(9 * 1.5), 1.5);
-        dCenterStr("- §b/monthly§f to check someone's monthly stats.", centerX, 200 + (int)(9 * 1.5) * 2, 1.5);
-        dCenterStr("- §b/bestgame§f to find someone's best game.", centerX, 200 + (int)(9 * 1.5) * 3, 1.5);
-
-        dCenterStr("You can see all the available commands by running §b/beezig commands§f.", centerX, 300, 2.0);
+        dCenterStr(WelcomeI18n.title(this), centerX, 60, 4.0);
+        drawCenteredWrapped(desc, centerX, 140, 2.0);
+        drawCenteredWrapped(report, centerX, 200, 1.5);
+        drawCenteredWrapped(ps, centerX, 200 + (int)(10 * 1.5), 1.5);
+        drawCenteredWrapped(monthly, centerX, 200 + (int)(20 * 1.5), 1.5);
+        drawCenteredWrapped(footer, centerX, 300, 2.0);
     }
 }

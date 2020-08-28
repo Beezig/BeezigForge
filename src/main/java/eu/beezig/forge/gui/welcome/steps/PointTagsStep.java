@@ -20,6 +20,7 @@ package eu.beezig.forge.gui.welcome.steps;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
+import eu.beezig.forge.gui.welcome.WelcomeI18n;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
@@ -27,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class PointTagsStep extends WelcomeGuiStep {
+    private final String desc = WelcomeI18n.colorMessage(this, "desc", "§b");
+    private final String footer = WelcomeI18n.colorMessage(this, "footer", "§b", "§b/pointtags§r");
 
     public PointTagsStep(WelcomeGui parent) {
         super(parent);
@@ -38,17 +41,17 @@ public class PointTagsStep extends WelcomeGuiStep {
     }
 
     @Override
+    protected String getTranslationKey() {
+        return "ptags";
+    }
+
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
         int centerX = width / 2;
-
-        dCenterStr("§3Point Tags", centerX, 60, 4.0);
-
-        dCenterStr("With Beezig, you can see §bpeople's points§r", centerX, 140, 2.0);
-        dCenterStr("above their head.", centerX, 158, 2.0);
-
-        dCenterStr("To configure it, run §b/pointtags§r.", centerX, 200, 2.0);
+        dCenterStr(WelcomeI18n.title(this), centerX, 60, 4.0);
+        drawCenteredWrapped(desc, centerX, 140, 2.0);
+        drawCenteredWrapped(footer, centerX, 200, 2.0);
     }
 
     @Override
