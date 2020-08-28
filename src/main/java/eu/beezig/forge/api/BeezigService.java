@@ -54,7 +54,7 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
-    public void registerTitle(Function<String, String> callback) {
+    public void registerTitle(Function<Map.Entry<String, Integer>, String> callback) {
         BeezigAPI.titleFunc = callback;
     }
 

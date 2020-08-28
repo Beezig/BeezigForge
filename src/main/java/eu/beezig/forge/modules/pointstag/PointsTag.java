@@ -58,13 +58,14 @@ public class PointsTag {
                 }
                 this.key = prefix;
                 JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
-                this.value = ForgeMessage.formatNumber((long) obj.get(pts));
+                long points = (long) obj.get(pts);
+                this.value = ForgeMessage.formatNumber(points);
                 if(game == Games.TIMV && (long) obj.get(pts) < 400) {
                     value += " (" + ForgeMessage.formatNumber((long) obj.get("role_points")) + ")";
                 }
                 this.status = PointsTagStatus.DONE;
                 if (ranks) {
-                    String rankStr = BeezigAPI.getTitle(obj.get("title").toString());
+                    String rankStr = BeezigAPI.getTitle(obj.get("title").toString(), Math.toIntExact(points));
                     if (rankStr != null) rank = rankStr;
                     if (game == Games.BED &&
                             obj.get("title").toString().startsWith("Sleepy ")

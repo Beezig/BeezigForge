@@ -32,7 +32,7 @@ public class BeezigAPI {
     static boolean onHive;
     static String currentGame;
     static Function<UUID, Integer> userRoleFunc;
-    static Function<String, String> titleFunc;
+    static Function<Map.Entry<String, Integer>, String> titleFunc;
     static Function<Long, String> formatFunc;
     static Function<String, String> translateFunc;
     static Function<Pair<String, Object[]>, String> translFormatFunc;
@@ -54,8 +54,8 @@ public class BeezigAPI {
         return userRoleFunc.apply(id);
     }
 
-    public static String getTitle(String api) {
-        return titleFunc.apply(api);
+    public static String getTitle(String api, int points) {
+        return titleFunc.apply(new AbstractMap.SimpleImmutableEntry<>(api, points));
     }
 
     public static String formatNumber(long l) {
