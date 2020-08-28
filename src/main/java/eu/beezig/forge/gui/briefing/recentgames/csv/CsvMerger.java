@@ -33,7 +33,6 @@ public class CsvMerger {
 
     private void putIntoList(LoggingGame type) throws IOException {
         ReversedLinesFileReader s = new ReversedLinesFileReader(new File(BeezigAPI.getBeezigDir(), type.name() + "/games.csv"));
-        s.readLine();
         String res;
         while((res = s.readLine()) != null) {
             try {
