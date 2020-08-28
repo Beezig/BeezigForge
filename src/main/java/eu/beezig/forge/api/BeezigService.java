@@ -20,8 +20,10 @@ package eu.beezig.forge.api;
 import eu.beezig.core.api.IBeezigService;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
+import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
+import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
@@ -90,6 +92,13 @@ public class BeezigService implements IBeezigService {
     @Override
     public void autovoteShuffle(List<String> favorites) {
         ShuffleForgeListener.mgr.attemptVote(favorites);
+    }
+
+    @Override
+    public void displayWelcomeGui() {
+        WelcomeGui gui = new WelcomeGui();
+        Minecraft.getMinecraft().displayGuiScreen(gui);
+        gui.advanceStep(0);
     }
 
     @Override

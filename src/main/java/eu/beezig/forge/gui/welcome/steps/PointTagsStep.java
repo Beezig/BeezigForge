@@ -17,7 +17,7 @@
 
 package eu.beezig.forge.gui.welcome.steps;
 
-import eu.beezig.forge.config.ConfigurationManager;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
 import eu.beezig.forge.gui.welcome.WelcomeI18n;
@@ -65,7 +65,7 @@ public class PointTagsStep extends WelcomeGuiStep {
 
     static void endTutorial() {
         new Thread(() -> {
-            File f = new File(ConfigurationManager.configParent + "tut");
+            File f = new File(BeezigAPI.getBeezigDir(), "tut");
             if(!f.exists()) {
                 try {
                     f.createNewFile();
