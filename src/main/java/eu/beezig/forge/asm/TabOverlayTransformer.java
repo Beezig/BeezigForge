@@ -78,7 +78,6 @@ public class TabOverlayTransformer implements IClassTransformer {
         try {
             for (MethodNode m : classNode.methods) {
                 if (Mapping.METHOD_NAME.equalsString(m.name, obf) && Mapping.METHOD_DESC.equalsString(m.desc, obf)) {
-                    System.out.println("Here we go... I'm excited");
                     for (ListIterator<AbstractInsnNode> it = m.instructions.iterator(); it.hasNext(); ) {
                         AbstractInsnNode n = it.next();
                         // Find our entry point

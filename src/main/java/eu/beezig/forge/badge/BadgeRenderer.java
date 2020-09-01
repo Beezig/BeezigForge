@@ -60,6 +60,9 @@ public class BadgeRenderer {
      * @return Convenience value (for ASM injection) that defines the badge's width. Currently, this just returns size.
      */
     public static int renderBadge(UUID uuid, double x, double y, double size) {
+        if (!((boolean) BeezigAPI.getSetting ("TABLIST_BADGES"))) {
+            return 0;
+        }
         BadgeRenderer badge = BadgeService.getBadge(BeezigAPI.getUserRole(uuid));
         if (badge == null) {
             return 0;
@@ -75,7 +78,7 @@ public class BadgeRenderer {
     }
 
     public static boolean shouldRenderTabBadge(UUID uuid) {
-        return BeezigAPI.getUserRole(uuid) != -1;
+        return ((boolean) BeezigAPI.getSetting ("TABLIST_BADGES")) && BeezigAPI.getUserRole(uuid) != -1;
     }
 
     public static void renderBadge(ResourceLocation badge, float x, float y, float z, RenderManager renderer, int width) {
