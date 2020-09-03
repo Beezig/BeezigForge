@@ -177,6 +177,8 @@ public class DailyGui extends GuiScreen {
 
     private void refreshLeaderboard() {
         refreshProfile();
+        if (currentRegion == null)
+            return;
         if (lbCache.containsKey(currentRegion.getId())) {
             Map<Games, LbResponse> gameCache = lbCache.get(currentRegion.getId());
             if (gameCache.containsKey(currentGame)) {
