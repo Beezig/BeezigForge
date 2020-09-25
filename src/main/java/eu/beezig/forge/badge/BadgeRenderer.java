@@ -24,9 +24,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.UUID;
 
 public class BadgeRenderer {
@@ -63,7 +65,15 @@ public class BadgeRenderer {
         if (!((boolean) BeezigAPI.getSetting ("TABLIST_BADGES"))) {
             return 0;
         }
-        BadgeRenderer badge = BadgeService.getBadge(BeezigAPI.getUserRole(uuid));
+        int userRole = BeezigAPI.getUserRole(uuid);
+        BadgeRenderer badge;
+        Map<String, Object> overrides = BeezigAPI.getOverrides(uuid);
+        if(overrides != null && overrides.containsKey("custom-badge.priority") &&
+                ((int) overrides.get("custom-badge.priority")) >= userRole) {
+            badge = BadgeService.getBadge((String) overrides.get("custom-badge.url"), uuid);
+        } else {
+            badge = BadgeService.getBadge(userRole);
+        }
         if (badge == null) {
             return 0;
         }
