@@ -81,7 +81,8 @@ public class PointsTagRenderListener {
         BadgeRenderer badge = BadgeService.getBadge(role);
         Map<String, Object> overrides;
         if ((overrides = BeezigAPI.getOverrides(uuid)) != null &&
-            overrides.containsKey("custom-badge.url")) {
+            overrides.containsKey("custom-badge.url") && overrides.containsKey("custom-badge.priority") &&
+                ((int) overrides.get("custom-badge.priority")) >= role) {
             badge = BadgeService.getBadge((String) overrides.get("custom-badge.url"), uuid);
         }
         tagRenderer.renderNameAndBadge(toRender, badge, new RenderData(p, x, y, z, partialTicks, renderer), offset);
