@@ -25,12 +25,23 @@ public enum PointsTagStatus {
     DONE(null);
 
     private String display;
+    private static boolean steveMode = false;
+    private static String steveText;
 
     PointsTagStatus(String display) {
         this.display = display;
     }
 
     public String getDisplay() {
-        return display;
+        return steveMode ? steveText : display;
+    }
+
+    public static void enableSteveMode(String text) {
+        steveMode = true;
+        steveText = text;
+    }
+
+    public static boolean getSteveMode() {
+        return steveMode;
     }
 }

@@ -35,12 +35,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
 public class PointsTagRenderListener {
 
     public static Function<UUID, Float> heightFunc;
     private TagRenderer tagRenderer = new TagRenderer();
+    private static AtomicBoolean steveModeSet = new AtomicBoolean(false);
 
     public void doRender(EntityPlayer p, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
         if(!BeezigAPI.isOnHive()) return;
@@ -49,6 +51,13 @@ public class PointsTagRenderListener {
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;
         if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;
+        if (!steveModeSet.get()) {
+            steveModeSet.set(true);
+            Map<String, Object> overrides = BeezigAPI.getOverrides(Minecraft.getMinecraft().thePlayer.getUniqueID());
+            if(overrides != null && overrides.containsKey("steve-mode.enabled") && ((boolean) overrides.get("steve-mode.enabled"))) {
+                PointsTagStatus.enableSteveMode((String) overrides.get("steve-mode.text"));
+            }
+        }
         PointsTag tag = PointsTagCache.get(p.getUniqueID());
         if(tag == null) {
             tag = new PointsTag();

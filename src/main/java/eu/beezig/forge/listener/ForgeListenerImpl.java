@@ -22,7 +22,6 @@ import eu.beezig.forge.gamefields.TIMV;
 import eu.beezig.forge.gui.ctest.CustomTestGui;
 import eu.beezig.forge.gui.report.ReportGui;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
-import eu.beezig.forge.modules.pointstag.render.PointsTagRenderListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
@@ -41,7 +40,6 @@ import eu.beezig.forge.settings.BeezigConfigElement;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ForgeListenerImpl {
 
