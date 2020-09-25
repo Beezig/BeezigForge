@@ -30,7 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class BadgeService {
-    private static Map<Integer, BadgeRenderer> badges = new ConcurrentHashMap<>();
+    private static Map<Object, BadgeRenderer> badges = new ConcurrentHashMap<>();
     private static ResourceLocation fallback = new ResourceLocation("beezig/badges/user-256.png");
     private static ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -47,18 +47,27 @@ public class BadgeService {
         BadgeRenderer res = badges.get(role);
         if(res == null) {
             badges.put(role, res = BadgeRenderer.dynamicTexture(new ResourceLocation("beezig/badges/role-" + role + ".png"), fallback));
-            downloadBadge(role, res);
+            downloadBadge("https://static.beezig.eu/badges/" + role + ".png", res);
             return res;
         }
         return res;
     }
 
-    private static void downloadBadge(int role, BadgeRenderer apply) {
+    public static BadgeRenderer getBadge(String url, Object key) {
+        BadgeRenderer ret = badges.get(key);
+        if (ret != null)
+            return ret;
+        badges.put(key, ret = BadgeRenderer.dynamicTexture(new ResourceLocation("beezig/badges/" + key.toString() + ".png"), fallback));
+        downloadBadge(url, ret);
+        return ret;
+    }
+
+    private static void downloadBadge(String url, BadgeRenderer apply) {
         executor.execute(() -> {
             HttpURLConnection connection = null;
             try {
-                URL url = new URL("https://static.beezig.eu/badges/" + role + ".png");
-                connection = (HttpURLConnection) url.openConnection();
+                URL u = new URL(url);
+                connection = (HttpURLConnection) u.openConnection();
                 connection.setRequestProperty("User-Agent", "BeezigForge/" + BeezigForgeMod.VERSION);
                 BufferedImage img = ImageIO.read(connection.getInputStream());
                 apply.setCachedImage(img);

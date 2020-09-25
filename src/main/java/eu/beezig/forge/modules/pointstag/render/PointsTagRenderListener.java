@@ -18,6 +18,8 @@
 package eu.beezig.forge.modules.pointstag.render;
 
 import eu.beezig.forge.api.BeezigAPI;
+import eu.beezig.forge.badge.BadgeRenderer;
+import eu.beezig.forge.badge.BadgeService;
 import eu.beezig.forge.modules.pointstag.PointsTag;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.pointstag.PointsTagStatus;
@@ -31,6 +33,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -73,8 +76,15 @@ public class PointsTagRenderListener {
         String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}",
                 PointsTagCache.colorRank ? tag.getRank() : EnumChatFormatting.getTextWithoutFormattingCodes(tag.getRank())).trim();
         if(!PointsTagCache.colorAll) toRender = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(toRender);
-        int role = BeezigAPI.getUserRole(p.getUniqueID());
-        tagRenderer.renderNameAndBadge(toRender, role, new RenderData(p, x, y, z, partialTicks, renderer), offset);
+        UUID uuid = p.getUniqueID();
+        int role = BeezigAPI.getUserRole(uuid);
+        BadgeRenderer badge = BadgeService.getBadge(role);
+        Map<String, Object> overrides;
+        if ((overrides = BeezigAPI.getOverrides(uuid)) != null &&
+            overrides.containsKey("custom-badge.url")) {
+            badge = BadgeService.getBadge((String) overrides.get("custom-badge.url"), uuid);
+        }
+        tagRenderer.renderNameAndBadge(toRender, badge, new RenderData(p, x, y, z, partialTicks, renderer), offset);
     }
 
     static class RenderData {

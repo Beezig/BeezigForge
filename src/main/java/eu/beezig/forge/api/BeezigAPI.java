@@ -22,6 +22,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -41,6 +42,10 @@ public class BeezigAPI {
     static Supplier<File> beezigDirFunc;
     static Function<String, Object> getSettingFunc;
     static Consumer<Map.Entry<String, Object>> setSettingFunc;
+    static Function<UUID, Map<String, Object>> getOverridesFunc;
+
+    // No fancy time-based cache needed
+    private static Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
 
     public static boolean isOnHive() {
         return onHive;
@@ -85,5 +90,13 @@ public class BeezigAPI {
 
     public static void setSetting(String name, Object value) {
         setSettingFunc.accept(new AbstractMap.SimpleImmutableEntry<>(name, value));
+    }
+
+    public static Map<String, Object> getOverrides(UUID uuid) {
+        if (overrideCache.containsKey(uuid))
+            return overrideCache.get(uuid);
+        Map<String, Object> ret = getOverridesFunc.apply(uuid);
+        overrideCache.put(uuid, ret);
+        return ret;
     }
 }

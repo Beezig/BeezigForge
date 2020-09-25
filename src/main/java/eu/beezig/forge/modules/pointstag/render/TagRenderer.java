@@ -34,8 +34,7 @@ public class TagRenderer {
 
     private final Gui dummyGui = new Gui();
 
-    public void renderNameAndBadge(String textToRender, int role, PointsTagRenderListener.RenderData data, double offset) {
-        BadgeRenderer badge = BadgeService.getBadge(role);
+    public void renderNameAndBadge(String textToRender, BadgeRenderer badge, PointsTagRenderListener.RenderData data, double offset) {
         double tagY = data.y + data.player.height + 0.5 + offset;
         FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();
         RenderManager renderer = data.renderer.getRenderManager();
