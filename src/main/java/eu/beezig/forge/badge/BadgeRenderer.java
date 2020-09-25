@@ -128,5 +128,6 @@ public class BadgeRenderer {
 
     private void compile() {
         Minecraft.getMinecraft().getTextureManager().loadTexture(resourceLocation, new DynamicTexture(cachedImage));
+        compiled = true;
     }
 }
