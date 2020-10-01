@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -127,7 +128,7 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
-    public void registerGetOverrides(Function<UUID, Map<String, Object>> callback) {
+    public void registerGetOverrides(Function<UUID, Optional<Map<String, Object>>> callback) {
         BeezigAPI.getOverridesFunc = callback;
     }
 }

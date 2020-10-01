@@ -34,6 +34,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -53,9 +54,13 @@ public class PointsTagRenderListener {
         if(!PointsTagUtils.shouldRender(p)) return;
         if (!steveModeSet.get()) {
             steveModeSet.set(true);
-            Map<String, Object> overrides = BeezigAPI.getOverrides(Minecraft.getMinecraft().thePlayer.getUniqueID());
-            if(overrides != null && overrides.containsKey("steve-mode.enabled") && ((boolean) overrides.get("steve-mode.enabled"))) {
-                PointsTagStatus.enableSteveMode((String) overrides.get("steve-mode.text"));
+            Optional<Map<String, Object>> overrides = BeezigAPI.getOverrides(Minecraft.getMinecraft().thePlayer.getUniqueID());
+            Map<String, Object> overridesList;
+            if (overrides.isPresent()) {
+                overridesList = overrides.get();
+                if(overridesList.containsKey("steve-mode.enabled") && ((boolean) overridesList.get("steve-mode.enabled"))) {
+                    PointsTagStatus.enableSteveMode((String) overridesList.get("steve-mode.text"));
+                }
             }
         }
         PointsTag tag = PointsTagCache.get(p.getUniqueID());
@@ -88,11 +93,14 @@ public class PointsTagRenderListener {
         UUID uuid = p.getUniqueID();
         int role = BeezigAPI.getUserRole(uuid);
         BadgeRenderer badge = BadgeService.getBadge(role);
-        Map<String, Object> overrides;
-        if ((overrides = BeezigAPI.getOverrides(uuid)) != null &&
-            overrides.containsKey("custom-badge.url") && overrides.containsKey("custom-badge.priority") &&
-                ((int) overrides.get("custom-badge.priority")) >= role) {
-            badge = BadgeService.getBadge((String) overrides.get("custom-badge.url"), uuid);
+        Optional<Map<String, Object>> overrides = BeezigAPI.getOverrides(uuid);
+        Map<String, Object> overridesList;
+        if (overrides.isPresent()) {
+            overridesList = overrides.get();
+            if (overridesList.containsKey("custom-badge.url") && overridesList.containsKey("custom-badge.priority") &&
+                    ((int) overridesList.get("custom-badge.priority")) >= role) {
+                badge = BadgeService.getBadge((String) overridesList.get("custom-badge.url"), uuid);
+            }
         }
         tagRenderer.renderNameAndBadge(toRender, badge, new RenderData(p, x, y, z, partialTicks, renderer), offset);
     }

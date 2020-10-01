@@ -28,6 +28,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class BadgeRenderer {
@@ -66,10 +67,15 @@ public class BadgeRenderer {
         }
         int userRole = BeezigAPI.getUserRole(uuid);
         BadgeRenderer badge;
-        Map<String, Object> overrides = BeezigAPI.getOverrides(uuid);
-        if(overrides != null && overrides.containsKey("custom-badge.priority") &&
-                ((int) overrides.get("custom-badge.priority")) >= userRole) {
-            badge = BadgeService.getBadge((String) overrides.get("custom-badge.url"), uuid);
+        Optional<Map<String, Object>> overrides = BeezigAPI.getOverrides(uuid);
+        Map<String, Object> overridesList;
+        if (overrides.isPresent()) {
+            overridesList = overrides.get();
+            if(overridesList.containsKey("custom-badge.priority") &&
+                    ((int) overridesList.get("custom-badge.priority")) >= userRole)
+                badge = BadgeService.getBadge((String) overridesList.get("custom-badge.url"), uuid);
+            else
+                badge = BadgeService.getBadge(userRole);
         } else {
             badge = BadgeService.getBadge(userRole);
         }
