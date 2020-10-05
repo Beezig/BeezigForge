@@ -61,7 +61,7 @@ public class OtherTab extends Tab {
         super.onActionPerformed(btn);
         switch (btn.id) {
             case 42 /* Join Discord */:
-                browse("https://l.beezig.eu/discord");
+                browse("https://go.beezig.eu/discord");
                 break;
             case 43 /* Website */:
                 browse("https://beezig.eu");
