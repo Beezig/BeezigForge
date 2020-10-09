@@ -22,6 +22,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 
 public class EnumService {
     public static EnumData tryParseAsEnum(Object object) {
@@ -41,7 +42,7 @@ public class EnumService {
             EnumEntry[] parsed = Arrays.stream(possibleValues).map(o -> {
                 String newKey;
                 try {
-                    newKey = (String) name.invoke(object);
+                    newKey = (String) name.invoke(o);
                 } catch (ReflectiveOperationException e) {
                     e.printStackTrace();
                     return null;
@@ -75,6 +76,19 @@ public class EnumService {
 
         public String getDisplay() {
             return display;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            EnumEntry enumEntry = (EnumEntry) o;
+            return key.equals(enumEntry.key);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key);
         }
     }
     public static class EnumData {

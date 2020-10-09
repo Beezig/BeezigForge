@@ -62,8 +62,8 @@ public class GuiTextInput extends GuiScreen {
     @Override
     public void initGui() {
         Keyboard.enableRepeatEvents(true); // Allows holding keys to type multiple characters
-        buttonList.add(doneButton = new GuiButton(1, width / 2 - 152, height / 6 + 140, 150, 20, I18n.format("gui.done")));
-        buttonList.add(new GuiButton(2, width / 2 + 2, height / 6 + 140, 150, 20, I18n.format("gui.cancel")));
+        buttonList.add(doneButton = new GuiButton(1, width / 2 + 2, height / 6 + 140, 150, 20, I18n.format("gui.done")));
+        buttonList.add(new GuiButton(2, width / 2 - 152, height / 6 + 140, 150, 20, I18n.format("gui.cancel")));
         inputField = new GuiTextField(3, mc.fontRendererObj, width / 2 - 150, height / 6 + 80, 300, 20);
         inputField.setMaxStringLength(100);
         if(defaultText != null) inputField.setText(defaultText);

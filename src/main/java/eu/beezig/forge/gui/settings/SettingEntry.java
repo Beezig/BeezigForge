@@ -25,6 +25,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     public static class BoolSettingEntry extends SettingEntry {
         public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
@@ -77,7 +80,11 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
         @Override
         protected void onButtonClick() {
-
+            EnumService.EnumData value = (EnumService.EnumData) this.value;
+            List<EnumService.EnumEntry> values = Arrays.asList(value.getPossibleValues());
+            parentScreen.mc.displayGuiScreen(new EnumList(parentScreen, values, values.indexOf(value.getValue()), entry -> {
+                if(entry != null) value.setValue(entry);
+            }));
         }
 
         @Override
