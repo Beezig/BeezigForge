@@ -57,6 +57,22 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         }
     }
 
+    public static class EnumSettingEntry extends SettingEntry {
+        public EnumSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
+            super(parentScreen, name, "Pick...", desc, value);
+        }
+
+        @Override
+        protected void onButtonClick(GuiButton button) {
+
+        }
+
+        @Override
+        protected String formatValue() {
+            return ((EnumService.EnumData) value).getValue().getDisplay();
+        }
+    }
+
     protected final GuiBeezigSettings parentScreen;
     protected final GuiButton actionButton;
     protected final String name;

@@ -18,7 +18,7 @@
 package eu.beezig.forge.commands;
 
 import com.google.common.collect.ImmutableMap;
-import eu.beezig.forge.api.SettingInfo;
+import eu.beezig.core.api.SettingInfo;
 import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

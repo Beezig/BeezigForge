@@ -17,7 +17,7 @@
 
 package eu.beezig.forge.gui.settings;
 
-import eu.beezig.forge.api.SettingInfo;
+import eu.beezig.core.api.SettingInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

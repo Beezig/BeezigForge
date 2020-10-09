@@ -17,7 +17,7 @@
 
 package eu.beezig.forge.gui.settings;
 
-import eu.beezig.forge.api.SettingInfo;
+import eu.beezig.core.api.SettingInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
@@ -45,6 +45,10 @@ public class SettingsList extends GuiListExtended {
                     entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
                 } else if(settingInfo.value instanceof String) {
                     entries.add(new SettingEntry.StringSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
+                } else {
+                    EnumService.EnumData enumData = EnumService.tryParseAsEnum(settingInfo.value);
+                    if(enumData != null)
+                        entries.add(new SettingEntry.EnumSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, enumData));
                 }
             }
         }
@@ -90,7 +94,7 @@ public class SettingsList extends GuiListExtended {
     }
 
     private static class Category implements IGuiListEntry {
-        private String display;
+        private final String display;
 
         public Category(String display) {
             this.display = display;
