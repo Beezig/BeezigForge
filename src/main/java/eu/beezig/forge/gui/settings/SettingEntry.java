@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.settings;
 
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -91,7 +92,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
     public static class BoolSettingEntry extends SettingEntry {
         public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
-            super(parentScreen, name, key, "Change", desc, value);
+            super(parentScreen, name, key, ForgeMessage.translate("gui.settings.action.change"), desc, value);
         }
 
         @Override
@@ -102,7 +103,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
         @Override
         protected String formatValue() {
-            return (boolean) value ? "On" : "Off";
+            return ForgeMessage.translate("msg." + ((boolean) value ? "on" : "off"));
         }
 
         @Override
@@ -113,7 +114,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
     public static class StringSettingEntry extends SettingEntry {
         public StringSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
-            super(parentScreen, name, key, "Edit...", desc, value);
+            super(parentScreen, name, key, ForgeMessage.translate("gui.settings.action.edit"), desc, value);
         }
 
         @Override
@@ -123,7 +124,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
                     value = s;
                     BeezigAPI.setSettingAsIs(this.key, s);
                 }
-            }, value.toString(), "Enter a value for " + name));
+            }, value.toString(), ForgeMessage.translate("gui.settings.edit", "§b" + name)));
         }
 
         @Override
@@ -139,7 +140,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
     public static class EnumSettingEntry extends SettingEntry {
         public EnumSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
-            super(parentScreen, name, key, "Pick...", desc, value);
+            super(parentScreen, name, key, ForgeMessage.translate("gui.settings.action.pick"), desc, value);
         }
 
         @Override
@@ -177,7 +178,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         private static final Pattern DECIMAL_REGEX = Pattern.compile("^\\d+\\.?\\d*$");
 
         public NumberSettingEntry(GuiBeezigSettings parentScreen, String name, String key, String desc, Object value) {
-            super(parentScreen, name, key, "Edit...", desc, value);
+            super(parentScreen, name, key, ForgeMessage.translate("gui.settings.action.edit"), desc, value);
         }
 
         @Override
@@ -197,9 +198,9 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
                     return;
                 }
                 BeezigAPI.setSettingAsIs(this.key, value);
-            }, value.toString(), "Enter a valid number for " + this.name);
+            }, value.toString(), ForgeMessage.translate("gui.settings.number.hint", "§b" + this.name));
             input.setValidator(toUse);
-            input.setValidatorError("§cPlease enter a valid number.");
+            input.setValidatorError(ForgeMessage.translate("gui.settings.number.error"));
             parentScreen.mc.displayGuiScreen(input);
         }
 

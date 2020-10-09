@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.settings;
 
+import eu.beezig.forge.ForgeMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -57,7 +58,7 @@ public class EnumList extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         slots.drawScreen(mouseX, mouseY, partialTicks);
-        drawCenteredString(fontRendererObj, "Select one from the list below.", width / 2, 16, 0xffffff);
+        drawCenteredString(fontRendererObj, ForgeMessage.translate("gui.settings.list"), width / 2, 16, 0xffffff);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
