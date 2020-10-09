@@ -21,6 +21,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
+import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.function.Consumer;
@@ -60,11 +61,19 @@ public class GuiTextInput extends GuiScreen {
 
     @Override
     public void initGui() {
+        Keyboard.enableRepeatEvents(true); // Allows holding keys to type multiple characters
         buttonList.add(doneButton = new GuiButton(1, width / 2 - 152, height / 6 + 140, 150, 20, I18n.format("gui.done")));
         buttonList.add(new GuiButton(2, width / 2 + 2, height / 6 + 140, 150, 20, I18n.format("gui.cancel")));
         inputField = new GuiTextField(3, mc.fontRendererObj, width / 2 - 150, height / 6 + 80, 300, 20);
+        inputField.setMaxStringLength(100);
         if(defaultText != null) inputField.setText(defaultText);
         else doneButton.enabled = false;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        Keyboard.enableRepeatEvents(false);
     }
 
     @Override

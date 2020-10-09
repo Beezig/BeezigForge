@@ -30,7 +30,6 @@ import java.util.Map;
 public class SettingsList extends GuiListExtended {
     private final GuiBeezigSettings parentScreen;
     private final List<IGuiListEntry> entries = new ArrayList<>();
-    private int selectedId = 0;
 
     public SettingsList(GuiBeezigSettings parentScreen, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(Minecraft.getMinecraft(), widthIn, heightIn, topIn, bottomIn, slotHeightIn);
@@ -39,7 +38,7 @@ public class SettingsList extends GuiListExtended {
 
     public void populate(Map<String, List<SettingInfo>> source) {
         for(Map.Entry<String, List<SettingInfo>> category : source.entrySet()) {
-            entries.add(new Category("§l" + category.getKey()));
+            entries.add(new Category("§b§l" + category.getKey()));
             for(SettingInfo settingInfo : category.getValue()) {
                 if (settingInfo.value instanceof Boolean) {
                     entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
@@ -56,28 +55,17 @@ public class SettingsList extends GuiListExtended {
 
     @Override
     public int getListWidth() {
-        return 260;
+        return 400;
     }
 
     @Override
     protected int getScrollBarX() {
-        return super.getScrollBarX() + 30;
+        return super.getScrollBarX() + 230;
     }
 
     @Override
     protected boolean isSelected(int slotIndex) {
-        if(entries.get(selectedId) instanceof Category) return false;
-        return selectedId == slotIndex;
-    }
-
-    public void setSelectedId(int selectedId) {
-        this.selectedId = selectedId;
-    }
-
-    @Override
-    protected void elementClicked(int slotIndex, boolean isDoubleClick, int mouseX, int mouseY) {
-        super.elementClicked(slotIndex, isDoubleClick, mouseX, mouseY);
-        this.selectedId = slotIndex;
+        return false;
     }
 
     @Override
@@ -109,7 +97,7 @@ public class SettingsList extends GuiListExtended {
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
-            fr.drawString(display, x + 130 - fr.getStringWidth(display) / 2, y, color);
+            fr.drawString(display, x + 200 - fr.getStringWidth(display) / 2, y, color);
         }
 
         @Override

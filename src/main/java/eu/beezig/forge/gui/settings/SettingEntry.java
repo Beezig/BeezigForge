@@ -19,28 +19,31 @@ package eu.beezig.forge.gui.settings;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import org.apache.commons.lang3.StringUtils;
 
 public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     public static class BoolSettingEntry extends SettingEntry {
         public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
-            super(parentScreen, name, (boolean) value ? "Disable" : "Enable", desc, value);
+            super(parentScreen, name, "Change", desc, value);
         }
 
         @Override
-        protected void onButtonClick(GuiButton button) {
+        protected void onButtonClick() {
             this.value = !((boolean) value);
-            actionButton.displayString = (boolean) value ? "Disable" : "Enable";
-            actionButton.width = Minecraft.getMinecraft().fontRendererObj.getStringWidth(actionButton.displayString) + 5;
         }
 
         @Override
         protected String formatValue() {
-            return (boolean) value ? "§aOn" : "§cOff";
+            return (boolean) value ? "On" : "Off";
+        }
+
+        @Override
+        protected int valueColor() {
+            return (boolean) value ? 0x55ff55 : 0xff5555;
         }
     }
 
@@ -50,10 +53,20 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         }
 
         @Override
-        protected void onButtonClick(GuiButton button) {
+        protected void onButtonClick() {
             parentScreen.mc.displayGuiScreen(new GuiTextInput(parentScreen, s -> {
                 if(s != null) value = s;
             }, value.toString(), "Enter a value for " + name));
+        }
+
+        @Override
+        protected String formatValue() {
+            return StringUtils.abbreviate(value.toString(), 30);
+        }
+
+        @Override
+        protected int valueColor() {
+            return 0xf5ebc1;
         }
     }
 
@@ -63,7 +76,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         }
 
         @Override
-        protected void onButtonClick(GuiButton button) {
+        protected void onButtonClick() {
 
         }
 
@@ -74,21 +87,22 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     }
 
     protected final GuiBeezigSettings parentScreen;
-    protected final GuiButton actionButton;
     protected final String name;
     private final IChatComponent desc;
+    protected final IChatComponent hoverAction;
     protected Object value;
 
-    private SettingEntry(GuiBeezigSettings parentScreen, String name, String buttonName, String desc, Object value) {
+    private SettingEntry(GuiBeezigSettings parentScreen, String name, String hoverAction, String desc, Object value) {
         this.name = name;
         this.desc = new ChatComponentText("");
         this.desc.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(desc)));
         this.parentScreen = parentScreen;
+        this.hoverAction = new ChatComponentText("");
+        this.hoverAction.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(hoverAction)));
         this.value = value;
-        this.actionButton = new GuiButton(1, 0, 0, Minecraft.getMinecraft().fontRendererObj.getStringWidth(buttonName) + 5, 10, buttonName);
     }
 
-    protected abstract void onButtonClick(GuiButton button);
+    protected abstract void onButtonClick();
 
     @Override
     public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {}
@@ -100,19 +114,18 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         int relY = mouseY - y;
         int color = 0xff_ff_ff_ff;
         fr.drawString(name, x, y + 2, color);
-        fr.drawString(formatValue(), x + 110, y + 2, color);
-        if(parentScreen.getSettings().isSelected(slotIndex)) {
-            actionButton.xPosition = x + (260 - 50);
-            actionButton.yPosition = y;
-            actionButton.drawButton(Minecraft.getMinecraft(), mouseX, mouseY);
+        if(relX > 300 && relY > 0 && relY <= fr.FONT_HEIGHT) {
+            fr.drawStringWithShadow(formatValue(), x + 300, y + 2, 0xe3bd14);
+            parentScreen.handleComponentHover(hoverAction, mouseX, mouseY);
         }
-        if(relX < 110 && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
+        else fr.drawStringWithShadow(formatValue(), x + 300, y + 2, valueColor());
+        if(relX < 300 && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
     }
 
     @Override
-    public boolean mousePressed(int slotIndex, int x, int y, int p_148278_4_, int p_148278_5_, int p_148278_6_) {
-        if(actionButton.mousePressed(Minecraft.getMinecraft(), x, y)) {
-            onButtonClick(actionButton);
+    public boolean mousePressed(int slotIndex, int x, int y, int p4, int relX, int relY) {
+        if(relX > 300 && relY > 0 && relY <= Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) {
+            onButtonClick();
             return true;
         }
         return false;
@@ -120,6 +133,10 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
 
     protected String formatValue() {
         return value.toString();
+    }
+
+    protected int valueColor() {
+        return 0xffffff;
     }
 
     @Override

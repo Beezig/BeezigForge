@@ -48,17 +48,17 @@ public class BeezigForgeTestCommand extends CommandBase {
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         List<SettingInfo> settings = new ArrayList<>();
         SettingInfo setting = new SettingInfo();
-        setting.name = "Test Setting";
+        setting.name = "You have accessed the secret menu :)";
         setting.value = true;
-        setting.desc = "Test Desc";
+        setting.desc = "Post this on Discord to look cool";
         settings.add(setting);
         List<SettingInfo> settings2 = new ArrayList<>();
         SettingInfo setting2 = new SettingInfo();
-        setting2.name = "String Setting";
-        setting2.value = "Text value";
-        setting2.desc = "Test Desc String\nNew Line";
+        setting2.name = "Advanced Records: (This is a long string)";
+        setting2.value = "Rocco was here";
+        setting2.desc = "Don't tell Archer btw";
         settings2.add(setting2);
-        GuiBeezigSettings gui = new GuiBeezigSettings(null, ImmutableMap.of("Test Category", settings, "Category 2", settings2));
+        GuiBeezigSettings gui = new GuiBeezigSettings(null, ImmutableMap.of("Congratulations", settings, "There's more", settings2));
         gui.show();
     }
 }
