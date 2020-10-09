@@ -44,9 +44,22 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         }
     }
 
-    private final GuiBeezigSettings parentScreen;
+    public static class StringSettingEntry extends SettingEntry {
+        public StringSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
+            super(parentScreen, name, "Edit...", desc, value);
+        }
+
+        @Override
+        protected void onButtonClick(GuiButton button) {
+            parentScreen.mc.displayGuiScreen(new GuiTextInput(parentScreen, s -> {
+                if(s != null) value = s;
+            }, value.toString(), "Enter a value for " + name));
+        }
+    }
+
+    protected final GuiBeezigSettings parentScreen;
     protected final GuiButton actionButton;
-    private final String name;
+    protected final String name;
     private final IChatComponent desc;
     protected Object value;
 

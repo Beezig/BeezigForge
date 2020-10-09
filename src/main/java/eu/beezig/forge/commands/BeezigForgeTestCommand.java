@@ -52,8 +52,13 @@ public class BeezigForgeTestCommand extends CommandBase {
         setting.value = true;
         setting.desc = "Test Desc";
         settings.add(setting);
-        //for(int i = 0; i < 5; i++) settings.addAll(settings);
-        GuiBeezigSettings gui = new GuiBeezigSettings(null, ImmutableMap.of("Test Category", settings));
+        List<SettingInfo> settings2 = new ArrayList<>();
+        SettingInfo setting2 = new SettingInfo();
+        setting2.name = "String Setting";
+        setting2.value = "Text value";
+        setting2.desc = "Test Desc String\nNew Line";
+        settings2.add(setting2);
+        GuiBeezigSettings gui = new GuiBeezigSettings(null, ImmutableMap.of("Test Category", settings, "Category 2", settings2));
         gui.show();
     }
 }

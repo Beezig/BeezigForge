@@ -43,6 +43,8 @@ public class SettingsList extends GuiListExtended {
             for(SettingInfo settingInfo : category.getValue()) {
                 if (settingInfo.value instanceof Boolean) {
                     entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
+                } else if(settingInfo.value instanceof String) {
+                    entries.add(new SettingEntry.StringSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
                 }
             }
         }
