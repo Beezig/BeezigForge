@@ -17,10 +17,15 @@
 
 package eu.beezig.forge.commands;
 
-import eu.beezig.forge.gui.welcome.WelcomeGui;
+import com.google.common.collect.ImmutableMap;
+import eu.beezig.forge.api.SettingInfo;
+import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BeezigForgeTestCommand extends CommandBase {
 
@@ -41,6 +46,14 @@ public class BeezigForgeTestCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        new WelcomeGui().show();
+        List<SettingInfo> settings = new ArrayList<>();
+        SettingInfo setting = new SettingInfo();
+        setting.name = "Test Setting";
+        setting.value = true;
+        setting.desc = "Test Desc";
+        settings.add(setting);
+        //for(int i = 0; i < 5; i++) settings.addAll(settings);
+        GuiBeezigSettings gui = new GuiBeezigSettings(null, ImmutableMap.of("Test Category", settings));
+        gui.show();
     }
 }
