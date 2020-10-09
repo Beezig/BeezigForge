@@ -18,6 +18,7 @@
 package eu.beezig.forge.gui.settings;
 
 import eu.beezig.core.api.SettingInfo;
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -42,6 +43,12 @@ public class GuiBeezigSettings extends GuiScreen {
 
     public SettingsList getSettings() {
         return settings;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        BeezigAPI.saveConfig();
     }
 
     @Override

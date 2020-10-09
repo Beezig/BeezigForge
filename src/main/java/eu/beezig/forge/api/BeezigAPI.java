@@ -38,8 +38,9 @@ public class BeezigAPI {
     static Supplier<String> regionFunc;
     static Supplier<File> beezigDirFunc;
     static Function<String, Object> getSettingFunc;
-    static Consumer<Map.Entry<String, Object>> setSettingFunc;
+    static Consumer<Map.Entry<String, Object>> setSettingFunc, setSettingAsIsFunc;
     static Function<UUID, Optional<Map<String, Object>>> getOverridesFunc;
+    static Runnable saveConfig;
 
     // No fancy time-based cache needed
     private static Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -95,5 +96,16 @@ public class BeezigAPI {
         Optional<Map<String, Object>> ret = getOverridesFunc.apply(uuid);
         ret.ifPresent(stringObjectMap -> overrideCache.put(uuid, stringObjectMap));
         return ret;
+    }
+
+    public static void saveConfig() {
+        saveConfig.run();
+    }
+
+    /**
+     * Sets the setting value to be exactly the provided object.
+     */
+    public static void setSettingAsIs(String name, Object value) {
+        setSettingAsIsFunc.accept(new AbstractMap.SimpleImmutableEntry<>(name, value));
     }
 }

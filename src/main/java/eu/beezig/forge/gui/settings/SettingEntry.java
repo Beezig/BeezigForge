@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.settings;
 
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
@@ -30,13 +31,14 @@ import java.util.List;
 
 public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     public static class BoolSettingEntry extends SettingEntry {
-        public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
-            super(parentScreen, name, "Change", desc, value);
+        public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
+            super(parentScreen, name, key, "Change", desc, value);
         }
 
         @Override
         protected void onButtonClick() {
             this.value = !((boolean) value);
+            BeezigAPI.setSettingAsIs(this.key, value);
         }
 
         @Override
@@ -51,14 +53,17 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     }
 
     public static class StringSettingEntry extends SettingEntry {
-        public StringSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
-            super(parentScreen, name, "Edit...", desc, value);
+        public StringSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
+            super(parentScreen, name, key, "Edit...", desc, value);
         }
 
         @Override
         protected void onButtonClick() {
             parentScreen.mc.displayGuiScreen(new GuiTextInput(parentScreen, s -> {
-                if(s != null) value = s;
+                if(s != null) {
+                    value = s;
+                    BeezigAPI.setSettingAsIs(this.key, s);
+                }
             }, value.toString(), "Enter a value for " + name));
         }
 
@@ -74,17 +79,27 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     }
 
     public static class EnumSettingEntry extends SettingEntry {
-        public EnumSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, Object value) {
-            super(parentScreen, name, "Pick...", desc, value);
+        public EnumSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
+            super(parentScreen, name, key, "Pick...", desc, value);
         }
 
         @Override
         protected void onButtonClick() {
             EnumService.EnumData value = (EnumService.EnumData) this.value;
             List<EnumService.EnumEntry> values = Arrays.asList(value.getPossibleValues());
-            parentScreen.mc.displayGuiScreen(new EnumList(parentScreen, values, values.indexOf(value.getValue()), entry -> {
-                if(entry != null) value.setValue(entry);
-            }));
+            // Optimization - if there are only 2 possible values just switch back and forth
+            if(values.size() == 2) {
+                EnumService.EnumEntry entry = values.stream().filter(v -> !v.equals(value.getValue())).findAny().orElseThrow(() -> new IllegalStateException("Value wasn't among the possible values."));
+                value.setValue(entry);
+                BeezigAPI.setSettingAsIs(this.key, value.getRealValue());
+            } else {
+                parentScreen.mc.displayGuiScreen(new EnumList(parentScreen, values, values.indexOf(value.getValue()), entry -> {
+                    if (entry != null) {
+                        value.setValue(entry);
+                        BeezigAPI.setSettingAsIs(this.key, value.getRealValue());
+                    }
+                }));
+            }
         }
 
         @Override
@@ -94,12 +109,12 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     }
 
     protected final GuiBeezigSettings parentScreen;
-    protected final String name;
+    protected final String name, key;
     private final IChatComponent desc;
     protected final IChatComponent hoverAction;
     protected Object value;
 
-    private SettingEntry(GuiBeezigSettings parentScreen, String name, String hoverAction, String desc, Object value) {
+    private SettingEntry(GuiBeezigSettings parentScreen, String name, String key, String hoverAction, String desc, Object value) {
         this.name = name;
         this.desc = new ChatComponentText("");
         this.desc.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(desc)));
@@ -107,6 +122,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         this.hoverAction = new ChatComponentText("");
         this.hoverAction.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(hoverAction)));
         this.value = value;
+        this.key = key;
     }
 
     protected abstract void onButtonClick();

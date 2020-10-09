@@ -40,6 +40,8 @@ public interface IBeezigService {
     void registerGetSetting(Function<String, Object> callback);
     void registerSetSetting(Consumer<Map.Entry<String, Object>> callback);
     void registerGetOverrides(Function<UUID, Optional<Map<String, Object>>> callback);
+    void registerSaveConfig(Runnable runnable);
+    void registerSetSettingAsIs(Consumer<Map.Entry<String, Object>> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);

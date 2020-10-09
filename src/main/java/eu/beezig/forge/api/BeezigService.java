@@ -138,4 +138,14 @@ public class BeezigService implements IBeezigService {
     public void registerGetOverrides(Function<UUID, Optional<Map<String, Object>>> callback) {
         BeezigAPI.getOverridesFunc = callback;
     }
+
+    @Override
+    public void registerSaveConfig(Runnable runnable) {
+        BeezigAPI.saveConfig = runnable;
+    }
+
+    @Override
+    public void registerSetSettingAsIs(Consumer<Map.Entry<String, Object>> callback) {
+        BeezigAPI.setSettingAsIsFunc = callback;
+    }
 }

@@ -41,13 +41,13 @@ public class SettingsList extends GuiListExtended {
             entries.add(new Category("§b§l" + category.getKey()));
             for(SettingInfo settingInfo : category.getValue()) {
                 if (settingInfo.value instanceof Boolean) {
-                    entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
+                    entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, settingInfo.value));
                 } else if(settingInfo.value instanceof String) {
-                    entries.add(new SettingEntry.StringSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.value));
+                    entries.add(new SettingEntry.StringSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, settingInfo.value));
                 } else {
                     EnumService.EnumData enumData = EnumService.tryParseAsEnum(settingInfo.value);
                     if(enumData != null)
-                        entries.add(new SettingEntry.EnumSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, enumData));
+                        entries.add(new SettingEntry.EnumSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, enumData));
                 }
             }
         }
