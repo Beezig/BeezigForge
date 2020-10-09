@@ -59,13 +59,14 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
         int relX = mouseX - x;
         int relY = mouseY - y;
+        String value = formatValue();
         fr.drawString(name, x, y + 2, 0xD1D1D1);
-        if(relX > 300 && relY > 0 && relY <= fr.FONT_HEIGHT) {
-            fr.drawStringWithShadow(formatValue(), x + 300, y + 2, 0xe3bd14);
+        if(relX > 300 && relX <= 300 + Math.max(50, fr.getStringWidth(value)) && relY > 0 && relY <= fr.FONT_HEIGHT) {
+            fr.drawStringWithShadow(value, x + 300, y + 2, 0xe3bd14);
             parentScreen.handleComponentHover(hoverAction, mouseX, mouseY);
         }
-        else fr.drawStringWithShadow(formatValue(), x + 300, y + 2, valueColor());
-        if(relX < 300 && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
+        else fr.drawStringWithShadow(value, x + 300, y + 2, valueColor());
+        if(relX < Math.max(200, fr.getStringWidth(name)) && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
     }
 
     @Override
