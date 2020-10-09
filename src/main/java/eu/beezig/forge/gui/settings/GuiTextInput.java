@@ -25,19 +25,31 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GuiTextInput extends GuiScreen {
     private final GuiScreen lastScreen;
     private GuiTextField inputField;
     private final Consumer<String> callback;
-    private String defaultText;
+    private String defaultText, errorMessage;
     private final String title;
     private GuiButton doneButton;
+    private Pattern validator;
+    private boolean displayError;
 
     public GuiTextInput(GuiScreen lastScreen, Consumer<String> callback, String title) {
         this.lastScreen = lastScreen;
         this.callback = callback;
         this.title = title;
+    }
+
+    public void setValidator(Pattern validator) {
+        this.validator = validator;
+    }
+
+    public void setValidatorError(String message) {
+        this.errorMessage = message;
     }
 
     public GuiTextInput(GuiScreen lastScreen, Consumer<String> callback, String defaultText, String title) {
@@ -51,6 +63,7 @@ public class GuiTextInput extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
         inputField.drawTextBox();
         if(title != null) drawCenteredString(mc.fontRendererObj, title, width / 2, height / 6, 0xffffffff);
+        if(displayError && errorMessage != null) drawCenteredString(mc.fontRendererObj, errorMessage, width / 2, height / 6 + 130, 0xffffffff);
     }
 
     @Override
@@ -89,6 +102,14 @@ public class GuiTextInput extends GuiScreen {
             callback.accept(null);
             mc.displayGuiScreen(lastScreen);
         } else if(button.id == 1) {
+            displayError = false;
+            if(validator != null) {
+                Matcher matcher = validator.matcher(inputField.getText());
+                if(!matcher.matches()) {
+                    displayError = true;
+                    return;
+                }
+            }
             callback.accept(inputField.getText());
             mc.displayGuiScreen(lastScreen);
         }

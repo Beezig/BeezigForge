@@ -22,6 +22,8 @@ import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -37,7 +39,7 @@ public class GuiBeezigSettings extends GuiScreen {
 
     public GuiBeezigSettings(GuiScreen parentScreen, Map<String, List<SettingInfo>> settings) {
         this.parentScreen = parentScreen;
-        this.settings = new SettingsList(this, width, height, 67, height - 44, 16);
+        this.settings = new SettingsList(this, width, height, 32, height - 48, 16);
         this.settings.populate(settings);
     }
 
@@ -54,7 +56,8 @@ public class GuiBeezigSettings extends GuiScreen {
     @Override
     public void initGui() {
         super.initGui();
-        settings.setDimensions(width, height, 67, height - 44);
+        settings.setDimensions(width, height, 32, height - 48);
+        buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 29, I18n.format("gui.done")));
     }
 
     @Override
@@ -66,8 +69,12 @@ public class GuiBeezigSettings extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
         settings.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(2f, 2f, 2f);
+        drawCenteredString(fontRendererObj, "Beezig", width / 4, 5, 0x1a7ef0);
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -84,7 +91,9 @@ public class GuiBeezigSettings extends GuiScreen {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        super.actionPerformed(button);
+        if (button.id == 200) {
+            Minecraft.getMinecraft().displayGuiScreen(parentScreen);
+        }
     }
 
     public void show() {

@@ -49,7 +49,7 @@ public class BeezigForgeTestCommand extends CommandBase {
         List<SettingInfo> settings = new ArrayList<>();
         SettingInfo setting = new SettingInfo();
         setting.name = "You have accessed the secret menu :)";
-        setting.value = true;
+        setting.value = 9_10_2020;
         setting.desc = "Post this on Discord to look cool";
         settings.add(setting);
         List<SettingInfo> settings2 = new ArrayList<>();

@@ -28,8 +28,67 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
+    protected final GuiBeezigSettings parentScreen;
+    protected final String name, key;
+    private final IChatComponent desc;
+    protected final IChatComponent hoverAction;
+    protected Object value;
+
+    private SettingEntry(GuiBeezigSettings parentScreen, String name, String key, String hoverAction, String desc, Object value) {
+        this.name = name;
+        this.desc = new ChatComponentText("");
+        this.desc.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(desc)));
+        this.parentScreen = parentScreen;
+        this.hoverAction = new ChatComponentText("");
+        this.hoverAction.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("§7" + hoverAction)));
+        this.value = value;
+        this.key = key;
+    }
+
+    protected abstract void onButtonClick();
+
+    @Override
+    public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {}
+
+    @Override
+    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
+        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        int relX = mouseX - x;
+        int relY = mouseY - y;
+        fr.drawString(name, x, y + 2, 0xD1D1D1);
+        if(relX > 300 && relY > 0 && relY <= fr.FONT_HEIGHT) {
+            fr.drawStringWithShadow(formatValue(), x + 300, y + 2, 0xe3bd14);
+            parentScreen.handleComponentHover(hoverAction, mouseX, mouseY);
+        }
+        else fr.drawStringWithShadow(formatValue(), x + 300, y + 2, valueColor());
+        if(relX < 300 && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mousePressed(int slotIndex, int x, int y, int p4, int relX, int relY) {
+        if(relX > 300 && relY > 0 && relY <= Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) {
+            onButtonClick();
+            return true;
+        }
+        return false;
+    }
+
+    protected String formatValue() {
+        return value.toString();
+    }
+
+    protected int valueColor() {
+        return 0xffffff;
+    }
+
+    @Override
+    public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
+
+    }
+
     public static class BoolSettingEntry extends SettingEntry {
         public BoolSettingEntry(GuiBeezigSettings parentScreen, String name, String desc, String key, Object value) {
             super(parentScreen, name, key, "Change", desc, value);
@@ -106,64 +165,52 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         protected String formatValue() {
             return ((EnumService.EnumData) value).getValue().getDisplay();
         }
-    }
 
-    protected final GuiBeezigSettings parentScreen;
-    protected final String name, key;
-    private final IChatComponent desc;
-    protected final IChatComponent hoverAction;
-    protected Object value;
-
-    private SettingEntry(GuiBeezigSettings parentScreen, String name, String key, String hoverAction, String desc, Object value) {
-        this.name = name;
-        this.desc = new ChatComponentText("");
-        this.desc.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(desc)));
-        this.parentScreen = parentScreen;
-        this.hoverAction = new ChatComponentText("");
-        this.hoverAction.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(hoverAction)));
-        this.value = value;
-        this.key = key;
-    }
-
-    protected abstract void onButtonClick();
-
-    @Override
-    public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_) {}
-
-    @Override
-    public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
-        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
-        int relX = mouseX - x;
-        int relY = mouseY - y;
-        int color = 0xff_ff_ff_ff;
-        fr.drawString(name, x, y + 2, color);
-        if(relX > 300 && relY > 0 && relY <= fr.FONT_HEIGHT) {
-            fr.drawStringWithShadow(formatValue(), x + 300, y + 2, 0xe3bd14);
-            parentScreen.handleComponentHover(hoverAction, mouseX, mouseY);
+        @Override
+        protected int valueColor() {
+            return 0xcc54c8;
         }
-        else fr.drawStringWithShadow(formatValue(), x + 300, y + 2, valueColor());
-        if(relX < 300 && relY > 0 && relY <= fr.FONT_HEIGHT) parentScreen.handleComponentHover(desc, mouseX, mouseY);
     }
 
-    @Override
-    public boolean mousePressed(int slotIndex, int x, int y, int p4, int relX, int relY) {
-        if(relX > 300 && relY > 0 && relY <= Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT) {
-            onButtonClick();
-            return true;
+    public static class NumberSettingEntry extends SettingEntry {
+        private static final Pattern INTEGER_REGEX = Pattern.compile("^\\d+$");
+        private static final Pattern DECIMAL_REGEX = Pattern.compile("^\\d+\\.?\\d*$");
+
+        public NumberSettingEntry(GuiBeezigSettings parentScreen, String name, String key, String desc, Object value) {
+            super(parentScreen, name, key, "Edit...", desc, value);
         }
-        return false;
-    }
 
-    protected String formatValue() {
-        return value.toString();
-    }
+        @Override
+        protected void onButtonClick() {
+            Pattern toUse = value instanceof Float || value instanceof Double ? DECIMAL_REGEX : INTEGER_REGEX;
+            GuiTextInput input = new GuiTextInput(parentScreen, v -> {
+                if(v == null) return;
+                try {
+                    if (value instanceof Float) value = Float.parseFloat(v);
+                    else if (value instanceof Double) value = Double.parseDouble(v);
+                    else if (value instanceof Integer) value = Integer.parseInt(v, 10);
+                    else if (value instanceof Short) value = Short.parseShort(v, 10);
+                    else if (value instanceof Byte) value = Byte.parseByte(v, 10);
+                    else value = value.getClass().cast(Long.parseLong(v, 10));
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace();
+                    return;
+                }
+                BeezigAPI.setSettingAsIs(this.key, value);
+            }, value.toString(), "Enter a valid number for " + this.name);
+            input.setValidator(toUse);
+            input.setValidatorError("§cPlease enter a valid number.");
+            parentScreen.mc.displayGuiScreen(input);
+        }
 
-    protected int valueColor() {
-        return 0xffffff;
-    }
+        @Override
+        protected String formatValue() {
+            return BeezigAPI.formatNumber(((Number)value).longValue());
+        }
 
-    @Override
-    public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY) {
-
+        @Override
+        protected int valueColor() {
+            return 0x55ffff;
+        }
     }
 }

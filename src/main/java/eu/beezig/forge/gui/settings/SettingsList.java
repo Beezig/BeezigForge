@@ -44,6 +44,8 @@ public class SettingsList extends GuiListExtended {
                     entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, settingInfo.value));
                 } else if(settingInfo.value instanceof String) {
                     entries.add(new SettingEntry.StringSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, settingInfo.value));
+                } else if(settingInfo.value instanceof Number) {
+                    entries.add(new SettingEntry.NumberSettingEntry(parentScreen, settingInfo.name, settingInfo.key, settingInfo.desc, settingInfo.value));
                 } else {
                     EnumService.EnumData enumData = EnumService.tryParseAsEnum(settingInfo.value);
                     if(enumData != null)
