@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.autovote;
 
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -69,7 +70,7 @@ public class AutovoteMapInput extends GuiScreen {
                 String text = input.getText().toUpperCase().replace(" ", "_");
                 Minecraft.getMinecraft().displayGuiScreen(parent);
                 if(!text.isEmpty())
-                    parent.getList().add(text);
+                    parent.getList().add(BeezigAPI.normalizeMapName(text));
                 break;
             case 3 /* Cancel */:
                 Minecraft.getMinecraft().displayGuiScreen(parent);

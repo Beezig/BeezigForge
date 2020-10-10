@@ -41,9 +41,10 @@ public class BeezigAPI {
     static Consumer<Map.Entry<String, Object>> setSettingFunc, setSettingAsIsFunc;
     static Function<UUID, Optional<Map<String, Object>>> getOverridesFunc;
     static Runnable saveConfig;
+    static Consumer<Pair<String, List<String>>> setAutovoteFunc;
 
     // No fancy time-based cache needed
-    private static Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
+    private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
 
     public static boolean isOnHive() {
         return onHive;
@@ -107,5 +108,9 @@ public class BeezigAPI {
      */
     public static void setSettingAsIs(String name, Object value) {
         setSettingAsIsFunc.accept(new AbstractMap.SimpleImmutableEntry<>(name, value));
+    }
+
+    public static void setAutovoteMaps(String mode, List<String> maps) {
+        setAutovoteFunc.accept(new ImmutablePair<>(mode, maps));
     }
 }

@@ -25,8 +25,7 @@ public enum AutovoteMode {
     BED("BedWars"), SKY("SkyWars"),
     TIMV("Trouble in Mineville"), DR("DeathRun"),
     GRAV("Gravity"), HIDE("Hide and Seek"),
-    GNT("SkyGiants"), SGN("Survival Games 2"),
-    CAI("Cowboys and Indians"), MIMV("Murder in Mineville");
+    SGN("Survival Games 2"), SHU("Arcade Shuffle");
 
 
     private String display;

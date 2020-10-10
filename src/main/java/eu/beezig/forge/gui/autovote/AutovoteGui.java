@@ -23,9 +23,10 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import eu.beezig.forge.API;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 public class AutovoteGui extends GuiScreen {
 
@@ -37,11 +38,21 @@ public class AutovoteGui extends GuiScreen {
     private AutovoteSlot list;
     private int step;
     private int opt = -1;
+    private Map<String, List<String>> mapData;
 
-    public AutovoteGui(int step, int... opts) {
+    public AutovoteGui(AutovoteGui parent, int step, int... opts) {
         this.step = step;
+        this.mapData = parent.mapData;
         if(opts.length > 0)
             this.opt = opts[0];
+    }
+
+    public AutovoteGui(int step) {
+        this.step = step;
+    }
+
+    public void setMapData(Map<String, List<String>> mapData) {
+        this.mapData = mapData;
     }
 
     @Override
@@ -58,7 +69,7 @@ public class AutovoteGui extends GuiScreen {
             buttonList.add(new GuiButton(4, this.width / 2 - 155 + 160, this.height - 38, 60, 20, "Move Up"));
             buttonList.add(new GuiButton(5, this.width / 2 - 155 + 230, this.height - 38, 60, 20, "Move Down"));
             buttonList.add(btnNext = new GuiButton(0, this.width / 2 - 155 + 300, this.height - 38, 60, 20, "Save"));
-            list.setData(API.autovote.getMapsForMode(AutovoteMode.get(opt).name()));
+            list.setData(mapData.get(AutovoteMode.get(opt).name()));
         }
         else {
             buttonList.add(btnBack = new GuiButton(1, this.width / 2 - 155, this.height - 38, 150, 20, "Cancel"));
@@ -101,7 +112,7 @@ public class AutovoteGui extends GuiScreen {
         switch(button.id) {
             case 1 /* Back */:
                 if(step == STEP_CHANGE_MAPS)
-                    Minecraft.getMinecraft().displayGuiScreen(new AutovoteGui(STEP_SELECT_MODE));
+                    Minecraft.getMinecraft().displayGuiScreen(new AutovoteGui(this, STEP_SELECT_MODE));
                 else
                     Minecraft.getMinecraft().displayGuiScreen(null);
                 break;
@@ -138,6 +149,6 @@ public class AutovoteGui extends GuiScreen {
     }
 
     void changeMaps() {
-        Minecraft.getMinecraft().displayGuiScreen(new AutovoteGui(STEP_CHANGE_MAPS, list.getSelected()));
+        Minecraft.getMinecraft().displayGuiScreen(new AutovoteGui(this, STEP_CHANGE_MAPS, list.getSelected()));
     }
 }

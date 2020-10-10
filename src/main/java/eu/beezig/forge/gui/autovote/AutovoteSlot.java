@@ -17,18 +17,16 @@
 
 package eu.beezig.forge.gui.autovote;
 
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiSlot;
-import eu.beezig.forge.API;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AutovoteSlot extends GuiSlot {
-
     List<String> savedMaps = new ArrayList<>();
-
     private FontRenderer frObj;
     private AutovoteGui parent;
     private int selected = 0;
@@ -84,7 +82,7 @@ public class AutovoteSlot extends GuiSlot {
     }
 
     void save() {
-        API.autovote.setMapsForMode(AutovoteMode.get(mode).name(), new ArrayList<>(savedMaps));
+        BeezigAPI.setAutovoteMaps(AutovoteMode.get(mode).name(), new ArrayList<>(savedMaps));
     }
 
     void remove() {

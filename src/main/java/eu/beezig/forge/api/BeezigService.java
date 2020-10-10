@@ -21,6 +21,7 @@ import eu.beezig.core.api.IBeezigService;
 import eu.beezig.core.api.SettingInfo;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
+import eu.beezig.forge.gui.autovote.AutovoteGui;
 import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
@@ -110,6 +111,13 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void openAutovote(Map<String, List<String>> maps) {
+        AutovoteGui gui = new AutovoteGui(0);
+        gui.setMapData(maps);
+        Minecraft.getMinecraft().displayGuiScreen(gui);
+    }
+
+    @Override
     public void registerGetRegion(Supplier<String> callback) {
         BeezigAPI.regionFunc = callback;
     }
@@ -147,5 +155,10 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerSetSettingAsIs(Consumer<Map.Entry<String, Object>> callback) {
         BeezigAPI.setSettingAsIsFunc = callback;
+    }
+
+    @Override
+    public void registerSetAutovoteMaps(Consumer<Pair<String, List<String>>> callback) {
+        BeezigAPI.setAutovoteFunc = callback;
     }
 }

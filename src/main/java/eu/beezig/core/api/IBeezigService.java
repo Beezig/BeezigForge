@@ -42,6 +42,7 @@ public interface IBeezigService {
     void registerGetOverrides(Function<UUID, Optional<Map<String, Object>>> callback);
     void registerSaveConfig(Runnable runnable);
     void registerSetSettingAsIs(Consumer<Map.Entry<String, Object>> callback);
+    void registerSetAutovoteMaps(Consumer<Pair<String, List<String>>> callback);
 
     void setOnHive(boolean update);
     void setCurrentGame(String game);
@@ -50,4 +51,5 @@ public interface IBeezigService {
     void autovoteShuffle(List<String> favorites);
     void displayWelcomeGui();
     void openSettings(Map<String, List<SettingInfo>> settings);
+    void openAutovote(Map<String, List<String>> maps);
 }
