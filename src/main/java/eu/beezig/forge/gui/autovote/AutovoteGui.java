@@ -65,12 +65,12 @@ public class AutovoteGui extends GuiScreen {
         this.list.registerScrollButtons(7, 8);
 
         if (step == STEP_CHANGE_MAPS) {
-            buttonList.add(btnBack = new GuiButton(1, this.width / 2 - 155 - 50, this.height - 38, 60, 20, ForgeMessage.translate("gui.back")));
-            buttonList.add(new GuiButton(2, this.width / 2 - 155 + 20, this.height - 38, 60, 20, ForgeMessage.translate("gui.autovote.add")));
-            buttonList.add(new GuiButton(3, this.width / 2 - 155 + 90, this.height - 38, 60, 20, ForgeMessage.translate("gui.remove")));
-            buttonList.add(new GuiButton(4, this.width / 2 - 155 + 160, this.height - 38, 60, 20, ForgeMessage.translate("gui.autovote.up")));
-            buttonList.add(new GuiButton(5, this.width / 2 - 155 + 230, this.height - 38, 60, 20, ForgeMessage.translate("gui.autovote.down")));
-            buttonList.add(btnNext = new GuiButton(0, this.width / 2 - 155 + 300, this.height - 38, 60, 20, ForgeMessage.translate("gui.save")));
+            buttonList.add(btnBack = new GuiButton(1, this.width / 2 - 155, this.height - 28, 150, 20, ForgeMessage.translate("gui.back")));
+            buttonList.add(new GuiButton(2, this.width / 2 - 155 + 20, this.height - 53, 60, 20, ForgeMessage.translate("gui.autovote.add")));
+            buttonList.add(new GuiButton(3, this.width / 2 - 155 + 90, this.height - 53, 60, 20, ForgeMessage.translate("gui.remove")));
+            buttonList.add(new GuiButton(4, this.width / 2 - 155 + 160, this.height - 53, 60, 20, ForgeMessage.translate("gui.autovote.up")));
+            buttonList.add(new GuiButton(5, this.width / 2 - 155 + 230, this.height - 53, 60, 20, ForgeMessage.translate("gui.autovote.down")));
+            buttonList.add(btnNext = new GuiButton(0, this.width / 2 - 155 + 160, this.height - 28, 150, 20, ForgeMessage.translate("gui.save")));
             list.setData(mapData.get(AutovoteMode.get(opt).name()));
         } else {
             buttonList.add(btnBack = new GuiButton(1, this.width / 2 - 155, this.height - 38, 150, 20, I18n.format("gui.cancel")));
