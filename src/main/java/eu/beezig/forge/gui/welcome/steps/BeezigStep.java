@@ -18,15 +18,17 @@
 package eu.beezig.forge.gui.welcome.steps;
 
 import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
+import eu.beezig.forge.gui.welcome.GuiCheckBox;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 
 import java.io.IOException;
 
 public class BeezigStep extends WelcomeGuiStep {
-
+    private GuiCheckBox telemetryBox;
+    private boolean skip = true;
 
     public BeezigStep(WelcomeGui parent) {
         super(parent);
@@ -45,8 +47,11 @@ public class BeezigStep extends WelcomeGuiStep {
     @Override
     public void initGui() {
         super.initGui();
-       buttonList.add(new GuiButton(1001, width / 2 - 155, height - 38, 150, 20,
-                "Skip tutorial"));
+        buttonList.add(new GuiButton(1001, width / 2 - 155, height - 38, 150, 20,
+                ForgeMessage.translate("tut.beezig.skip")));
+        String boxText = ForgeMessage.translate("tut.beezig.telemetry");
+        // 11: box width
+        buttonList.add(telemetryBox = new GuiCheckBox(3, (width - 11 - fontRendererObj.getStringWidth(boxText)) / 2, height - 60, boxText, true));
     }
 
     @Override
@@ -59,12 +64,22 @@ public class BeezigStep extends WelcomeGuiStep {
 
     @Override
     protected void actionPerformed(GuiButton button) throws IOException {
-        switch(button.id) {
-            case 1001 /* Skip */:
-                Minecraft.getMinecraft().displayGuiScreen(null);
-                PointTagsStep.endTutorial();
-                break;
+        if(button.id == 0) {
+            skip = false;
+            BeezigAPI.setSettingAsIs("TELEMETRY", telemetryBox.isChecked());
+        } else if(button.id == 1001) {
+            // Skip
+            mc.displayGuiScreen(null);
         }
         super.actionPerformed(button);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        if(skip) {
+            BeezigAPI.setSettingAsIs("TELEMETRY", telemetryBox.isChecked());
+            PointTagsStep.endTutorial();
+        }
     }
 }
