@@ -18,8 +18,10 @@
 package eu.beezig.forge.api;
 
 import eu.beezig.core.api.IBeezigService;
+import eu.beezig.core.api.SettingInfo;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
+import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
@@ -103,6 +105,11 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void openSettings(Map<String, List<SettingInfo>> settings) {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiBeezigSettings(Minecraft.getMinecraft().currentScreen, settings));
+    }
+
+    @Override
     public void registerGetRegion(Supplier<String> callback) {
         BeezigAPI.regionFunc = callback;
     }
@@ -130,5 +137,15 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerGetOverrides(Function<UUID, Optional<Map<String, Object>>> callback) {
         BeezigAPI.getOverridesFunc = callback;
+    }
+
+    @Override
+    public void registerSaveConfig(Runnable runnable) {
+        BeezigAPI.saveConfig = runnable;
+    }
+
+    @Override
+    public void registerSetSettingAsIs(Consumer<Map.Entry<String, Object>> callback) {
+        BeezigAPI.setSettingAsIsFunc = callback;
     }
 }

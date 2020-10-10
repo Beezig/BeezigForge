@@ -17,8 +17,13 @@
 
 package eu.beezig.forge.listener;
 
+import eu.beezig.forge.API;
+import eu.beezig.forge.ActiveGame;
+import eu.beezig.forge.BeezigForgeMod;
+import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gamefields.TIMV;
+import eu.beezig.forge.gui.autovote.AutovoteGui;
 import eu.beezig.forge.gui.ctest.CustomTestGui;
 import eu.beezig.forge.gui.report.ReportGui;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
@@ -28,18 +33,8 @@ import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fml.client.config.IConfigElement;
-import eu.beezig.forge.API;
-import eu.beezig.forge.ActiveGame;
-import eu.beezig.forge.BeezigForgeMod;
-import eu.beezig.forge.api.command.BeezigCommandRegistry;
-import eu.beezig.forge.gui.autovote.AutovoteGui;
-import eu.beezig.forge.gui.settings.GuiBeezigSettings;
-import eu.beezig.forge.settings.BeezigConfigElement;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ForgeListenerImpl {
 
@@ -77,30 +72,6 @@ public class ForgeListenerImpl {
 
         if(Minecraft.getMinecraft().thePlayer != null)
         Minecraft.getMinecraft().thePlayer.addChatComponentMessage(txt);
-    }
-
-    public void onDisplaySettingsGui(Object settings) {
-
-
-        try {
-            Object[] arr = (Object[]) settings.getClass().getField("array").get(settings);
-            List<IConfigElement> elements = new ArrayList<>();
-            for (Object o : arr) {
-                String enumName = o.toString();
-                String desc = (String) o.getClass().getMethod("getBriefDescription").invoke(o);
-                String briefDesc = (String) o.getClass().getMethod("getBrieferDescription").invoke(o);
-                boolean enabled = (boolean) o.getClass().getMethod("getValue").invoke(o);
-
-
-                elements.add(new BeezigConfigElement(enumName, desc, enabled, briefDesc));
-            }
-
-            new GuiBeezigSettings(null, elements).show();
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     public void displayAutovoteGui() {
