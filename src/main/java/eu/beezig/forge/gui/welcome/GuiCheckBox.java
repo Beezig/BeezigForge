@@ -19,7 +19,12 @@ package eu.beezig.forge.gui.welcome;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 /**
  * This class provides a checkbox style control.
@@ -49,7 +54,7 @@ public class GuiCheckBox extends GuiButton
         if (this.visible)
         {
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.boxWidth && mouseY < this.yPosition + this.height;
-            GuiUtils.drawContinuousTexturedBox(buttonTextures, this.xPosition, this.yPosition, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
+            drawContinuousTexturedBox(buttonTextures, this.xPosition, this.yPosition, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
             this.mouseDragged(mc, mouseX, mouseY);
             int color = 14737632;
 
@@ -93,5 +98,75 @@ public class GuiCheckBox extends GuiButton
     public void setIsChecked(boolean isChecked)
     {
         this.isChecked = isChecked;
+    }
+
+    // Render Utils
+    private static void drawContinuousTexturedBox(ResourceLocation res, int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight,
+                                                 int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
+    {
+        Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+        drawContinuousTexturedBox(x, y, u, v, width, height, textureWidth, textureHeight, topBorder, bottomBorder, leftBorder, rightBorder, zLevel);
+    }
+
+    private static void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, float zLevel)
+    {
+        float uScale = 1f / 0x100;
+        float vScale = 1f / 0x100;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer wr = tessellator.getWorldRenderer();
+        wr.begin(7, DefaultVertexFormats.POSITION_TEX);
+        wr.pos(x        , y + height, zLevel).tex( u          * uScale, ((v + height) * vScale)).endVertex();
+        wr.pos(x + width, y + height, zLevel).tex((u + width) * uScale, ((v + height) * vScale)).endVertex();
+        wr.pos(x + width, y         , zLevel).tex((u + width) * uScale, ( v           * vScale)).endVertex();
+        wr.pos(x        , y         , zLevel).tex( u          * uScale, ( v           * vScale)).endVertex();
+        tessellator.draw();
+    }
+
+    private static void drawContinuousTexturedBox(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight,
+                                                 int topBorder, int bottomBorder, int leftBorder, int rightBorder, float zLevel)
+    {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
+
+        int fillerWidth = textureWidth - leftBorder - rightBorder;
+        int fillerHeight = textureHeight - topBorder - bottomBorder;
+        int canvasWidth = width - leftBorder - rightBorder;
+        int canvasHeight = height - topBorder - bottomBorder;
+        int xPasses = canvasWidth / fillerWidth;
+        int remainderWidth = canvasWidth % fillerWidth;
+        int yPasses = canvasHeight / fillerHeight;
+        int remainderHeight = canvasHeight % fillerHeight;
+
+        // Draw Border
+        // Top Left
+        drawTexturedModalRect(x, y, u, v, leftBorder, topBorder, zLevel);
+        // Top Right
+        drawTexturedModalRect(x + leftBorder + canvasWidth, y, u + leftBorder + fillerWidth, v, rightBorder, topBorder, zLevel);
+        // Bottom Left
+        drawTexturedModalRect(x, y + topBorder + canvasHeight, u, v + topBorder + fillerHeight, leftBorder, bottomBorder, zLevel);
+        // Bottom Right
+        drawTexturedModalRect(x + leftBorder + canvasWidth, y + topBorder + canvasHeight, u + leftBorder + fillerWidth, v + topBorder + fillerHeight, rightBorder, bottomBorder, zLevel);
+
+        for (int i = 0; i < xPasses + (remainderWidth > 0 ? 1 : 0); i++)
+        {
+            // Top Border
+            drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y, u + leftBorder, v, (i == xPasses ? remainderWidth : fillerWidth), topBorder, zLevel);
+            // Bottom Border
+            drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y + topBorder + canvasHeight, u + leftBorder, v + topBorder + fillerHeight, (i == xPasses ? remainderWidth : fillerWidth), bottomBorder, zLevel);
+
+            // Throw in some filler for good measure
+            for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++)
+                drawTexturedModalRect(x + leftBorder + (i * fillerWidth), y + topBorder + (j * fillerHeight), u + leftBorder, v + topBorder, (i == xPasses ? remainderWidth : fillerWidth), (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+        }
+
+        // Side Borders
+        for (int j = 0; j < yPasses + (remainderHeight > 0 ? 1 : 0); j++)
+        {
+            // Left Border
+            drawTexturedModalRect(x, y + topBorder + (j * fillerHeight), u, v + topBorder, leftBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+            // Right Border
+            drawTexturedModalRect(x + leftBorder + canvasWidth, y + topBorder + (j * fillerHeight), u + leftBorder + fillerWidth, v + topBorder, rightBorder, (j == yPasses ? remainderHeight : fillerHeight), zLevel);
+        }
     }
 }
