@@ -57,16 +57,10 @@ public class GuiCheckBox extends GuiButton
             drawContinuousTexturedBox(buttonTextures, this.xPosition, this.yPosition, 0, 46, this.boxWidth, this.height, 200, 20, 2, 3, 2, 2, this.zLevel);
             this.mouseDragged(mc, mouseX, mouseY);
             int color = 14737632;
-
-            if (packedFGColour != 0)
-            {
-                color = packedFGColour;
-            }
-            else if (!this.enabled)
+            if (!this.enabled)
             {
                 color = 10526880;
             }
-
             if (this.isChecked)
                 this.drawCenteredString(mc.fontRendererObj, "x", this.xPosition + this.boxWidth / 2 + 1, this.yPosition + 1, 14737632);
 
