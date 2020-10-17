@@ -44,6 +44,7 @@ public class BeezigAPI {
     static Runnable saveConfig;
     static Consumer<Pair<String, List<String>>> setAutovoteFunc;
     static Function<String, Set<ForgeNewsEntry>> getNewsFunc;
+    static Supplier<Set<ForgeNewsEntry>> forumsFunc;
 
     // No fancy time-based cache needed
     private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -118,5 +119,9 @@ public class BeezigAPI {
 
     public static Set<ForgeNewsEntry> getNews(String type) {
         return getNewsFunc.apply(type);
+    }
+
+    public static Set<ForgeNewsEntry> getForumsNews() {
+        return forumsFunc.get();
     }
 }

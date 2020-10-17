@@ -41,7 +41,7 @@ public class HiveNewsTab extends Tab {
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
-        newsArticles = BeezigAPI.getNews("HIVE_FORUMS");
+        new Thread(() -> newsArticles = BeezigAPI.getForumsNews()).start();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class HiveNewsTab extends Tab {
                 List<String> content = render.listFormattedStringToWidth(article.content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth(article.author,
+                List<String> author = render.listFormattedStringToWidth("§3" + article.author,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
