@@ -19,6 +19,7 @@ package eu.beezig.forge.api;
 
 import eu.beezig.core.api.IBeezigService;
 import eu.beezig.core.api.SettingInfo;
+import eu.beezig.core.news.ForgeNewsEntry;
 import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gui.autovote.AutovoteGui;
@@ -31,10 +32,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -160,5 +158,10 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerSetAutovoteMaps(Consumer<Pair<String, List<String>>> callback) {
         BeezigAPI.setAutovoteFunc = callback;
+    }
+
+    @Override
+    public void registerGetLoadedNews(Function<String, Set<ForgeNewsEntry>> callback) {
+        BeezigAPI.getNewsFunc = callback;
     }
 }

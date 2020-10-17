@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.api;
 
+import eu.beezig.core.news.ForgeNewsEntry;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -42,6 +43,7 @@ public class BeezigAPI {
     static Function<UUID, Optional<Map<String, Object>>> getOverridesFunc;
     static Runnable saveConfig;
     static Consumer<Pair<String, List<String>>> setAutovoteFunc;
+    static Function<String, Set<ForgeNewsEntry>> getNewsFunc;
 
     // No fancy time-based cache needed
     private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -112,5 +114,9 @@ public class BeezigAPI {
 
     public static void setAutovoteMaps(String mode, List<String> maps) {
         setAutovoteFunc.accept(new ImmutablePair<>(mode, maps));
+    }
+
+    public static Set<ForgeNewsEntry> getNews(String type) {
+        return getNewsFunc.apply(type);
     }
 }

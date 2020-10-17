@@ -17,21 +17,20 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
+import eu.beezig.forge.gui.briefing.tabs.TabNewsEntry;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import eu.beezig.forge.gui.briefing.xml.Article;
-import eu.beezig.forge.gui.briefing.xml.RssParser;
 
 import java.awt.*;
 import java.net.URI;
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 public class HiveNewsTab extends Tab {
-
-    private List<Article> newsArticles = null;
+    private List<TabNewsEntry> newsArticles = null;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
@@ -42,8 +41,7 @@ public class HiveNewsTab extends Tab {
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
-        new Thread(() -> newsArticles = RssParser.getArticles()).start();
-
+        newsArticles = BeezigAPI.getNews("HIVE_FORUMS").stream().map(TabNewsEntry::new).collect(Collectors.toList());
     }
 
     @Override
@@ -54,16 +52,16 @@ public class HiveNewsTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(Article article : newsArticles) {
+            for(TabNewsEntry article : newsArticles) {
                 int stringY = y + 12;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getTitle(),
+                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getParent().title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(article.getContent(),
+                List<String> content = render.listFormattedStringToWidth(article.getParent().content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth(article.getAuthor(),
+                List<String> author = render.listFormattedStringToWidth(article.getParent().author,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
@@ -134,10 +132,10 @@ public class HiveNewsTab extends Tab {
 
     private void activateComponent(int mouseX, int mouseY) {
         if(newsArticles == null) return;
-        for(Article article : newsArticles) {
+        for(TabNewsEntry article : newsArticles) {
             if(article.isShown() && article.isHovered(mouseX, mouseY)) {
                 try {
-                    Desktop.getDesktop().browse(new URI(article.getLink()));
+                    Desktop.getDesktop().browse(new URI(article.getParent().link));
                     break;
                 } catch (Exception e) {
                     System.err.println("Couldn't open URL: ");

@@ -17,21 +17,23 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
+import com.google.common.collect.ImmutableSet;
+import eu.beezig.core.news.ForgeNewsEntry;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
+import eu.beezig.forge.gui.briefing.tabs.TabNewsEntry;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import eu.beezig.forge.gui.briefing.json.BeezigArticle;
-import eu.beezig.forge.gui.briefing.json.BeezigArticles;
 
 import java.awt.*;
 import java.util.List;
-
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BeezigNewsTab extends Tab {
-
-    private List<BeezigArticle> newsArticles = null;
+    private List<TabNewsEntry> newsArticles = null;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
@@ -42,8 +44,9 @@ public class BeezigNewsTab extends Tab {
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
-        new Thread(() -> newsArticles = BeezigArticles.fetch()).start();
-
+        Set<ForgeNewsEntry> newsArticles = BeezigAPI.getNews("BEEZIG");
+        if(!(newsArticles instanceof ImmutableSet)) newsArticles.addAll(BeezigAPI.getNews("STATUS"));
+        this.newsArticles = newsArticles.stream().map(TabNewsEntry::new).collect(Collectors.toList());
     }
 
     @Override
@@ -54,16 +57,16 @@ public class BeezigNewsTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(BeezigArticle article : newsArticles) {
+            for(TabNewsEntry article : newsArticles) {
                 int stringY = y;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getTitle(),
+                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getParent().title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(article.getContent(),
+                List<String> content = render.listFormattedStringToWidth(article.getParent().content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.getPostedAt()),
+                List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.getParent().pubDate),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
