@@ -18,9 +18,11 @@
 package eu.beezig.forge.gui.briefing.tabs.items;
 
 import eu.beezig.core.news.ForgeNewsEntry;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
+import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
@@ -35,7 +37,7 @@ public class HiveNewsTab extends Tab {
     private double scrollY;
 
     public HiveNewsTab() {
-        super("Hive News", new ResourceLocation("beezigforge/gui/hive.png"));
+        super(ForgeMessage.translate("gui.news.tab.hive"), new ResourceLocation("beezigforge/gui/hive.png"));
     }
 
     @Override
@@ -49,7 +51,7 @@ public class HiveNewsTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(newsArticles == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
             for(ForgeNewsEntry article : newsArticles) {
@@ -61,8 +63,8 @@ public class HiveNewsTab extends Tab {
                 List<String> content = render.listFormattedStringToWidth(article.content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth("§3" + article.author,
-                        windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
+                List<String> author = render.listFormattedStringToWidth("§3" + ForgeMessage.translate("gui.news.author",
+                        "§b" + article.author + "§3", "§b" + Tabs.sdf.format(article.pubDate) + "§3"), windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
 

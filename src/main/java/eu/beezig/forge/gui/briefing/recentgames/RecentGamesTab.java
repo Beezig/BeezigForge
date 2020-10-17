@@ -17,22 +17,20 @@
 
 package eu.beezig.forge.gui.briefing.recentgames;
 
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.gui.briefing.recentgames.csv.CsvMerger;
 import eu.beezig.forge.gui.briefing.recentgames.csv.GameData;
+import eu.beezig.forge.gui.briefing.recentgames.csv.LoggingGame;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
+import eu.beezig.forge.gui.briefing.tabs.TabGuiButton;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import eu.beezig.forge.gui.briefing.recentgames.csv.LoggingGame;
-import eu.beezig.forge.gui.briefing.tabs.TabGuiButton;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class RecentGamesTab extends Tab {
@@ -44,7 +42,7 @@ public class RecentGamesTab extends Tab {
     private LoggingGame gamemodeFilter;
 
     public RecentGamesTab() {
-        super("Recent Games", new ResourceLocation("beezigforge/gui/recent.png"));
+        super(ForgeMessage.translate("gui.news.tab.recent"), new ResourceLocation("beezigforge/gui/recent.png"));
     }
 
     @Override
@@ -52,9 +50,10 @@ public class RecentGamesTab extends Tab {
         super.init(windowWidth, windowHeight);
         new Thread(() -> csv = new CsvMerger(windowWidth)).start();
         getButtonList().add(new TabGuiButton(this,40, windowWidth / 2 + 200, getStartY() + 10,
-                100, 20, "Show: " + gamesLimit + " games"));
+                100, 20, ForgeMessage.translate("gui.news.tab.recent.games", gamesLimit)));
         getButtonList().add(new TabGuiButton(this,41, windowWidth / 2 + 200, getStartY() + 40,
-                100, 20, "Filter: " + (gamemodeFilter == null ? "All" : gamemodeFilter.name().toUpperCase())));
+                100, 20, gamemodeFilter == null ? ForgeMessage.translate("gui.news.tab.recent.filter.all")
+                : ForgeMessage.translate("gui.news.tab.recent.filter", gamemodeFilter.name().toUpperCase())));
 
     }
 
@@ -65,30 +64,30 @@ public class RecentGamesTab extends Tab {
             case 40 /* Game limit */:
                 if(gamesLimit == 400) {
                     gamesLimit = csv.getRecentGames().size();
-                    btn.displayString = "Show: All games";
+                    btn.displayString = ForgeMessage.translate("gui.news.tab.recent.games.all");
                 }
                 else if(gamesLimit == csv.getRecentGames().size()) {
                     gamesLimit = 100;
-                    btn.displayString = "Show: 100 games";
+                    btn.displayString = ForgeMessage.translate("gui.news.tab.recent.games", gamesLimit);
                 }
                 else {
                     gamesLimit += 100;
-                    btn.displayString = "Show: " + gamesLimit + " games";
+                    btn.displayString = ForgeMessage.translate("gui.news.tab.recent.games", gamesLimit);
                 }
                 break;
             case 41 /* Filter */:
                 if(gamemodeFilter == null) {
                     gamemodeFilter = LoggingGame.values()[0];
-                    btn.displayString = "Filter: " + gamemodeFilter.name().toUpperCase();
+                    btn.displayString = ForgeMessage.translate("gui.news.tab.recent.filter", gamemodeFilter.name().toUpperCase());
                 }
                 else {
                     if(gamemodeFilter.ordinal() + 1 >= LoggingGame.values().length) {
                         gamemodeFilter = null;
-                        btn.displayString = "Filter: All";
+                        btn.displayString = ForgeMessage.translate("gui.news.tab.recent.filter.all");
                     }
                     else {
                         gamemodeFilter = LoggingGame.values()[gamemodeFilter.ordinal() + 1];
-                        btn.displayString = "Filter: " + gamemodeFilter.name().toUpperCase();
+                        btn.displayString = ForgeMessage.translate("gui.news.tab.recent.filter", gamemodeFilter.name().toUpperCase());
                     }
                 }
                 break;
@@ -100,7 +99,7 @@ public class RecentGamesTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(csv == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             final int[] y = {getStartY() + (int) scrollY};
             csv.getRecentGames().stream().filter(g -> gamemodeFilter == null || g.getGamemode() == gamemodeFilter)

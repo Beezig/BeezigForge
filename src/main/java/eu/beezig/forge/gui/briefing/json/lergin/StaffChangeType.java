@@ -17,33 +17,32 @@
 
 package eu.beezig.forge.gui.briefing.json.lergin;
 
+import eu.beezig.forge.ForgeMessage;
+
+import java.util.Locale;
+
 public enum StaffChangeType {
+    MODERATOR_REMOVE("§c", "－"),
+    MODERATOR_ADD("§c", "＋"),
+    SENIOR_MODERATOR_REMOVE("§4",  "－"),
+    SENIOR_MODERATOR_ADD("§4",  "＋"),
+    NECTAR_REMOVE("§3", "－"),
+    NECTAR_ADD("§3", "＋"),
+    DEVELOPER_REMOVE("§7",  "－"),
+    DEVELOPER_ADD("§7", "＋"),
+    OWNER_REMOVE("§e", "－"),
+    OWNER_ADD("§e", "＋");
 
-
-    MODERATOR_REMOVE("§c", "Retiring Moderator", "－"),
-    MODERATOR_ADD("§c", "New Moderator", "＋"),
-    SENIOR_MODERATOR_REMOVE("§4", "Retiring Sr. Moderator", "－"),
-    SENIOR_MODERATOR_ADD("§4", "New Sr. Moderator", "＋"),
-    NECTAR_REMOVE("§3", "Retiring Builder", "－"),
-    NECTAR_ADD("§3", "New Builder", "＋"),
-    DEVELOPER_REMOVE("§7", "Retiring Developer", "－"),
-    DEVELOPER_ADD("§7", "New Developer", "＋"),
-    OWNER_REMOVE("§e", "Retiring Owner", "－"),
-    OWNER_ADD("§e", "New Owner", "＋");
-
-
-    private String display;
     private String color;
     private String prefix;
 
-    StaffChangeType(String color, String display, String prefix) {
-        this.display = display;
+    StaffChangeType(String color, String prefix) {
         this.color = color;
         this.prefix = prefix;
     }
 
     public String getDisplay() {
-        return color + display;
+        return color + ForgeMessage.translate("staff." + name().toLowerCase(Locale.ROOT));
     }
 
     public String getColor() {

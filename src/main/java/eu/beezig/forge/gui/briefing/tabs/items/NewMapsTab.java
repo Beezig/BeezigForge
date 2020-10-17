@@ -18,6 +18,7 @@
 package eu.beezig.forge.gui.briefing.tabs.items;
 
 import eu.beezig.core.news.ForgeNewsEntry;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
@@ -35,7 +36,7 @@ public class NewMapsTab extends Tab {
     private double scrollY;
 
     public NewMapsTab() {
-        super("Map Additions", new ResourceLocation("beezigforge/gui/maps.png"));
+        super(ForgeMessage.translate("gui.news.tab.maps"), new ResourceLocation("beezigforge/gui/maps.png"));
     }
 
     @Override
@@ -49,7 +50,7 @@ public class NewMapsTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(mapChanges == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
             for(ForgeNewsEntry map : mapChanges) {

@@ -19,6 +19,7 @@ package eu.beezig.forge.gui.briefing.tabs.items;
 
 import com.google.common.collect.ImmutableSet;
 import eu.beezig.core.news.ForgeNewsEntry;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
@@ -37,7 +38,7 @@ public class BeezigNewsTab extends Tab {
     private double scrollY;
 
     public BeezigNewsTab() {
-        super("Beezig News", new ResourceLocation("beezigforge/gui/news.png"));
+        super(ForgeMessage.translate("gui.news.tab.beezig"), new ResourceLocation("beezigforge/gui/news.png"));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class BeezigNewsTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(newsArticles == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
             for(ForgeNewsEntry article : newsArticles) {
