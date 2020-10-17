@@ -22,13 +22,13 @@ import org.apache.commons.io.input.ReversedLinesFileReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CsvMerger {
 
-    private List<GameData> recentGames = new ArrayList<>();
+    private Set<GameData> recentGames = new TreeSet<>(Comparator.comparingLong(GameData::getTime).reversed());
     private int windowWidth;
 
     private void putIntoList(LoggingGame type) throws IOException {
@@ -68,14 +68,9 @@ public class CsvMerger {
                 e.printStackTrace();
             }
         }
-        sort();
     }
 
-    private void sort() {
-        recentGames.sort(Comparator.comparingLong(GameData::getTime).reversed());
-    }
-
-    public List<GameData> getRecentGames() {
+    public Set<GameData> getRecentGames() {
         return recentGames;
     }
 }

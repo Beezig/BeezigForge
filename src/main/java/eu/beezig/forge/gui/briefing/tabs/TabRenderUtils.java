@@ -158,10 +158,10 @@ public class TabRenderUtils extends Gui {
         final Tessellator tessellator = Tessellator.getInstance();
         final WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(left + 0.0, top + height, (double)this.zLevel).tex((double)((float)(textureX + 0.0) * f), (double)((float)(textureY + height) * f2)).endVertex();
-        worldrenderer.pos(left + width, top + height, (double)this.zLevel).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + height) * f2)).endVertex();
-        worldrenderer.pos(left + width, top + 0.0, (double)this.zLevel).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0.0) * f2)).endVertex();
-        worldrenderer.pos(left + 0.0, top + 0.0, (double)this.zLevel).tex((double)((float)(textureX + 0.0) * f), (double)((float)(textureY + 0.0) * f2)).endVertex();
+        worldrenderer.pos(left + 0.0, top + height, this.zLevel).tex((float)(textureX + 0.0) * f, (float)(textureY + height) * f2).endVertex();
+        worldrenderer.pos(left + width, top + height, this.zLevel).tex((float)(textureX + width) * f, (float)(textureY + height) * f2).endVertex();
+        worldrenderer.pos(left + width, top + 0.0, this.zLevel).tex((float)(textureX + width) * f, (float)(textureY + 0.0) * f2).endVertex();
+        worldrenderer.pos(left + 0.0, top + 0.0, this.zLevel).tex((float)(textureX + 0.0) * f, (float)(textureY + 0.0) * f2).endVertex();
         tessellator.draw();
     }
 
