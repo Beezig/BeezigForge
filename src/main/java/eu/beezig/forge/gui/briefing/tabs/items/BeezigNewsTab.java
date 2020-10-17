@@ -21,19 +21,18 @@ import com.google.common.collect.ImmutableSet;
 import eu.beezig.core.news.ForgeNewsEntry;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
-import eu.beezig.forge.gui.briefing.tabs.TabNewsEntry;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
+import java.net.URI;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class BeezigNewsTab extends Tab {
-    private List<TabNewsEntry> newsArticles = null;
+    private Set<ForgeNewsEntry> newsArticles = null;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
@@ -46,7 +45,7 @@ public class BeezigNewsTab extends Tab {
         super.init(windowWidth, windowHeight);
         Set<ForgeNewsEntry> newsArticles = BeezigAPI.getNews("BEEZIG");
         if(!(newsArticles instanceof ImmutableSet)) newsArticles.addAll(BeezigAPI.getNews("STATUS"));
-        this.newsArticles = newsArticles.stream().map(TabNewsEntry::new).collect(Collectors.toList());
+        this.newsArticles = newsArticles;
     }
 
     @Override
@@ -57,16 +56,16 @@ public class BeezigNewsTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(TabNewsEntry article : newsArticles) {
-                int stringY = y;
+            for(ForgeNewsEntry article : newsArticles) {
+                int stringY = y + 12;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + article.getParent().title,
+                List<String> title = render.listFormattedStringToWidth("§b§l" + article.title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(article.getParent().content,
+                List<String> content = render.listFormattedStringToWidth(article.content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.getParent().pubDate),
+                List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.pubDate),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
@@ -93,10 +92,25 @@ public class BeezigNewsTab extends Tab {
                     render.drawCenteredString(s, windowWidth / 2, stringY, 0.9);
                     stringY += 12;
                 }
+                if(stringY > getStartY()) {
+                    int sWidth = render.getStringWidth(article.getChatComponent());
+                    article.setPosition(windowWidth / 2 - sWidth / 2, stringY, sWidth,
+                            12);
+                    article.setShown(true);
+                    render.drawCenteredString(article.getChatComponent(), windowWidth / 2, stringY, 1.2);
+                    stringY += 15;
+                }
+                else article.setShown(false);
                 stringY += 8;
                 y = stringY;
             }
         }
+    }
+
+    @Override
+    protected void onMouseClick(int mouseX, int mouseY) {
+        super.onMouseClick(mouseX, mouseY);
+        activateComponent(mouseX, mouseY);
     }
 
     @Override
@@ -117,6 +131,22 @@ public class BeezigNewsTab extends Tab {
     private void checkOutOfBorders() {
         if (this.scrollY > 0.0) {
             this.scrollY = 0.0;
+        }
+    }
+
+    private void activateComponent(int mouseX, int mouseY) {
+        if(newsArticles == null) return;
+        for(ForgeNewsEntry article : newsArticles) {
+            if(article.isShown() && article.isHovered(mouseX, mouseY)) {
+                try {
+                    Desktop.getDesktop().browse(new URI(article.link));
+                    break;
+                } catch (Exception e) {
+                    System.err.println("Couldn't open URL: ");
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 }

@@ -17,9 +17,9 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
+import eu.beezig.core.news.ForgeNewsEntry;
 import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
-import eu.beezig.forge.gui.briefing.tabs.TabNewsEntry;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
@@ -27,10 +27,10 @@ import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class NewMapsTab extends Tab {
-    private List<TabNewsEntry> mapChanges = null;
+    private Set<ForgeNewsEntry> mapChanges = null;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
@@ -41,7 +41,7 @@ public class NewMapsTab extends Tab {
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
-        mapChanges = BeezigAPI.getNews("HIVE_MAPS").stream().map(TabNewsEntry::new).collect(Collectors.toList());
+        mapChanges = BeezigAPI.getNews("HIVE_MAPS");
     }
 
     @Override
@@ -52,16 +52,16 @@ public class NewMapsTab extends Tab {
             centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(TabNewsEntry map : mapChanges) {
+            for(ForgeNewsEntry map : mapChanges) {
                 int stringY = y;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + map.getParent().title,
+                List<String> title = render.listFormattedStringToWidth("§b§l" + map.title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(map.getParent().pubDate),
+                List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(map.pubDate),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth("§3" + map.getParent().extra.getOrDefault("gameType", "Unknown"),
+                List<String> author = render.listFormattedStringToWidth("§3" + map.extra.getOrDefault("game", "Unknown"),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 
