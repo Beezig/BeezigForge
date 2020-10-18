@@ -27,6 +27,7 @@ public class ForgeNewsEntry {
     public Date pubDate;
     public String content, link;
     public Map<String, Object> extra;
+    public boolean persistent; // Persistent news will be pinned and always shown
 
     // BeezigForge render stuff
     private int x, y, width, height;
