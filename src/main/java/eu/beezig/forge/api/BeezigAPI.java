@@ -45,6 +45,7 @@ public class BeezigAPI {
     static Consumer<Pair<String, List<String>>> setAutovoteFunc;
     static Function<String, Set<ForgeNewsEntry>> getNewsFunc;
     static Supplier<Set<ForgeNewsEntry>> forumsFunc;
+    static Supplier<Boolean> dailyScoresFunc;
 
     // No fancy time-based cache needed
     private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -123,5 +124,9 @@ public class BeezigAPI {
 
     public static Set<ForgeNewsEntry> getForumsNews() {
         return forumsFunc.get();
+    }
+
+    public static boolean hasDailyScores() {
+        return dailyScoresFunc.get();
     }
 }

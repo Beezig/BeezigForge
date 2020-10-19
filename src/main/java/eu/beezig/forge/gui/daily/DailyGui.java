@@ -3,10 +3,12 @@ package eu.beezig.forge.gui.daily;
 import com.google.gson.Gson;
 import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.api.BeezigAPI;
+import eu.beezig.forge.gui.welcome.GuiCheckBox;
 import eu.beezig.forge.modules.pointstag.Games;
 import eu.beezig.forge.utils.JSON;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -48,6 +50,19 @@ public class DailyGui extends GuiScreen {
         buttonList.add(modePrev = new GuiButton(3, width / 2 - 80, 30, 20, 20, "<"));
         buttonList.add(modeNext = new GuiButton(4, width / 2 + 80, 30, 20, 20, ">"));
         buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 29, I18n.format("gui.done")));
+        String checkBoxText = ForgeMessage.translate("gui.daily.btn.opt");
+        buttonList.add(new GuiCheckBox(1910, this.width - 30 - fontRendererObj.getStringWidth(checkBoxText), this.height - 28, checkBoxText, BeezigAPI.hasDailyScores()) {
+            @Override
+            public void setIsChecked(boolean isChecked) {
+                if(BeezigAPI.hasDailyScores()) {
+                    Minecraft.getMinecraft().displayGuiScreen(new GuiChat());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/beezig daily hide");
+                } else {
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/beezig daily show");
+                    super.setIsChecked(isChecked);
+                }
+            }
+        });
         regPrev.enabled = false;
         regNext.enabled = false;
         modePrev.enabled = false;

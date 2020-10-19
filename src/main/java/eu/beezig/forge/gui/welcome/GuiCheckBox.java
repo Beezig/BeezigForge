@@ -77,7 +77,7 @@ public class GuiCheckBox extends GuiButton
     {
         if (this.enabled && this.visible && mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height)
         {
-            this.isChecked = !this.isChecked;
+            setIsChecked(!this.isChecked);
             return true;
         }
 

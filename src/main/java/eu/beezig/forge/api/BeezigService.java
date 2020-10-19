@@ -169,4 +169,9 @@ public class BeezigService implements IBeezigService {
     public void registerGetForumsNews(Supplier<Set<ForgeNewsEntry>> callback) {
         BeezigAPI.forumsFunc = callback;
     }
+
+    @Override
+    public void registerHasDailyScores(Supplier<Boolean> callback) {
+        BeezigAPI.dailyScoresFunc = callback;
+    }
 }
