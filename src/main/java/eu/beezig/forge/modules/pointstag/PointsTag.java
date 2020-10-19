@@ -43,6 +43,7 @@ public class PointsTag {
                 }
                 String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "").toUpperCase(Locale.ROOT);
                 if("SG".equals(gameStr) || "SGD".equals(gameStr)) gameStr = "SGN";
+                else if("BEDD".equals(gameStr) || "BEDT".equals(gameStr)) gameStr = "BED";
                 Games game = Games.value(gameStr);
                 String prefix;
                 String pts;
