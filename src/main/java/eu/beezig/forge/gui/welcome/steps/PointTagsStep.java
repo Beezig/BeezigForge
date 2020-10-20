@@ -65,7 +65,7 @@ public class PointTagsStep extends WelcomeGuiStep {
 
     static void endTutorial() {
         BeezigAPI.saveConfig();
-        File f = new File(BeezigAPI.getBeezigDir(), "tut");
+        File f = new File(BeezigAPI.getBeezigDir(), "tut.new");
         if (!f.exists()) {
             try {
                 f.createNewFile();
