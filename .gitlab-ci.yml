@@ -1,10 +1,25 @@
 # Beezig GitLab CI Configuration
 # Copyright (C) 2020  Beezig Team
 ---
+image: openjdk:8-alpine
 
-image: alpine:latest
+stages:
+    - build
+    - deploy
+
+build:
+    stage: build
+    before_script:
+        - apk add git
+    script:
+    - ./gradlew build
+    artifacts:
+        paths:
+            - build/libs/*.jar
+        expire_in: 1 week
 
 deploy version:
+    stage: deploy
     before_script:
         - apk add openssh git jq bash coreutils curl
     script:
