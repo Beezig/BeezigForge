@@ -18,12 +18,20 @@ public class DailyLeaderboard extends GuiListExtended {
 
     public DailyLeaderboard(List<Profile> profiles, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
-        this.profiles.add(new Header());
+        boolean global = !profiles.isEmpty() && profiles.get(0).region != null;
+        Header header = new Header();
+        header.global = global;
+        this.profiles.add(header);
         this.profiles.addAll(profiles);
     }
 
+    @Override
+    protected int getScrollBarX() {
+        return super.getScrollBarX() + 35;
+    }
+
     public void setResetTime(long resetTime) {
-        this.resetTime = new Date(resetTime * 1000);
+        this.resetTime = resetTime == -1 ? null : new Date(resetTime * 1000);
     }
 
     public String getFormattedResetTime() {
@@ -55,7 +63,7 @@ public class DailyLeaderboard extends GuiListExtended {
 
         protected static final int MAX_NAME_LEN = 16;
 
-        private String uuid, name;
+        private String uuid, name, region;
         private int place, points, most, roleColor = -1;
         private Role role;
         private String ptsStr;
@@ -78,8 +86,9 @@ public class DailyLeaderboard extends GuiListExtended {
             FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
             int color = 0xff_ff_ff_ff;
             fr.drawString("#" + place, x - 50, y, color);
-            fr.drawString(name, x, y, roleColor);
-            int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
+            if(region != null) fr.drawString(name + " §7(" + region.toUpperCase() + ")", x, y, roleColor);
+            else fr.drawString(name, x, y, roleColor);
+            int ptsPos = x + 40 + fr.getCharWidth('A') * (region != null ? MAX_NAME_LEN + 6 : MAX_NAME_LEN);
             fr.drawString(ptsStr, ptsPos, y, color);
             fr.drawString(ForgeMessage.formatNumber(most), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
         }
@@ -100,6 +109,7 @@ public class DailyLeaderboard extends GuiListExtended {
     }
 
     private static class Header extends Profile {
+        private boolean global;
 
         @Override
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
@@ -107,7 +117,7 @@ public class DailyLeaderboard extends GuiListExtended {
             int color = 0xff_ff_ff_ff;
             fr.drawString("§l" + ForgeMessage.translate("gui.daily.place"), x - 50, y, color);
             fr.drawString("§l" + ForgeMessage.translate("gui.daily.name"), x, y, color);
-            int ptsPos = x + 40 + fr.getCharWidth('A') * MAX_NAME_LEN;
+            int ptsPos = x + 40 + fr.getCharWidth('A') * (global ? MAX_NAME_LEN + 6 : MAX_NAME_LEN);
             fr.drawString("§l" + ForgeMessage.translate("gui.daily.points"), ptsPos, y, color);
             fr.drawString("§l" + ForgeMessage.translate("gui.daily.most"), ptsPos + 30 + fr.getStringWidth("999,999"), y, color);
         }
