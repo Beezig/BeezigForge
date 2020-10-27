@@ -18,7 +18,6 @@
 package eu.beezig.forge.modules.pointstag.render;
 
 import eu.beezig.forge.badge.BadgeRenderer;
-import eu.beezig.forge.badge.BadgeService;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -37,6 +36,7 @@ public class TagRenderer {
     public void renderNameAndBadge(String textToRender, BadgeRenderer badge, PointsTagRenderListener.RenderData data, double offset) {
         double tagY = data.y + data.player.height + 0.5 + offset;
         FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();
+        if(fontRenderer == null) return; // This might crash in very early loading stages
         RenderManager renderer = data.renderer.getRenderManager();
         int textSemiWidth = fontRenderer.getStringWidth(textToRender) / 2;
 
