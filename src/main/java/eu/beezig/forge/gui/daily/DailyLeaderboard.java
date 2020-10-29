@@ -1,20 +1,24 @@
 package eu.beezig.forge.gui.daily;
 
+import com.google.gson.annotations.SerializedName;
 import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.renderer.Tessellator;
 import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DailyLeaderboard extends GuiListExtended {
-
     private Date resetTime;
     private final List<Profile> profiles = new ArrayList<>();
+    private List<Extension> extensions;
 
     public DailyLeaderboard(List<Profile> profiles, Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
@@ -23,6 +27,10 @@ public class DailyLeaderboard extends GuiListExtended {
         header.global = global;
         this.profiles.add(header);
         this.profiles.addAll(profiles);
+    }
+
+    public void setExtensions(List<Extension> extensions) {
+        this.extensions = extensions;
     }
 
     @Override
@@ -44,6 +52,12 @@ public class DailyLeaderboard extends GuiListExtended {
         return DurationFormatUtils.formatDuration(duration, dateFmt);
     }
 
+    public void onGuiClose() {
+        if(extensions != null && !extensions.isEmpty()) {
+            BeezigAPI.sendDailyExtensions(extensions.stream().map(e -> new ImmutablePair<>(e.name, e.shortLink)).collect(Collectors.toList()));
+        }
+    }
+
     @Override
     protected void drawContainerBackground(Tessellator tessellator) {
 
@@ -59,13 +73,19 @@ public class DailyLeaderboard extends GuiListExtended {
         return profiles.size();
     }
 
+    static class Extension {
+        private String name;
+        @SerializedName("short_link")
+        private String shortLink;
+    }
+
     public static class Profile implements IGuiListEntry {
 
         protected static final int MAX_NAME_LEN = 16;
 
         private String uuid, name, region;
         private int place, points, most, roleColor = -1;
-        private Role role;
+        private DailyLeaderboard.Role role;
         private String ptsStr;
 
         public Profile() {

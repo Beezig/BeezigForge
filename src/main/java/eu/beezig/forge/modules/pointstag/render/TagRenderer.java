@@ -19,7 +19,6 @@ package eu.beezig.forge.modules.pointstag.render;
 
 import eu.beezig.forge.badge.BadgeRenderer;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -30,9 +29,6 @@ import org.lwjgl.opengl.GL11;
 import static eu.beezig.forge.badge.BadgeRenderer.renderBadge;
 
 public class TagRenderer {
-
-    private final Gui dummyGui = new Gui();
-
     public void renderNameAndBadge(String textToRender, BadgeRenderer badge, PointsTagRenderListener.RenderData data, double offset) {
         double tagY = data.y + data.player.height + 0.5 + offset;
         FontRenderer fontRenderer = data.renderer.getFontRendererFromRenderManager();

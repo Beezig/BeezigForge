@@ -200,13 +200,14 @@ public class DailyGui extends GuiScreen {
                 LbResponse cached = gameCache.get(currentGame);
                 leaderboard = new DailyLeaderboard(cached.leaderboard, Minecraft.getMinecraft(), width, height, 67, DailyGui.this.height - 44, 16);
                 leaderboard.setResetTime(cached.reset_time);
+                leaderboard.setExtensions(cached.extensions);
                 return;
             }
         }
         Games game = currentGame;
         DailyRegion region = currentRegion;
         new Thread(() -> {
-            String url = String.format("https://web.beezig.eu/v1/dailies/leaderboard/%s/%s/0/100", currentGame.name(), currentRegion.getId());
+            String url = String.format("https://web.beezig.eu/v1/dailies/leaderboard/%s/%s/0/100?ext=true", currentGame.name(), currentRegion.getId());
             JSONObject json = JSON.downloadJSON(url);
             LbResponse res = GSON.fromJson(json.toJSONString(), LbResponse.class);
             synchronized (lbLock) {
@@ -214,14 +215,22 @@ public class DailyGui extends GuiScreen {
                 lbCache.get(region.getId()).put(game, res);
                 leaderboard = new DailyLeaderboard(res.leaderboard, Minecraft.getMinecraft(), width, height, 67, DailyGui.this.height - 44, 16);
                 leaderboard.setResetTime(res.reset_time);
+                leaderboard.setExtensions(res.extensions);
             }
             updateScreen();
         }).start();
     }
 
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        if(leaderboard != null) leaderboard.onGuiClose();
+    }
+
     private static class LbResponse {
         private List<DailyLeaderboard.Profile> leaderboard;
         private long reset_time;
+        private List<DailyLeaderboard.Extension> extensions;
     }
 
     private static class DailyProfile {

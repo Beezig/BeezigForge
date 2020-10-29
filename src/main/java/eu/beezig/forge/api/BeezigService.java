@@ -174,4 +174,9 @@ public class BeezigService implements IBeezigService {
     public void registerHasDailyScores(Supplier<Boolean> callback) {
         BeezigAPI.dailyScoresFunc = callback;
     }
+
+    @Override
+    public void registerSendDailyExtensions(Consumer<List<Pair<String, String>>> callback) {
+        BeezigAPI.sendDailyExtensionsFunc = callback;
+    }
 }

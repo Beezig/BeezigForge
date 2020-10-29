@@ -46,6 +46,7 @@ public class BeezigAPI {
     static Function<String, Set<ForgeNewsEntry>> getNewsFunc;
     static Supplier<Set<ForgeNewsEntry>> forumsFunc;
     static Supplier<Boolean> dailyScoresFunc;
+    static Consumer<List<Pair<String, String>>> sendDailyExtensionsFunc;
 
     // No fancy time-based cache needed
     private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -128,5 +129,9 @@ public class BeezigAPI {
 
     public static boolean hasDailyScores() {
         return dailyScoresFunc.get();
+    }
+
+    public static void sendDailyExtensions(List<Pair<String, String>> extensions) {
+        sendDailyExtensionsFunc.accept(extensions);
     }
 }
