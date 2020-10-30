@@ -15,46 +15,44 @@
  * along with BeezigForge.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package eu.beezig.forge.gui.briefing.xml;
+package eu.beezig.core.news;
+
+import eu.beezig.forge.ForgeMessage;
 
 import java.util.Date;
+import java.util.Map;
 
-public class Article {
+public class ForgeNewsEntry {
+    public String author, title;
+    public Date pubDate;
+    public String content, link;
+    public Map<String, Object> extra;
+    public boolean persistent; // Persistent news will be pinned and always shown
 
-    private String author, title;
-    private Date pubDate;
-    private String content, link;
-
+    // BeezigForge render stuff
     private int x, y, width, height;
     private String clickHere;
     private boolean shown;
 
-    public String getAuthor() {
-        return author;
+    public int getX() {
+        return x;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public int getY() {
+        return y;
     }
 
-    public String getTitle() {
-        return title;
+    public int getWidth() {
+        return width;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public int getHeight() {
+        return height;
     }
 
-    public Date getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
-    public String getContent() {
-        return content;
+    public String getChatComponent() {
+        if(clickHere == null) clickHere = "§b[" + ForgeMessage.translate("btn.news.more.name") +  "]";
+        return clickHere;
     }
 
     public boolean isShown() {
@@ -65,10 +63,6 @@ public class Article {
         this.shown = shown;
     }
 
-    public boolean isHovered(int mouseX, int mouseY) {
-        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
-    }
-
     public void setPosition(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -76,20 +70,7 @@ public class Article {
         this.height = height;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public String getChatComponent() {
-        return clickHere;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-        this.clickHere = "§7[Read More]";
+    public boolean isHovered(int mouseX, int mouseY) {
+        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
     }
 }

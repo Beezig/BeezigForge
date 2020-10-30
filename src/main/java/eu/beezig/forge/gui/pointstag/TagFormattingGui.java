@@ -17,12 +17,14 @@
 
 package eu.beezig.forge.gui.pointstag;
 
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.config.pointstag.TagConfigManager;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Mouse;
 
@@ -30,7 +32,7 @@ import java.io.IOException;
 
 public class TagFormattingGui extends GuiScreen {
 
-    private Minecraft mc;
+    private final Minecraft mc;
     private GuiTextField input;
 
     public TagFormattingGui() {
@@ -44,11 +46,11 @@ public class TagFormattingGui extends GuiScreen {
                 150, 20);
         input.setText(translateAlternateColorCodesReverse(PointsTagCache.formatting));
         this.buttonList.add(new GuiButton(3013, this.width / 2 - 68, this.height / 2 - 30, 150, 20,
-                "Colored rank: " + (PointsTagCache.colorRank ? "Yes" : "No")));
+                ForgeMessage.translateOnOff("gui.ptags.fmt.rank", PointsTagCache.colorRank)));
         this.buttonList.add(new GuiButton(3012, this.width / 2 - 68, this.height / 2, 150, 20,
-                "Colored: " + (PointsTagCache.colorAll ? "Yes" : "No")));
+                ForgeMessage.translateOnOff("gui.ptags.fmt.color", PointsTagCache.colorAll)));
         this.buttonList.add(new GuiButton(3011, this.width / 2 - 68, this.height / 2 + 30, 150, 20,
-                "Done"));
+                I18n.format("gui.done")));
     }
 
     @Override
@@ -56,17 +58,17 @@ public class TagFormattingGui extends GuiScreen {
 
         this.drawDefaultBackground();
         input.drawTextBox();
-        this.drawCenteredString(this.fontRendererObj, "Edit formatting", this.width / 2, 40, 16777215);
+        this.drawCenteredString(this.fontRendererObj, ForgeMessage.translate("gui.ptags.fmt.title"), this.width / 2, 40, 16777215);
         String preview = translateAlternateColorCodes('&', input.getText())
                 .replace("{k}", "Points")
                 .replace("{v}", "201,530")
                 .replace("{r}", PointsTagCache.colorRank ? "§f§lWatson" : "Watson").trim();
         if(!PointsTagCache.colorAll) preview = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(preview);
-        this.drawCenteredString(this.fontRendererObj, "Preview: " + preview, this.width / 2, this.height / 2 + 60, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7Available variables:", this.width / 2, this.height / 2 + 90, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{k} Prefix, e.g, 'Points'", this.width / 2, this.height / 2 + 100, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{v} Value, e.g, '250,100'", this.width / 2, this.height / 2 + 110, 16777215);
-        this.drawCenteredString(this.fontRendererObj, "§7{r} Rank, for supported modes, e.g, 'Forensic'", this.width / 2, this.height / 2 + 120, 16777215);
+        this.drawCenteredString(this.fontRendererObj, ForgeMessage.translate("gui.ptags.fmt.preview", preview), this.width / 2, this.height / 2 + 60, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7" + ForgeMessage.translate("gui.ptags.fmt.vars"), this.width / 2, this.height / 2 + 90, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7" + ForgeMessage.translate("gui.ptags.fmt.prefix", "{k}", "'Points'"), this.width / 2, this.height / 2 + 100, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7" + ForgeMessage.translate("gui.ptags.fmt.value", "{v}", "'201,530'"), this.width / 2, this.height / 2 + 110, 16777215);
+        this.drawCenteredString(this.fontRendererObj, "§7" + ForgeMessage.translate("gui.ptags.fmt.game_rank", "{r}", "'Watson'"), this.width / 2, this.height / 2 + 120, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -82,21 +84,21 @@ public class TagFormattingGui extends GuiScreen {
             case 3011:
                 String converted = translateAlternateColorCodes('&', input.getText());
                 PointsTagCache.formatting = converted;
-                TagConfigManager.formatting.set(converted);
+                TagConfigManager.formatting.setValue(converted);
 
-                TagConfigManager.colorAll.set(PointsTagCache.colorAll);
-                TagConfigManager.colorRank.set(PointsTagCache.colorRank);
+                TagConfigManager.colorAll.setValue(PointsTagCache.colorAll);
+                TagConfigManager.colorRank.setValue(PointsTagCache.colorRank);
 
                 TagConfigManager.save();
                 mc.displayGuiScreen(new TagSettingsGui());
                 break;
             case 3012:
                 PointsTagCache.colorAll = !PointsTagCache.colorAll;
-                button.displayString = "Colored: " + (PointsTagCache.colorAll ? "Yes" : "No");
+                button.displayString = ForgeMessage.translateOnOff("gui.ptags.fmt.color", PointsTagCache.colorAll);
                 break;
             case 3013:
                 PointsTagCache.colorRank = !PointsTagCache.colorRank;
-                button.displayString = "Colored rank: " + (PointsTagCache.colorRank ? "Yes" : "No");
+                button.displayString = ForgeMessage.translateOnOff("gui.ptags.fmt.rank", PointsTagCache.colorRank);
                 break;
         }
     }

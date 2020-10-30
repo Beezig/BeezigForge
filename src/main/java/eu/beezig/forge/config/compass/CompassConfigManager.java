@@ -17,10 +17,12 @@
 
 package eu.beezig.forge.config.compass;
 
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
+import eu.beezig.forge.config.Configuration;
+import eu.beezig.forge.config.Property;
 import eu.beezig.forge.modules.compass.CompassManager;
 import eu.beezig.forge.modules.compass.render.CompassRenderListener;
+
+import java.io.IOException;
 
 
 public class CompassConfigManager {
@@ -35,27 +37,13 @@ public class CompassConfigManager {
 
     public static void init(Configuration config) {
         CompassConfigManager.config = config;
-        enabled = config.get("ignored", "enabled", true,
-                "Whether the Bedwars Teams Compass should show.");
-
-        size = config.get("ignored", "size", 4D,
-                "Size of the dots");
-
-        x = config.get("ignored", "posX", 0,
-                "X Coordinate of the position");
-
-        y = config.get("ignored", "posY", 0,
-                "Y Coordinate of the position");
-
-        enabled4 = config.get("ignored", "enabled4", true,
-                "Whether the compass should display in Teams Of 4");
-
-        enabled2 = config.get("ignored", "enabled2", true,
-                "Whether the compass should display in Duos");
-
-        enabled1 = config.get("ignored", "enabled1", true,
-                "Whether the compass should display in Solos");
-
+        enabled = config.get("enabled", true);
+        size = config.get("size", 4D);
+        x = config.get("posX", 0);
+        y = config.get("posY", 0);
+        enabled4 = config.get("enabled4", true);
+        enabled2 = config.get("enabled2", true);
+        enabled1 = config.get("enabled1", true);
 
         CompassRenderListener.offX = x.getInt();
         CompassRenderListener.offY = y.getInt();
@@ -64,13 +52,14 @@ public class CompassConfigManager {
         CompassManager.enabled4 = enabled4.getBoolean();
         CompassManager.enabled2 = enabled2.getBoolean();
         CompassManager.enabled1 = enabled1.getBoolean();
-
-
-
     }
 
     public static void save() {
-        config.save();
+        try {
+            config.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

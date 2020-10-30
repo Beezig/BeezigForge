@@ -17,12 +17,15 @@
 
 package eu.beezig.forge.modules.pointstag.render;
 
-import eu.beezig.forge.ActiveGame;
+import eu.beezig.forge.api.BeezigAPI;
+import eu.beezig.forge.badge.BadgeRenderer;
+import eu.beezig.forge.badge.BadgeService;
 import eu.beezig.forge.modules.pointstag.PointsTag;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.pointstag.PointsTagStatus;
 import eu.beezig.forge.modules.pointstag.PointsTagUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
@@ -30,20 +33,36 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 public class PointsTagRenderListener {
 
-    public static Method mGetHeight;
+    public static Function<UUID, Float> heightFunc;
+    private TagRenderer tagRenderer = new TagRenderer();
+    private static AtomicBoolean steveModeSet = new AtomicBoolean(false);
 
-    @SubscribeEvent
-    public void onRenderPlayer(RenderPlayerEvent.Post evt) {
-        if(ActiveGame.current() == null || ActiveGame.current().isEmpty()) return;
+    public void doRender(EntityPlayer p, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
+        if(!BeezigAPI.isOnHive()) return;
         if(!PointsTagCache.enabled) return;
-        EntityPlayer p = evt.entityPlayer;
+        if(!PointsTagCache.showTokens && BeezigAPI.getCurrentGame() == null) return;
         if(p.getName().isEmpty() || p.getName().contains("NPC-")) return;
         if(!PointsTagCache.self && p.getUniqueID().equals(Minecraft.getMinecraft().thePlayer.getUniqueID())) return;
         if(!PointsTagUtils.shouldRender(p)) return;
+        if (!steveModeSet.get()) {
+            steveModeSet.set(true);
+            Optional<Map<String, Object>> overrides = BeezigAPI.getOverrides(Minecraft.getMinecraft().thePlayer.getUniqueID());
+            Map<String, Object> overridesList;
+            if (overrides.isPresent()) {
+                overridesList = overrides.get();
+                if(overridesList.containsKey("steve-mode.enabled") && ((boolean) overridesList.get("steve-mode.enabled"))) {
+                    PointsTagStatus.enableSteveMode((String) overridesList.get("steve-mode.text"));
+                }
+            }
+        }
         PointsTag tag = PointsTagCache.get(p.getUniqueID());
         if(tag == null) {
             tag = new PointsTag();
@@ -57,11 +76,8 @@ public class PointsTagRenderListener {
         String value = status == PointsTagStatus.DONE ? tag.getValue() : status.getDisplay();
         double offset = 0.3;
 
-        if(mGetHeight != null) {
-            try {
-                offset += (float) mGetHeight.invoke(null, p.getGameProfile().getId());
-            }
-            catch (Exception ignored) {}
+        if(heightFunc != null) {
+            offset += heightFunc.apply(p.getGameProfile().getId());
         }
 
         Scoreboard scoreboard = p.getWorldScoreboard();
@@ -74,8 +90,39 @@ public class PointsTagRenderListener {
         String toRender = PointsTagCache.formatting.replace("{k}", key).replace("{v}", value).replace("{r}",
                 PointsTagCache.colorRank ? tag.getRank() : EnumChatFormatting.getTextWithoutFormattingCodes(tag.getRank())).trim();
         if(!PointsTagCache.colorAll) toRender = "§f" + EnumChatFormatting.getTextWithoutFormattingCodes(toRender);
-        PointsTagUtils.render(evt.renderer, toRender, p, evt.x, evt.y + offset, evt.z);
-
+        UUID uuid = p.getUniqueID();
+        int role = BeezigAPI.getUserRole(uuid);
+        BadgeRenderer badge = BadgeService.getBadge(role);
+        Optional<Map<String, Object>> overrides = BeezigAPI.getOverrides(uuid);
+        Map<String, Object> overridesList;
+        if (overrides.isPresent()) {
+            overridesList = overrides.get();
+            if (overridesList.containsKey("custom-badge.url") && overridesList.containsKey("custom-badge.priority") &&
+                    ((int) overridesList.get("custom-badge.priority")) >= role) {
+                badge = BadgeService.getBadge((String) overridesList.get("custom-badge.url"), uuid);
+            }
+        }
+        tagRenderer.renderNameAndBadge(toRender, badge, new RenderData(p, x, y, z, partialTicks, renderer), offset);
     }
 
+    static class RenderData {
+        public EntityPlayer player;
+        public RenderPlayer renderer;
+        public double x, y, z;
+        public float partialTicks;
+
+        public RenderData(EntityPlayer player, double x, double y, double z, float partialTicks, RenderPlayer renderer) {
+            this.player = player;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.partialTicks = partialTicks;
+            this.renderer = renderer;
+        }
+    }
+
+    @SubscribeEvent
+    public void onRenderPlayer(RenderPlayerEvent.Post evt) {
+        doRender(evt.entityPlayer, evt.x, evt.y, evt.z, evt.partialRenderTick, evt.renderer);
+    }
 }

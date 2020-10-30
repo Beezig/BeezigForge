@@ -17,16 +17,18 @@
 
 package eu.beezig.forge.gui.welcome.steps;
 
-import eu.beezig.forge.API;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
-import net.minecraft.client.gui.GuiButton;
 import eu.beezig.forge.gui.welcome.WelcomeGuiStep;
+import eu.beezig.forge.gui.welcome.WelcomeI18n;
+import net.minecraft.client.gui.GuiButton;
 
 import java.io.IOException;
 
 public class AdvancedRecordsStep extends WelcomeGuiStep {
 
     private boolean setting;
+    private final String desc = WelcomeI18n.colorMessage(this, "desc", "§b");
 
     public AdvancedRecordsStep(WelcomeGui parent) {
         super(parent);
@@ -38,22 +40,23 @@ public class AdvancedRecordsStep extends WelcomeGuiStep {
     }
 
     @Override
+    protected String getTranslationKey() {
+        return "advrec";
+    }
+
+    @Override
     public void initGui() {
         super.initGui();
         buttonList.add(new GuiButton(1001, width / 2 - 80, 200, 160, 20,
-                "Enable Advanced Records: " + ((setting = API.inst.getSettingValue("ADVANCED_RECORDS")) ? "Yes" : "No")));
+                WelcomeI18n.button(this, "setting", setting = (boolean) BeezigAPI.getSetting("ADVANCED_RECORDS"))));
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-
         int centerX = width / 2;
-
-        dCenterStr("§3Advanced Records", centerX, 60, 4.0);
-
-        dCenterStr("With Beezig, you can get §bmore stats§r when checking someone's", centerX, 140, 2.0);
-        dCenterStr(" using /stats or /records.", centerX, 158, 2.0);
+        dCenterStr(WelcomeI18n.title(this), centerX, 60, 4.0);
+        drawCenteredWrapped(desc, centerX, 140, 2.0);
     }
 
     @Override
@@ -61,8 +64,8 @@ public class AdvancedRecordsStep extends WelcomeGuiStep {
         switch(button.id) {
             case 1001 /* Toggle */:
                 setting = !setting;
-                API.inst.setSetting("ADVANCED_RECORDS", setting);
-                button.displayString = "Enable Advanced Records: " + (setting ? "Yes" : "No");
+                BeezigAPI.setSetting("ADVANCED_RECORDS", setting);
+                button.displayString = WelcomeI18n.button(this, "setting", setting);
                 break;
         }
         super.actionPerformed(button);

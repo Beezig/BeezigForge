@@ -48,24 +48,4 @@ public class LerginFetcher {
 
         return result;
     }
-
-    public static List<NewMap> getMapChanges() {
-        List<NewMap> result = new ArrayList<>();
-
-        JSONArray changes = JSON.downloadJSONArray(MAPS);
-
-        for(Object o : changes) {
-            JSONObject j = (JSONObject)o;
-            NewMap map = new NewMap();
-            map.setDate((long)j.get("date"));
-            if(j.get("mapName") != null)
-                map.setName(j.get("mapName").toString());
-            map.setMode(j.get("gameType").toString());
-
-            result.add(map);
-        }
-
-        return result.subList(0, 50);
-    }
-
 }

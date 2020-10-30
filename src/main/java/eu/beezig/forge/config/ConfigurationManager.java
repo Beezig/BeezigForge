@@ -19,17 +19,17 @@ package eu.beezig.forge.config;
 
 import eu.beezig.forge.config.compass.CompassConfigManager;
 import eu.beezig.forge.config.pointstag.TagConfigManager;
-import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ConfigurationManager {
 
     public static String configParent;
 
-    public static void initAll(File file) {
-        TagConfigManager.init(new Configuration(new File(file.getParent() + "/BeezigForge/tags.conf")));
-        CompassConfigManager.init(new Configuration(new File(file.getParent() + "/BeezigForge/bcompass.conf")));
+    public static void initAll(File file) throws IOException {
+        TagConfigManager.init(Configuration.fromFile(new File(file.getParent(), "BeezigForge/tags.conf")));
+        CompassConfigManager.init(Configuration.fromFile(new File(file.getParent(), "BeezigForge/bcompass.conf")));
 
         configParent = file.getParent() + "/BeezigForge/";
     }

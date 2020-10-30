@@ -21,6 +21,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
+import org.apache.commons.lang3.text.WordUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -58,11 +60,11 @@ public abstract class WelcomeGuiStep extends GuiScreen {
         WelcomeGuiStep previous = parent.getNext(-1);
 
         buttonList.add(new GuiButton(0, this.width / 2 - 155 + 160, this.height - 38, 150, 20,
-                next != null ? next.getName() + " >" : "Done"));
+                next != null ? WelcomeI18n.title(next) + " §r>" : I18n.format("gui.done")));
 
         if(previous != null)
             buttonList.add(new GuiButton(1, this.width / 2 - 155, this.height - 38, 150, 20,
-                    "< " + previous.getName()));
+                    "< " + WelcomeI18n.title(previous)));
     }
 
     protected void dCenterStr(String str, int x, int y, double scaleFactor) {
@@ -78,9 +80,29 @@ public abstract class WelcomeGuiStep extends GuiScreen {
             drawCenteredString(Minecraft.getMinecraft().fontRendererObj, str, x, y, 16777215);
     }
 
+    protected void drawCenteredWrapped(String str, int x, int y, double scale) {
+        String[] wrapped = WordUtils.wrap(str, 60).split("\\n");
+        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+        if(scale != 1d) {
+            GL11.glPushMatrix();
+            GL11.glScaled(scale, scale, scale);
+            for(int i = 0; i < wrapped.length; i++) {
+                String draw = wrapped[i];
+                fr.drawString(draw,
+                        (float)(x / scale) - (fr.getStringWidth(draw) / 2f), (float)(y / scale) + i * 10, 16777215, true);
+            }
+            GL11.glPopMatrix();
+        }
+        else for(int i = 0; i < wrapped.length; i++) {
+            String draw = wrapped[i];
+            fr.drawString(draw, x - (fr.getStringWidth(draw) / 2f), y + i * 10, 16777215, true);
+        }
+    }
+
     protected void dCenterStr(String str, int x, int y) {
         dCenterStr(str, x, y, 1d);
     }
 
     public abstract String getName();
+    protected abstract String getTranslationKey();
 }

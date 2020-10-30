@@ -29,7 +29,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class JSON {
 
@@ -59,7 +59,7 @@ public class JSON {
             conn.addRequestProperty("User-Agent", "BeezigForge/" + BeezigForgeMod.VERSION);
             conn.setRequestProperty("Accept", "application/json");
             conn.connect();
-            return new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
+            return new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
 
         } catch (Exception e) {
             return null;

@@ -17,39 +17,44 @@
 
 package eu.beezig.forge.gui.briefing.recentgames.csv;
 
-import eu.beezig.forge.API;
+import eu.beezig.forge.api.BeezigAPI;
+import org.apache.commons.io.input.ReversedLinesFileReader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
+import java.io.IOException;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class CsvMerger {
 
-    private List<GameData> recentGames = new ArrayList<>();
+    private Set<GameData> recentGames = new TreeSet<>(Comparator.comparingLong(GameData::getTime).reversed());
     private int windowWidth;
 
-    private void putIntoList(LoggingGame type) throws FileNotFoundException {
-        Scanner s = new Scanner(new File(API.inst.getConfigPath() + "/" + type.name() + "/games.csv"));
+    private void putIntoList(LoggingGame type) throws IOException {
+        ReversedLinesFileReader s = new ReversedLinesFileReader(new File(BeezigAPI.getBeezigDir(), type.name() + "/games.csv"));
+        String res;
+        while((res = s.readLine()) != null) {
+            try {
+                String[] data = res.split(",");
+                if (data.length == 0) continue;
 
-        if(s.hasNextLine()) s.nextLine(); // Skip header
+                GameData game = new GameData();
+                game.setGamemode(type);
+                game.setSupportsWinning(type.canWin());
+                game.setWon(type.won(data));
+                game.setDate(type.getTimestamp(data));
+                game.setGameId(type.getGameId(data));
+                game.setMap(type.getMap(data));
+                game.setMode(type.getMode(data));
+                game.setValue(ValueEntries.getValue(data, type));
+                game.initText(windowWidth);
 
-        while(s.hasNextLine()){
-            String res = s.nextLine();
-            String[] data = res.split(",");
-            if(data.length == 0) continue;
-
-            GameData game = new GameData();
-            game.setGamemode(type);
-            game.setSupportsWinning(type.canWin());
-            game.setWon(type.won(data));
-            game.setDate(type.getTimestamp(data));
-            game.setGameId(type.getGameId(data));
-            game.setMap(type.getMap(data));
-            game.setMode(type.getMode(data));
-            game.setValue(ValueEntries.getValue(data, type));
-            game.initText(windowWidth);
-
-            recentGames.add(game);
+                recentGames.add(game);
+            } catch (Exception ex) {
+                System.err.println(String.format("Error occurred when loading a %s game", type.name()));
+                ex.printStackTrace();
+            }
         }
         s.close();
     }
@@ -59,19 +64,13 @@ public class CsvMerger {
         for(LoggingGame game : LoggingGame.values()) {
             try {
                 putIntoList(game);
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        sort();
     }
 
-    private void sort() {
-        recentGames.sort((gameData, t1) -> t1.getTime() > gameData.getTime() ? 1 : -1);
-    }
-
-
-    public List<GameData> getRecentGames() {
+    public Set<GameData> getRecentGames() {
         return recentGames;
     }
 }

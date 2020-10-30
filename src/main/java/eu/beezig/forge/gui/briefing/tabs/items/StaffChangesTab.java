@@ -17,6 +17,8 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
+import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.gui.briefing.json.lergin.LerginFetcher;
 import eu.beezig.forge.gui.briefing.json.lergin.StaffChange;
 import eu.beezig.forge.gui.briefing.tabs.ImageDownloader;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
@@ -24,7 +26,6 @@ import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import eu.beezig.forge.gui.briefing.json.lergin.LerginFetcher;
 
 import java.awt.*;
 import java.util.List;
@@ -37,14 +38,18 @@ public class StaffChangesTab extends Tab {
     private double scrollY;
 
     public StaffChangesTab() {
-        super("Staff Changes", new ResourceLocation("beezigforge/gui/staff.png"));
+        super(ForgeMessage.translate("gui.news.tab.staff"), new ResourceLocation("beezigforge/gui/staff.png"));
     }
 
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
         new Thread(() -> staffChanges = LerginFetcher.getStaffChanges()).start();
+    }
 
+    @Override
+    protected int getStartY() {
+        return super.getStartY() + 10; // For the "warn" text
     }
 
     @Override
@@ -52,8 +57,9 @@ public class StaffChangesTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(staffChanges == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
+            centered("§7" + ForgeMessage.translate("gui.news.tab.staff.warn"), windowWidth / 2, -10, Color.WHITE.getRGB());
             int y = getStartY() + (int)scrollY;
             for(StaffChange sc : staffChanges) {
                 int stringY = y;
@@ -62,9 +68,7 @@ public class StaffChangesTab extends Tab {
                                 sc.getType().getPrefix() + " " +
                                 sc.getName(),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
-                for(String s : title) {
-                    stringY += 12;
-                }
+                stringY += 12 * title.size();
                 List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(sc.getDate()),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;

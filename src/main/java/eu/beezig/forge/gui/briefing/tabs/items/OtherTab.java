@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
 import eu.beezig.forge.gui.briefing.tabs.TabGuiButton;
 import net.minecraft.client.gui.GuiButton;
@@ -30,7 +31,7 @@ public class OtherTab extends Tab {
 
 
     public OtherTab() {
-        super("Other", new ResourceLocation("beezigforge/gui/other.png"));
+        super(ForgeMessage.translate("gui.news.tab.other"), new ResourceLocation("beezigforge/gui/other.png"));
     }
 
     @Override
@@ -38,11 +39,11 @@ public class OtherTab extends Tab {
         super.init(windowWidth, windowHeight);
 
         getButtonList().add(new TabGuiButton(this,42, windowWidth / 2 - 50, 108, 100, 20,
-                "Click here"));
+                ForgeMessage.translate("gui.news.click")));
         getButtonList().add(new TabGuiButton(this,43, windowWidth / 2 - 50, 148, 100, 20,
-                "Click here"));
+                ForgeMessage.translate("gui.news.click")));
         getButtonList().add(new TabGuiButton(this,44, windowWidth / 2 - 50, 188, 100, 20,
-                "Click here"));
+                ForgeMessage.translate("gui.news.click")));
 
     }
 
@@ -50,9 +51,9 @@ public class OtherTab extends Tab {
     protected void drawTab(int mouseX, int mouseY) {
         super.drawTab(mouseX, mouseY);
 
-        centered("Join our §bDiscord server§f!", windowWidth / 2, 0, Color.WHITE.getRGB());
-        centered("Check out our §bwebsite§f!", windowWidth / 2, 40, Color.WHITE.getRGB());
-        centered("Need help? Read the §bwiki§f!", windowWidth / 2, 80, Color.WHITE.getRGB());
+        centered(ForgeMessage.translate("gui.news.tab.other.discord"), windowWidth / 2, 0, Color.CYAN.getRGB());
+        centered(ForgeMessage.translate("gui.news.tab.other.website"), windowWidth / 2, 40, Color.CYAN.getRGB());
+        centered(ForgeMessage.translate("gui.news.tab.other.wiki"), windowWidth / 2, 80, Color.CYAN.getRGB());
 
     }
 
@@ -61,7 +62,7 @@ public class OtherTab extends Tab {
         super.onActionPerformed(btn);
         switch (btn.id) {
             case 42 /* Join Discord */:
-                browse("https://l.beezig.eu/discord");
+                browse("https://go.beezig.eu/discord");
                 break;
             case 43 /* Website */:
                 browse("https://beezig.eu");

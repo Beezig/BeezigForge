@@ -17,11 +17,12 @@
 
 package eu.beezig.forge.modules.pointstag;
 
-import eu.beezig.forge.ActiveGame;
+import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.utils.JSON;
 import org.json.simple.JSONObject;
-import eu.beezig.forge.API;
-import eu.beezig.forge.Log;
+
+import java.util.Locale;
 
 public class PointsTag {
 
@@ -31,36 +32,50 @@ public class PointsTag {
     public void downloadData(String uuid) {
         status = PointsTagStatus.LOADING;
         new Thread(() -> {
-            String gameStr = ActiveGame.current().replace("ARCADE_", "");
-            Games game = Games.value(gameStr);
-            String prefix;
-            String pts;
-            boolean ranks;
-            if(game == null) {
-                prefix = "Points";
-                pts = "total_points";
-                ranks = false;
+            try {
+                if(BeezigAPI.getCurrentGame() == null) {
+                    if(!PointsTagCache.showTokens) return;
+                    this.key = "Tokens";
+                    JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid);
+                    this.value = ForgeMessage.formatNumber((long) obj.get("tokens"));
+                    this.status = PointsTagStatus.DONE;
+                    return;
+                }
+                String gameStr = BeezigAPI.getCurrentGame().replace("ARCADE_", "").toUpperCase(Locale.ROOT);
+                if("SG".equals(gameStr) || "SGD".equals(gameStr)) gameStr = "SGN";
+                else if("BEDD".equals(gameStr) || "BEDT".equals(gameStr)) gameStr = "BED";
+                Games game = Games.value(gameStr);
+                String prefix;
+                String pts;
+                boolean ranks;
+                if (game == null) {
+                    prefix = "Points";
+                    pts = "total_points";
+                    ranks = false;
+                } else {
+                    prefix = game.getDisplay();
+                    pts = game.getPoints();
+                    ranks = game.supportsRanks();
+                }
+                this.key = prefix;
+                JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
+                long points = (long) obj.get(pts);
+                this.value = ForgeMessage.formatNumber(points);
+                if(game == Games.TIMV && (long) obj.get(pts) < 400) {
+                    value += " (" + ForgeMessage.formatNumber((long) obj.get("role_points")) + ")";
+                }
+                this.status = PointsTagStatus.DONE;
+                if (ranks) {
+                    String rankStr = BeezigAPI.getTitle(obj.get("title").toString(), Math.toIntExact(points));
+                    if (rankStr != null) rank = rankStr;
+                    if (game == Games.BED &&
+                            obj.get("title").toString().startsWith("Sleepy ")
+                            && (long) obj.get(pts) > 1500L)
+                        rank = "§f§l✸ Zzzzzz";
+                }
+            } catch (Exception e) {
+                status = PointsTagStatus.ERRORED;
             }
-            else {
-                prefix = game.getDisplay();
-                pts = game.getPoints();
-                ranks = true;
-            }
-            this.key = prefix;
-            JSONObject obj = JSON.downloadJSON("https://api.hivemc.com/v1/player/" + uuid + "/" + gameStr);
-            this.value = Log.df((long)obj.get(pts));
-            this.status = PointsTagStatus.DONE;
-            if(ranks) {
-                String rankStr = game == Games.TIMV
-                        ? API.inst.getTIMVRank(obj.get("title").toString(), (long)obj.get(pts))
-                        : API.inst.getRankString(obj.get("title").toString(), gameStr);
-                if(rankStr != null) rank = rankStr;
-                if(game == Games.BED &&
-                        obj.get("title").toString().startsWith("Sleepy ")
-                        && (long)obj.get(pts) > 1500L)
-                    rank = "§f§l✸ Zzzzzz";
-            }
-
         }).start();
     }
 

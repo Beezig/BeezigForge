@@ -29,7 +29,7 @@ public class PointsTagCache {
     public static String formatting;
     public static boolean colorAll;
     public static boolean colorRank;
-
+    public static boolean showTokens;
 
     public static void putIfAbsent(UUID uuid, PointsTag cached) {
         cache.putIfAbsent(uuid, cached);

@@ -21,18 +21,11 @@ import eu.beezig.forge.gamefields.TIMV;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import eu.beezig.forge.ActiveGame;
-import eu.beezig.forge.Log;
 
 import java.util.List;
 import java.util.stream.Collectors;

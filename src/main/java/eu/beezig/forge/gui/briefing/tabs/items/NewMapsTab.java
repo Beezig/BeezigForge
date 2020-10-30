@@ -17,33 +17,32 @@
 
 package eu.beezig.forge.gui.briefing.tabs.items;
 
-import eu.beezig.forge.gui.briefing.json.lergin.LerginFetcher;
+import eu.beezig.core.news.ForgeNewsEntry;
+import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.briefing.tabs.Tab;
 import eu.beezig.forge.gui.briefing.tabs.TabRenderUtils;
 import eu.beezig.forge.gui.briefing.tabs.Tabs;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
-import eu.beezig.forge.gui.briefing.json.lergin.NewMap;
 
 import java.awt.*;
 import java.util.List;
-
+import java.util.Set;
 
 public class NewMapsTab extends Tab {
-
-    private List<NewMap> mapChanges = null;
+    private Set<ForgeNewsEntry> mapChanges = null;
     private TabRenderUtils render = new TabRenderUtils(getStartY());
     private double scrollY;
 
     public NewMapsTab() {
-        super("Map Additions", new ResourceLocation("beezigforge/gui/maps.png"));
+        super(ForgeMessage.translate("gui.news.tab.maps"), new ResourceLocation("beezigforge/gui/maps.png"));
     }
 
     @Override
     protected void init(int windowWidth, int windowHeight) {
         super.init(windowWidth, windowHeight);
-        new Thread(() -> mapChanges = LerginFetcher.getMapChanges()).start();
-
+        mapChanges = BeezigAPI.getNews("HIVE_MAPS");
     }
 
     @Override
@@ -51,19 +50,19 @@ public class NewMapsTab extends Tab {
         super.drawTab(mouseX, mouseY);
 
         if(mapChanges == null)
-            centered("Loading, please wait...", windowWidth / 2, 0, Color.WHITE.getRGB());
+            centered(ForgeMessage.translate("gui.news.loading"), windowWidth / 2, 0, Color.WHITE.getRGB());
         else {
             int y = getStartY() + (int)scrollY;
-            for(NewMap map : mapChanges) {
+            for(ForgeNewsEntry map : mapChanges) {
                 int stringY = y;
                 // Adapt strings to fit into the box
-                List<String> title = render.listFormattedStringToWidth("§b§l" + map.getName(),
+                List<String> title = render.listFormattedStringToWidth("§b§l" + map.title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(map.getDate()),
+                List<String> content = render.listFormattedStringToWidth(Tabs.sdf.format(map.pubDate),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
-                List<String> author = render.listFormattedStringToWidth("§3" + map.getMode(),
+                List<String> author = render.listFormattedStringToWidth("§3" + map.extra.getOrDefault("game", "Unknown"),
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += author.size() * 12;
 

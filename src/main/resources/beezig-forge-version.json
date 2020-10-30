@@ -1,0 +1,7 @@
+{
+  "version": "@beezigforgeversion@",
+  "commit": "@beezigforgecommit@",
+  "commits": @beezigforgecommits@,
+  "type": "@beezigforgetype@",
+  "date": "@beezigforgedate@"
+}

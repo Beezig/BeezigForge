@@ -23,24 +23,21 @@ public class ValueEntries {
 
     public static String getValue(String[] data, LoggingGame game) {
         switch(game) {
-
             case bp:
+            case draw:
+            case grav:
+            case sp:
                 return safeValue(data, 0, "§7Points:§r ");
             case dr:
                 return safeValue(data, 6, "§7Time:§r ");
-            case cai:
-                return safeValue(data, 0, "§7Points:§r ");
-            case gnt:
-                return safeValue(data, 8, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ")
-                        + " §r/ " + safeValue(data, 3, "§7Deaths:§r ") + " §r/ " +
-                        safeValue(data, 4, "§7Giants: §r");
             case sky:
+            case sgn:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 2, "§7Kills:§r ");
             case hide:
-                return safeValue(data, 2, "§7Kills:§r ") + " §r/ " + safeValue(data, 5, "§7Time Alive:§r ");
+                return safeValue(data, 0, "§7Points:§r ") + "§r / " + safeValue(data, 2, "§7Kills:§r ");
             case timv:
                 return parseTimvRole(data) + " §r/ " + parseTimvKarma(data);
-            case bedwars:
+            case bed:
                 return safeValue(data, 0, "§7Points:§r ") + " §r/ " + safeValue(data, 3, "§7Kills:§r ") + "§r / "
                         + safeValue(data, 4, "§7Deaths:§r ") + " §r/ " + safeValue(data, 5, "§7Beds:§r ");
 

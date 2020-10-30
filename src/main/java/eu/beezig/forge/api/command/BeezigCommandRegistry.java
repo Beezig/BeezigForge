@@ -18,8 +18,7 @@
 package eu.beezig.forge.api.command;
 
 import com.mojang.authlib.GameProfile;
-import eu.beezig.forge.API;
-import eu.beezig.forge.Log;
+import eu.beezig.forge.ForgeMessage;
 import eu.beezig.forge.tabcompletion.BeezigCommandExecutor;
 import eu.beezig.forge.tabcompletion.TabCompletionUtils;
 import net.minecraft.client.Minecraft;
@@ -31,9 +30,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BeezigCommandRegistry {
 
@@ -45,67 +42,53 @@ public class BeezigCommandRegistry {
             Method exec = cl.getMethod("execute", String[].class);
             Method tabCompletion = tabCompletion(cl);
 
-            List<String> aliasesList = Arrays.stream(aliases)
-                    .map(s -> s.replace("/", "")).collect(Collectors.toList());
-
-            String firstAlias = aliasesList.size() < 1 ? name : aliasesList.get(0);
-
-            ClientCommandHandler.instance.registerCommand(new BeezigCommandExecutor() {
-                @Override
-                public String getCommandName() {
-                    return firstAlias;
-                }
-
-                public String getInternalName() {
-                    return name;
-                }
-
-                @Override
-                public String getCommandUsage(ICommandSender sender) {
-                    return "";
-                }
-
-
-                @Override
-                public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-                    try {
-                        if(!(boolean)exec.invoke(obj,(Object) args)) {
-                            String alias = firstAlias;
-                            if(API.inst != null && !API.inst.isHive() && aliases.length > 1) {
-                                alias = aliasesList.get(1);
-                            }
-                            Minecraft.getMinecraft().thePlayer
-                                    .sendChatMessage("/" + alias + " " + String.join(" ", args));
-                        }
-
-                    } catch (Exception e) {
-                        sender.addChatMessage(new ChatComponentText(Log.error + "An unexpected error occurred " +
-                                "§cwhile attempting to §cperform the command."));
-                        e.printStackTrace();
+            for(String alias : aliases) {
+                ClientCommandHandler.instance.registerCommand(new BeezigCommandExecutor() {
+                    @Override
+                    public String getCommandName() {
+                        return alias.substring(1);
                     }
-                }
 
-                @Override
-                public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-                    if(!(sender instanceof EntityPlayer)) return super.addTabCompletionOptions(sender, args, pos);
-                    try {
-                        Object tabCompl = tabCompletion == null
-                                ? TabCompletionUtils.matching(args)
-                                : tabCompletion.invoke(obj, ((EntityPlayer)sender).getGameProfile(), args);
-                        if(tabCompl instanceof List) {
-                            return (List<String>) tabCompl;
+                    public String getInternalName() {
+                        return name;
+                    }
+
+                    @Override
+                    public String getCommandUsage(ICommandSender sender) {
+                        return "";
+                    }
+
+                    @Override
+                    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+                        try {
+                            if(!(boolean)exec.invoke(obj,(Object) args)) {
+                                Minecraft.getMinecraft().thePlayer
+                                        .sendChatMessage(alias + " " + String.join(" ", args));
+                            }
+
+                        } catch (Exception e) {
+                            sender.addChatMessage(new ChatComponentText(ForgeMessage.error + "An unexpected error occurred " +
+                                    "§cwhile attempting to §cperform the command."));
+                            e.printStackTrace();
                         }
+                    }
 
-                    } catch (Exception ignored) {}
-                    return TabCompletionUtils.matching(args);
-                }
+                    @Override
+                    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+                        if(!(sender instanceof EntityPlayer)) return super.addTabCompletionOptions(sender, args, pos);
+                        try {
+                            Object tabCompl = tabCompletion == null
+                                    ? TabCompletionUtils.matching(args)
+                                    : tabCompletion.invoke(obj, ((EntityPlayer)sender).getGameProfile(), args);
+                            if(tabCompl instanceof List) {
+                                return (List<String>) tabCompl;
+                            }
 
-                @Override
-                public List<String> getCommandAliases() {
-                    return aliasesList;
-                }
-            });
-
+                        } catch (Exception ignored) {}
+                        return TabCompletionUtils.matching(args);
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

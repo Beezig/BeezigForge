@@ -17,30 +17,82 @@
 
 package eu.beezig.forge.gui.settings;
 
-import eu.beezig.forge.API;
+import eu.beezig.core.api.SettingInfo;
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.config.GuiConfig;
-import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-public class GuiBeezigSettings extends GuiConfig {
+public class GuiBeezigSettings extends GuiScreen {
+    private final GuiScreen parentScreen;
+    private final SettingsList settings;
 
-    public GuiBeezigSettings(GuiScreen parentScreen, List<IConfigElement> configElements) {
-        super(parentScreen, configElements, "BeezigForge", false, false, "Beezig Config GUI");
+    public GuiBeezigSettings(GuiScreen parentScreen, Map<String, List<SettingInfo>> settings) {
+        this.parentScreen = parentScreen;
+        this.settings = new SettingsList(this, width, height, 32, height - 48, 16);
+        this.settings.populate(settings);
+    }
 
+    public SettingsList getSettings() {
+        return settings;
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
-        super.actionPerformed(button);
-        if(button.id == 2000) {
-            API.inst.saveConfigData(this.configElements.toArray());
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        BeezigAPI.saveConfig();
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        settings.setDimensions(width, height, 32, height - 48);
+        buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 29, I18n.format("gui.done")));
+    }
+
+    @Override
+    public void handleMouseInput() throws IOException {
+        settings.handleMouseInput();
+        super.handleMouseInput();
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
+        settings.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(2f, 2f, 2f);
+        drawCenteredString(fontRendererObj, "Beezig", width / 4, 5, 0x1a7ef0);
+        GlStateManager.popMatrix();
+    }
+
+    @Override
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        super.mouseClicked(mouseX, mouseY, mouseButton);
+        settings.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        super.mouseReleased(mouseX, mouseY, state);
+        settings.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) throws IOException {
+        if (button.id == 200) {
+            Minecraft.getMinecraft().displayGuiScreen(parentScreen);
         }
     }
 
@@ -52,5 +104,10 @@ public class GuiBeezigSettings extends GuiConfig {
     public void onClientTick(TickEvent.ClientTickEvent evt) {
         MinecraftForge.EVENT_BUS.unregister(this);
         Minecraft.getMinecraft().displayGuiScreen(this);
+    }
+
+    @Override
+    public void handleComponentHover(IChatComponent p_175272_1_, int p_175272_2_, int p_175272_3_) {
+        super.handleComponentHover(p_175272_1_, p_175272_2_, p_175272_3_);
     }
 }

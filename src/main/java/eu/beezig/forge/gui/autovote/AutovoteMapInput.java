@@ -17,10 +17,13 @@
 
 package eu.beezig.forge.gui.autovote;
 
+import eu.beezig.forge.ForgeMessage;
+import eu.beezig.forge.api.BeezigAPI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 
 import java.io.IOException;
 
@@ -28,24 +31,27 @@ public class AutovoteMapInput extends GuiScreen {
 
     private GuiTextField input;
     private AutovoteGui parent;
+    private final AutovoteMode mode;
 
-    AutovoteMapInput(AutovoteGui parent) {
+    AutovoteMapInput(AutovoteGui parent, AutovoteMode mode) {
         this.parent = parent;
+        this.mode = mode;
     }
 
     @Override
     public void initGui() {
         super.initGui();
         input = new GuiTextField(1, fontRendererObj,width / 2 - 150, height / 6 + 80, 300, 20);
-        buttonList.add(new GuiButton(2, width / 2 - 152, height / 6 + 140, 150, 20, "Done"));
-        buttonList.add(new GuiButton(3, width / 2 + 2, height / 6 + 140, 150, 20, "Cancel"));
+        buttonList.add(new GuiButton(2, width / 2 - 152, height / 6 + 140, 150, 20, I18n.format("gui.done")));
+        buttonList.add(new GuiButton(3, width / 2 + 2, height / 6 + 140, 150, 20, I18n.format("gui.cancel")));
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         input.drawTextBox();
-        drawCenteredString(fontRendererObj, "Insert the map's display name. Make sure to include special characters (e.g, colons) and spaces.",
+        drawCenteredString(fontRendererObj, ForgeMessage.translate(mode == AutovoteMode.SHU ? "gui.autovote.input.shu" : "gui.autovote.input")
+                        + " " + ForgeMessage.translate("gui.autovote.input.hint"),
                 width / 2, height / 6, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -69,7 +75,7 @@ public class AutovoteMapInput extends GuiScreen {
                 String text = input.getText().toUpperCase().replace(" ", "_");
                 Minecraft.getMinecraft().displayGuiScreen(parent);
                 if(!text.isEmpty())
-                    parent.getList().add(text);
+                    parent.getList().add(BeezigAPI.normalizeMapName(text));
                 break;
             case 3 /* Cancel */:
                 Minecraft.getMinecraft().displayGuiScreen(parent);

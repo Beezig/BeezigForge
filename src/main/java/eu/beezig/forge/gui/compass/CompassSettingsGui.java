@@ -53,7 +53,7 @@ public class CompassSettingsGui extends GuiScreen {
                 120, 20, "Dot Size: ", "",
                 1d, 10d, CompassManager.size, false, true, slider -> {
             CompassManager.size = slider.getValueInt();
-            CompassConfigManager.size.set(slider.getValueInt());
+            CompassConfigManager.size.setValue(slider.getValueInt());
         }));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 60, this.height / 2 + 100, 120, 20,
                 "Done"));
@@ -81,12 +81,12 @@ public class CompassSettingsGui extends GuiScreen {
         switch(button.id) {
             case 0:
                 CompassManager.enabled = !CompassManager.enabled;
-                CompassConfigManager.enabled.set(CompassManager.enabled);
+                CompassConfigManager.enabled.setValue(CompassManager.enabled);
                 button.displayString = "Enabled: " + (CompassManager.enabled ? "Yes" : "No");
                 break;
             case 1:
-                CompassConfigManager.x.set(0);
-                CompassConfigManager.y.set(0);
+                CompassConfigManager.x.setValue(0);
+                CompassConfigManager.y.setValue(0);
                 CompassRenderListener.offX = 0;
                 CompassRenderListener.offY = 0;
                 break;
@@ -97,17 +97,17 @@ public class CompassSettingsGui extends GuiScreen {
                 break;
             case 4:
                 CompassManager.enabled4 = !CompassManager.enabled4;
-                CompassConfigManager.enabled4.set(CompassManager.enabled4);
+                CompassConfigManager.enabled4.setValue(CompassManager.enabled4);
                 button.displayString = "Enabled in Teams: " + (CompassManager.enabled4 ? "Yes" : "No");
                 break;
             case 5:
                 CompassManager.enabled2 = !CompassManager.enabled2;
-                CompassConfigManager.enabled2.set(CompassManager.enabled2);
+                CompassConfigManager.enabled2.setValue(CompassManager.enabled2);
                 button.displayString = "Enabled in Duos: " + (CompassManager.enabled2 ? "Yes" : "No");
                 break;
             case 6:
                 CompassManager.enabled1 = !CompassManager.enabled1;
-                CompassConfigManager.enabled4.set(CompassManager.enabled1);
+                CompassConfigManager.enabled4.setValue(CompassManager.enabled1);
                 button.displayString = "Enabled in Solo: " + (CompassManager.enabled1 ? "Yes" : "No");
                 break;
         }
@@ -116,8 +116,8 @@ public class CompassSettingsGui extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        CompassConfigManager.x.set(CompassRenderListener.offX);
-        CompassConfigManager.y.set(CompassRenderListener.offY);
+        CompassConfigManager.x.setValue(CompassRenderListener.offX);
+        CompassConfigManager.y.setValue(CompassRenderListener.offY);
         CompassConfigManager.save();
         super.onGuiClosed();
     }
