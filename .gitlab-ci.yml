@@ -33,7 +33,7 @@ deploy version:
         - curl -X POST -F token=$BEEZIGLABY_TRIGGER -F ref=rewrite https://gitlab.com/api/v4/projects/11233515/trigger/pipeline
     only:
         refs:
-            - rewrite
+            - master
 
 .deployments:
     stage: deploy
@@ -51,7 +51,6 @@ deploy beta:
         - "ssh-agent sh -c \"ssh-add \\\"$DEPLOYMENTS_KEY\\\" ; git clone git@gitlab.com:Beezig/deployments.git ; mkdir -p deployments/beezigforge-beta || true ; cp build/libs/BeezigForge*.jar \\\"deployments/beezigforge-beta/BeezigForge-$VERSION-$(git rev-list --count $(git describe --tags --abbrev=0)..HEAD)-$(git log -1 --format=%h).jar\\\" ; cd deployments ; git add . ; git -c 'user.name=GitLab Deploy' -c 'user.email=noreply@gitlab.com' commit -m 'deploy: Deploy BeezigForge Beta' ; git push origin master\""
     only:
         - master
-        - rewrite
     except:
         - tags
 
