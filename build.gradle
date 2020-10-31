@@ -89,7 +89,7 @@ processResources
             filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0-rc1',
                                            beezigforgecommit: beezigForgeCommit,
                                            beezigforgecommits: beezigForgeCommits,
-                                           beezigforgetype: 'beta',
+                                           beezigforgetype: 'release',
                                            beezigforgedate: beezigForgeDate])
         }
     }
