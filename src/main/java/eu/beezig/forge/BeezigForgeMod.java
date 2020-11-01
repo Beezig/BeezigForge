@@ -18,7 +18,6 @@
 package eu.beezig.forge;
 
 
-import eu.beezig.forge.commands.BedwarsCompassCommand;
 import eu.beezig.forge.commands.BeezigForgeTestCommand;
 import eu.beezig.forge.commands.DailyCommand;
 import eu.beezig.forge.commands.PointsTagCommand;
@@ -80,7 +79,6 @@ public class BeezigForgeMod {
         ClientCommandHandler cch = ClientCommandHandler.instance;
 
         cch.registerCommand(new PointsTagCommand());
-        cch.registerCommand(new BedwarsCompassCommand());
         cch.registerCommand(new BeezigForgeTestCommand());
         cch.registerCommand(new DailyCommand());
 
