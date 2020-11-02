@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AutovoteGui extends GuiScreen {
@@ -71,7 +72,7 @@ public class AutovoteGui extends GuiScreen {
             buttonList.add(new GuiButton(4, this.width / 2 - 155 + 160, this.height - 53, 60, 20, ForgeMessage.translate("gui.autovote.up")));
             buttonList.add(new GuiButton(5, this.width / 2 - 155 + 230, this.height - 53, 60, 20, ForgeMessage.translate("gui.autovote.down")));
             buttonList.add(btnNext = new GuiButton(0, this.width / 2 - 155 + 160, this.height - 28, 150, 20, ForgeMessage.translate("gui.save")));
-            list.setData(mapData.get(AutovoteMode.get(opt).name()));
+            list.setData(mapData.get(AutovoteMode.get(opt).name().toLowerCase(Locale.ROOT)));
         } else {
             buttonList.add(btnBack = new GuiButton(1, this.width / 2 - 155, this.height - 38, 150, 20, I18n.format("gui.cancel")));
             buttonList.add(btnNext = new GuiButton(0, this.width / 2 - 155 + 160, this.height - 38, 150, 20, ForgeMessage.translate("gui.next")));

@@ -24,6 +24,7 @@ import net.minecraft.client.gui.GuiSlot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AutovoteSlot extends GuiSlot {
     List<String> savedMaps = new ArrayList<>();
@@ -82,7 +83,7 @@ public class AutovoteSlot extends GuiSlot {
     }
 
     void save() {
-        BeezigAPI.setAutovoteMaps(AutovoteMode.get(mode).name(), new ArrayList<>(savedMaps));
+        BeezigAPI.setAutovoteMaps(AutovoteMode.get(mode).name().toLowerCase(Locale.ROOT), new ArrayList<>(savedMaps));
     }
 
     void remove() {
