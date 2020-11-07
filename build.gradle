@@ -86,7 +86,7 @@ processResources
                     "..HEAD").execute().text.trim()
             def beezigForgeDate = ("git log -1 --pretty=%cI " + beezigForgeCommit).execute().text.trim()
 
-            filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0-rc2',
+            filter(ReplaceTokens, tokens: [beezigforgeversion: '7.0.0',
                                            beezigforgecommit: beezigForgeCommit,
                                            beezigforgecommits: beezigForgeCommits,
                                            beezigforgetype: 'release',
