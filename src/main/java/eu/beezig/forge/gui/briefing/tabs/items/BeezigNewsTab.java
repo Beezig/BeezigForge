@@ -63,7 +63,7 @@ public class BeezigNewsTab extends Tab {
                 List<String> title = render.listFormattedStringToWidth("§b§l" + article.title,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5 - 10);
                 stringY += title.size() * 12;
-                List<String> content = render.listFormattedStringToWidth(article.content,
+                List<String> content = render.listFormattedStringToWidth(article.content == null ? "?" : article.content,
                         windowWidth / 3 * 2 - 5 - windowWidth / 3 + 5);
                 stringY += content.size() * 12;
                 List<String> author = render.listFormattedStringToWidth(Tabs.sdf.format(article.pubDate),
