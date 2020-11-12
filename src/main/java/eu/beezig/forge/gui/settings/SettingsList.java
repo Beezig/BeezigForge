@@ -38,7 +38,7 @@ public class SettingsList extends GuiListExtended {
 
     public void populate(Map<String, List<SettingInfo>> source) {
         for(Map.Entry<String, List<SettingInfo>> category : source.entrySet()) {
-            entries.add(new Category("§b§l" + category.getKey()));
+            if(!category.getKey().isEmpty()) entries.add(new Category("§b§l" + category.getKey()));
             for(SettingInfo settingInfo : category.getValue()) {
                 if (settingInfo.value instanceof Boolean) {
                     entries.add(new SettingEntry.BoolSettingEntry(parentScreen, settingInfo.name, settingInfo.desc, settingInfo.key, settingInfo.value));
@@ -53,6 +53,10 @@ public class SettingsList extends GuiListExtended {
                 }
             }
         }
+    }
+
+    public void addEntry(IGuiListEntry entry) {
+        entries.add(entry);
     }
 
     @Override

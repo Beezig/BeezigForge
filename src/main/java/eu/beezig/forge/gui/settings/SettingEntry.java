@@ -49,6 +49,22 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         this.key = key;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public IChatComponent getDescription() {
+        return desc;
+    }
+
     protected abstract void onButtonClick();
 
     @Override
@@ -99,7 +115,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         @Override
         protected void onButtonClick() {
             this.value = !((boolean) value);
-            BeezigAPI.setSettingAsIs(this.key, value);
+            parentScreen.saveEntry(this, value);
         }
 
         @Override
@@ -123,7 +139,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
             parentScreen.mc.displayGuiScreen(new GuiTextInput(parentScreen, s -> {
                 if(s != null) {
                     value = s;
-                    BeezigAPI.setSettingAsIs(this.key, s);
+                    parentScreen.saveEntry(this, value);
                 }
             }, value.toString(), ForgeMessage.translate("gui.settings.edit", "§b" + name)));
         }
@@ -152,12 +168,12 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
             if(values.size() == 2) {
                 EnumService.EnumEntry entry = values.stream().filter(v -> !v.equals(value.getValue())).findAny().orElseThrow(() -> new IllegalStateException("Value wasn't among the possible values."));
                 value.setValue(entry);
-                BeezigAPI.setSettingAsIs(this.key, value.getRealValue());
+                parentScreen.saveEntry(this, value);
             } else {
                 parentScreen.mc.displayGuiScreen(new EnumList(parentScreen, values, values.indexOf(value.getValue()), entry -> {
                     if (entry != null) {
                         value.setValue(entry);
-                        BeezigAPI.setSettingAsIs(this.key, value.getRealValue());
+                        parentScreen.saveEntry(this, value);
                     }
                 }));
             }
@@ -198,7 +214,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
                     ex.printStackTrace();
                     return;
                 }
-                BeezigAPI.setSettingAsIs(this.key, value);
+                parentScreen.saveEntry(this, value);
             }, value.toString(), ForgeMessage.translate("gui.settings.number.hint", "§b" + this.name));
             input.setValidator(toUse);
             input.setValidatorError(ForgeMessage.translate("gui.settings.number.error"));
@@ -213,6 +229,40 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
         @Override
         protected int valueColor() {
             return 0x55ffff;
+        }
+    }
+
+    public static class ColorEntry extends SettingEntry {
+        private final GuiColorPicker.ColorMode mode;
+        private int colorNoAlpha;
+
+        public ColorEntry(GuiBeezigSettings parentScreen, String name, String key, String desc, int value, GuiColorPicker.ColorMode mode) {
+            super(parentScreen, name, key, ForgeMessage.translate("gui.settings.action.pick"), desc, value);
+            this.mode = mode;
+            stripAlpha(value);
+        }
+
+        private void stripAlpha(int value) {
+            this.colorNoAlpha = mode == GuiColorPicker.ColorMode.RGBA ? (value >>> 8) & 0x00FFFFFF : value & 0x00FFFFFF;
+        }
+
+        @Override
+        protected String formatValue() {
+            return String.format("#%06X", colorNoAlpha);
+        }
+
+        @Override
+        protected int valueColor() {
+            return colorNoAlpha;
+        }
+
+        @Override
+        protected void onButtonClick() {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiColorPicker(parentScreen, mode, (int) value, v -> {
+                this.value = v;
+                stripAlpha(v);
+                parentScreen.saveEntry(this, v);
+            }));
         }
     }
 }

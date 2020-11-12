@@ -17,7 +17,9 @@
 
 package eu.beezig.forge.commands;
 
-import eu.beezig.forge.gui.settings.GuiColorPicker;
+import com.google.common.collect.Lists;
+import eu.beezig.core.api.SettingInfo;
+import eu.beezig.forge.gui.settings.speedrun.GuiSpeedrunSettings;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -41,7 +43,11 @@ public class BeezigForgeTestCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        GuiColorPicker colorPicker = new GuiColorPicker(null, GuiColorPicker.ColorMode.ARGB, 0x80adeaea, v -> System.out.printf("%06X\n", v));
-        colorPicker.show();
+        SettingInfo color = new SettingInfo();
+        color.key = "COLOR_TEST";
+        color.name = "Color test";
+        color.desc = "Color test desc";
+        color.value = 0xFFADEAEA;
+        new GuiSpeedrunSettings(Lists.newArrayList(color)).show();
     }
 }

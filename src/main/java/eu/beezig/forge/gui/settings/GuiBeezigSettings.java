@@ -35,12 +35,12 @@ import java.util.Map;
 
 public class GuiBeezigSettings extends GuiScreen {
     private final GuiScreen parentScreen;
-    private final SettingsList settings;
+    protected final SettingsList settings;
 
     public GuiBeezigSettings(GuiScreen parentScreen, Map<String, List<SettingInfo>> settings) {
         this.parentScreen = parentScreen;
         this.settings = new SettingsList(this, width, height, 32, height - 48, 16);
-        this.settings.populate(settings);
+        if(settings != null) this.settings.populate(settings);
     }
 
     public SettingsList getSettings() {
@@ -94,6 +94,10 @@ public class GuiBeezigSettings extends GuiScreen {
         if (button.id == 200) {
             Minecraft.getMinecraft().displayGuiScreen(parentScreen);
         }
+    }
+
+    protected void saveEntry(SettingEntry entry, Object value) {
+        BeezigAPI.setSettingAsIs(entry.getKey(), value);
     }
 
     public void show() {
