@@ -17,6 +17,7 @@
 
 package eu.beezig.forge.api;
 
+import eu.beezig.core.api.SettingInfo;
 import eu.beezig.core.news.ForgeNewsEntry;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,6 +48,7 @@ public class BeezigAPI {
     static Supplier<Set<ForgeNewsEntry>> forumsFunc;
     static Supplier<Boolean> dailyScoresFunc;
     static Consumer<List<Pair<String, String>>> sendDailyExtensionsFunc;
+    static Consumer<List<SettingInfo>> saveSpeedrunFunc;
 
     // No fancy time-based cache needed
     private static final Map<UUID, Map<String, Object>> overrideCache = new HashMap<>(5);
@@ -133,5 +135,9 @@ public class BeezigAPI {
 
     public static void sendDailyExtensions(List<Pair<String, String>> extensions) {
         sendDailyExtensionsFunc.accept(extensions);
+    }
+
+    public static void saveSpeedrunConfig(List<SettingInfo> settings) {
+        saveSpeedrunFunc.accept(settings);
     }
 }

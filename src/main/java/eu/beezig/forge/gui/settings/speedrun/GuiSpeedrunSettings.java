@@ -19,6 +19,7 @@ package eu.beezig.forge.gui.settings.speedrun;
 
 import com.google.common.collect.ImmutableMap;
 import eu.beezig.core.api.SettingInfo;
+import eu.beezig.forge.api.BeezigAPI;
 import eu.beezig.forge.gui.settings.GuiBeezigSettings;
 import eu.beezig.forge.gui.settings.GuiColorPicker;
 import eu.beezig.forge.gui.settings.SettingEntry;
@@ -27,12 +28,27 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GuiSpeedrunSettings extends GuiBeezigSettings {
+    private final List<SettingInfo> settingInfos;
+    private final Map<String, SettingInfo> indexes = new HashMap<>();
+
     public GuiSpeedrunSettings(List<SettingInfo> settings) {
         super(null, null);
+        this.settingInfos = new ArrayList<>(settings);
+        for(SettingInfo settingInfo : settings) {
+            indexes.put(settingInfo.key, settingInfo);
+        }
         populate(settings);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        BeezigAPI.saveSpeedrunConfig(settingInfos);
     }
 
     private void populate(List<SettingInfo> settings) {
@@ -52,7 +68,7 @@ public class GuiSpeedrunSettings extends GuiBeezigSettings {
 
     @Override
     protected void saveEntry(SettingEntry entry, Object value) {
-
+        indexes.get(entry.getKey()).value = value;
     }
 
     @SubscribeEvent

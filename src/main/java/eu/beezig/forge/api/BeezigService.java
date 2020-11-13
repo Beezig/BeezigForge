@@ -24,6 +24,7 @@ import eu.beezig.forge.api.command.BeezigCommandRegistry;
 import eu.beezig.forge.config.ConfigurationManager;
 import eu.beezig.forge.gui.autovote.AutovoteGui;
 import eu.beezig.forge.gui.settings.GuiBeezigSettings;
+import eu.beezig.forge.gui.settings.speedrun.GuiSpeedrunSettings;
 import eu.beezig.forge.gui.welcome.WelcomeGui;
 import eu.beezig.forge.modules.pointstag.PointsTagCache;
 import eu.beezig.forge.modules.shuffle.ShuffleForgeListener;
@@ -116,6 +117,11 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void openSpeedrunConfig(List<SettingInfo> settings) {
+        Minecraft.getMinecraft().displayGuiScreen(new GuiSpeedrunSettings(settings));
+    }
+
+    @Override
     public void registerGetRegion(Supplier<String> callback) {
         BeezigAPI.regionFunc = callback;
     }
@@ -178,5 +184,10 @@ public class BeezigService implements IBeezigService {
     @Override
     public void registerSendDailyExtensions(Consumer<List<Pair<String, String>>> callback) {
         BeezigAPI.sendDailyExtensionsFunc = callback;
+    }
+
+    @Override
+    public void registerSaveSpeedrunConfig(Consumer<List<SettingInfo>> callback) {
+        BeezigAPI.saveSpeedrunFunc = callback;
     }
 }
