@@ -38,7 +38,7 @@ public abstract class SettingEntry implements GuiListExtended.IGuiListEntry {
     protected final IChatComponent hoverAction;
     protected Object value;
 
-    private SettingEntry(GuiBeezigSettings parentScreen, String name, String key, String hoverAction, String desc, Object value) {
+    protected SettingEntry(GuiBeezigSettings parentScreen, String name, String key, String hoverAction, String desc, Object value) {
         this.name = name;
         this.desc = new ChatComponentText("");
         this.desc.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(desc)));

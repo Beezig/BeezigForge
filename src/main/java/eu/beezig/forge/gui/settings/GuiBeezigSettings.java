@@ -96,7 +96,7 @@ public class GuiBeezigSettings extends GuiScreen {
         }
     }
 
-    protected void saveEntry(SettingEntry entry, Object value) {
+    public void saveEntry(SettingEntry entry, Object value) {
         BeezigAPI.setSettingAsIs(entry.getKey(), value);
     }
 
