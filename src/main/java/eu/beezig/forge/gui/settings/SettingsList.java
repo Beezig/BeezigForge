@@ -21,7 +21,9 @@ import eu.beezig.core.api.SettingInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiListExtended;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
+import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,21 @@ import java.util.Map;
 public class SettingsList extends GuiListExtended {
     private final GuiBeezigSettings parentScreen;
     private final List<IGuiListEntry> entries = new ArrayList<>();
+    private ScaledResolution scaledResolution;
 
     public SettingsList(GuiBeezigSettings parentScreen, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
         super(Minecraft.getMinecraft(), widthIn, heightIn, topIn, bottomIn, slotHeightIn);
         this.parentScreen = parentScreen;
+    }
+
+    @Override
+    public void handleMouseInput() {
+        super.handleMouseInput();
+        int wheel = Mouse.getEventDWheel();
+        if(wheel != 0) {
+            // Scroll multiplier
+            amountScrolled -= (Math.signum(wheel) * Math.min(3F, entries.size() * 0.1F));
+        }
     }
 
     public void populate(Map<String, List<SettingInfo>> source) {
@@ -55,6 +68,12 @@ public class SettingsList extends GuiListExtended {
         }
     }
 
+    @Override
+    public void setDimensions(int widthIn, int heightIn, int topIn, int bottomIn) {
+        super.setDimensions(widthIn, heightIn, topIn, bottomIn);
+        scaledResolution = new ScaledResolution(mc);
+    }
+
     public void addEntry(IGuiListEntry entry) {
         entries.add(entry);
     }
@@ -66,7 +85,7 @@ public class SettingsList extends GuiListExtended {
 
     @Override
     protected int getScrollBarX() {
-        return super.getScrollBarX() + 230;
+        return super.getScrollBarX() + 31 * scaledResolution.getScaleFactor();
     }
 
     @Override
