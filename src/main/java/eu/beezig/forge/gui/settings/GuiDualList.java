@@ -64,13 +64,15 @@ public class GuiDualList<E extends GuiDualList.DualListEntry> extends GuiScreen 
 
     @Override
     public void initGui() {
+        int listWidth = width / 4;
+        int leftmost = width / 2 - 50 - listWidth;
         int relHeight = (height - 32) / 2;
         buttonList.add(new GuiButton(1, width / 2 - 15, relHeight - 12, 30, 20, "<<"));
         buttonList.add(new GuiButton(2, width / 2 - 15, relHeight + 12, 30, 20, ">>"));
-        buttonList.add(new GuiButton(3, width / 2 - 370, relHeight - 12, 60, 20, ForgeMessage.translate("gui.autovote.up")));
-        buttonList.add(new GuiButton(4, width / 2 - 370, relHeight + 12, 60, 20, ForgeMessage.translate("gui.autovote.down")));
+        buttonList.add(new GuiButton(3, leftmost - 70, relHeight - 12, 60, 20, ForgeMessage.translate("gui.autovote.up")));
+        buttonList.add(new GuiButton(4, leftmost - 70, relHeight + 12, 60, 20, ForgeMessage.translate("gui.autovote.down")));
         buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height - 29, I18n.format("gui.done")));
-        leftView = new DualList(mc, 220, 400, 32, 32 + 400, 16) {
+        leftView = new DualList(mc, listWidth, height - 100, 32, 32 + height - 100, 16) {
             @Override
             public IGuiListEntry getListEntry(int index) {
                 return GuiDualList.this.left.get(index);
@@ -91,8 +93,8 @@ public class GuiDualList<E extends GuiDualList.DualListEntry> extends GuiScreen 
                 drawHeader(ForgeMessage.translate("gui.settings.list.current"), x, y, width, top);
             }
         };
-        leftView.setSlotXBoundsFromLeft(width / 2 - 280);
-        rightView = new DualList(mc, 220, 400, 32, 32 + 400, 16) {
+        leftView.setSlotXBoundsFromLeft(leftmost);
+        rightView = new DualList(mc, listWidth, height - 100, 32, 32 + height - 100, 16) {
             @Override
             public IGuiListEntry getListEntry(int index) {
                 return GuiDualList.this.right.get(index);
@@ -122,7 +124,7 @@ public class GuiDualList<E extends GuiDualList.DualListEntry> extends GuiScreen 
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(GuiButton button) {
         switch (button.id) {
             case 1:
                 moveLeft(selectedRight);
@@ -247,6 +249,11 @@ public class GuiDualList<E extends GuiDualList.DualListEntry> extends GuiScreen 
         public DualList(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn) {
             super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);
             this.setHasListHeader(true, (int)((float)mcIn.fontRendererObj.FONT_HEIGHT * 1.5F));
+        }
+
+        @Override
+        public int getListWidth() {
+            return width;
         }
 
         @Override
