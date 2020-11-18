@@ -35,6 +35,7 @@ public class GuiColorPicker extends GuiScreen {
     private final GuiScreen parentScreen;
     private final Consumer<Integer> callback;
     private final ColorMode mode;
+    private ScaledResolution scaledResolution;
 
     private int color = 0xFF_FF_FF;
     private float alpha = 1f;
@@ -43,7 +44,7 @@ public class GuiColorPicker extends GuiScreen {
     private int red = 255, green = 255, blue = 255;
 
     // Components
-    private GuiTextField rgbInput;
+    private final GuiTextField rgbInput;
     private GuiSlider redSlider, greenSlider, blueSlider;
 
     public GuiColorPicker(GuiScreen parentScreen, ColorMode mode, int defaultValue, Consumer<Integer> callback) {
@@ -60,6 +61,7 @@ public class GuiColorPicker extends GuiScreen {
 
     @Override
     public void initGui() {
+        scaledResolution = new ScaledResolution(mc);
         buttonList.add(makeSlider(1, width / 2 - 75, height / 2 - 70, 0.02f, alpha, v -> alpha = v,
                 v -> ForgeMessage.translate("gui.settings.color.opacity", (v == 2 ? 0 : (int) (v * 100)) + "%")));
         buttonList.add(redSlider = makeSlider(3, width / 2 - 75, height / 2 - 40, 0f, red / 255f, v -> {
@@ -109,8 +111,8 @@ public class GuiColorPicker extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        drawColorRect(width / 2 - 25, height / 5);
-        drawPreview(width / 2, height / 5 + 60);
+        drawColorRect(width / 2 - 25, height / (7 * scaledResolution.getScaleFactor()));
+        drawPreview(width / 2, height / (7 * scaledResolution.getScaleFactor()) + 60);
         rgbInput.drawTextBox();
     }
 
