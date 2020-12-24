@@ -9,5 +9,6 @@ public class ShuffleForgeListener {
     @SubscribeEvent
     public void onGuiOpen(GuiScreenEvent.DrawScreenEvent.Post event) {
         mgr.listener.onGuiOpen(event.gui);
+        mgr.listener.findWinner(event.gui);
     }
 }

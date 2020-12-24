@@ -122,6 +122,16 @@ public class BeezigService implements IBeezigService {
     }
 
     @Override
+    public void shuffleOpenWinner() {
+        ShuffleForgeListener.mgr.prepareCheckWinner();
+    }
+
+    @Override
+    public void shuffleCheckWinner(Consumer<String> callback) {
+        ShuffleForgeListener.mgr.checkWinner(callback);
+    }
+
+    @Override
     public void registerGetRegion(Supplier<String> callback) {
         BeezigAPI.regionFunc = callback;
     }
